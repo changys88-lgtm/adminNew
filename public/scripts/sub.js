@@ -8,22 +8,12 @@ function generateCalendars(names = "", layer = "") {
 		const dd = String(d.getDate()).padStart(2, '0');
 		const NOWS = `${y}${m}${dd}`;
 		$("#" + layer).addClass("is-open");
+		$(".city-layer").removeClass("is-open");
+		$(".seat-layer").removeClass("is-open");
 		//const now = dates ? StrClear(dates) : formatDate(new Date());
 		ticket_type    = document.frmForm.ticket_type.value;
 		departure_date = document.frmForm.departure_date.value;
 		arrive_date    = document.frmForm.arrive_date.value;
-		if (ticket_type == "3") {
-			var regex = /[^0-9]/g;
-			var result = names.replace(regex, "");
-			hh = (result - 1) * 50;
-			$("#CalendarLayer").css("top", 95 + hh + "px");
-			$("#CalendarLayer").css("left", "14px");
-		if (result > 1)
-			Nows = eval("document.frmForm.dep_date" + (result - 1)).value;
-		} else {
-			$("#CalendarLayer").css("top", "167px");
-			$("#CalendarLayer").css("left", "14px");
-		}
 		let year = new Date().getFullYear();
 		let month = new Date().getMonth() + 1; // JS는 0부터 시작
 

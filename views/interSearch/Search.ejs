@@ -295,30 +295,42 @@
 	}
 
     function firstSet () {
-        if (!document.frmForm || !document.frmForm.departure_date) {
-            return; // form이 아직 로드되지 않았으면 리턴
-        }
         let date1 = getCookie("AviaSearchDate1");
         let date2 = getCookie("AviaSearchDate2");
 
         date1 = date1 || getFutureDate(2); // 기본 2일 뒤
         const week1 = getWeekFromDateStr(date1);
-        document.frmForm.departure_date.value = date1;
+        
+        // form이 있으면 value 설정, 없어도 텍스트는 표시
+        if (document.frmForm && document.frmForm.departure_date) {
+            document.frmForm.departure_date.value = date1;
+        }
         $("#departure_date_name").html(CutDate(date1) + " (" + getWeek(week1) + ")");
 
         date2 = date2 || getFutureDateFrom(date1, 2); // date1 기준 2일 뒤
         const week2 = getWeekFromDateStr(date2);
-        document.frmForm.arrive_date.value = date2;
+        
+        // form이 있으면 value 설정, 없어도 텍스트는 표시
+        if (document.frmForm && document.frmForm.arrive_date) {
+            document.frmForm.arrive_date.value = date2;
+        }
         $("#arrive_date_name").html(CutDate(date2) + " (" + getWeek(week2) + ")");
     }
 
 	$(document).ready(function(){
         resizeFrame();
         searchDatas ("CITY");    
-        // form이 완전히 로드될 때까지 약간의 딜레이
+        // 날짜 텍스트는 즉시 표시, form은 나중에 설정
+        firstSet();
+        // form이 완전히 로드된 후 value 재설정
         setTimeout(function() {
-            firstSet();
-        }, 100);
+            if (document.frmForm && document.frmForm.departure_date) {
+                const date1 = document.frmForm.departure_date.value || getCookie("AviaSearchDate1") || getFutureDate(2);
+                const date2 = document.frmForm.arrive_date.value || getCookie("AviaSearchDate2") || getFutureDateFrom(date1, 2);
+                document.frmForm.departure_date.value = date1;
+                document.frmForm.arrive_date.value = date2;
+            }
+        }, 200);
 	});
 
     async function searchDatas (mode,uid='') {

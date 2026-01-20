@@ -208,7 +208,9 @@ html, body {
   background: #fff;
 }
 
-.city-layer, .date-layer, .pax-layer {
+/* .city-layer 스타일은 international.css로 이동됨 */
+.date-layer,
+.pax-layer {
   display: none;
   position: fixed;
   inset: 0;
@@ -217,7 +219,8 @@ html, body {
   justify-content: center;
   z-index: 9999;
 }
-.city-layer.is-open, .date-layer.is-open, .pax-layer.is-open {
+.date-layer.is-open,
+.pax-layer.is-open {
   display: flex;
 }
 

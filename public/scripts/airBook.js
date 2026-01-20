@@ -238,7 +238,6 @@
 		$(".seat-layer").addClass("is-open");
 		$(".city-layer").removeClass("is-open");
 		$(".calendar-layer").removeClass("is-open");
-		$(".seat-layer").css("top", "167px");
 	}
 	function seatClose() {
 		$(".seat-layer").removeClass("is-open");

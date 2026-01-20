@@ -311,14 +311,16 @@ font-size: 14px;
  City 도시검색
 ================================ */
 .city-layer {
-position: fixed;
-background: transparent;
-display: none;
-z-index: 9999;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
+position: fixed !important;
+background: transparent !important;
+display: none !important;
+z-index: 9999 !important;
+top: 0 !important;
+left: 0 !important;
+right: 0 !important;
+bottom: 0 !important;
+align-items: center !important;
+justify-content: center !important;
 }
 
 .city-layer .city-head {
@@ -360,10 +362,20 @@ bottom: 0;
 	color: #0f172a;
   }
 
-.city-layer.is-open {
+.city-layer.is-open,
+div.city-layer.is-open,
+#CityLayer.is-open,
+div#CityLayer.is-open {
 display: flex !important;
 align-items: center !important;
 justify-content: center !important;
+position: fixed !important;
+top: 0 !important;
+left: 0 !important;
+right: 0 !important;
+bottom: 0 !important;
+z-index: 9999 !important;
+background: transparent !important;
 }
 
 .city-box {
@@ -456,17 +468,24 @@ color: #0f766e;
 .date-layer,
 .pax-layer,
 .calendar-layer {
-position: fixed;
-display: none;
-align-items: center;
-justify-content: center;
-z-index: 9999;
+position: fixed !important;
+display: none !important;
+align-items: center !important;
+justify-content: center !important;
+z-index: 9999 !important;
+top: 0 !important;
+left: 0 !important;
+right: 0 !important;
+bottom: 0 !important;
+background: transparent !important;
 }
 
 .date-layer.is-open,
 .pax-layer.is-open,
 .calendar-layer.is-open {
-display: flex;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
 }
 
 .layer-box {
@@ -1492,7 +1511,6 @@ color: #0f766e;
 
 .seat-layer {
 	width: 380px;
-	right: 0;
 	padding: 18px 20px 20px;
 	background: #ffffff;
 	border: 1px solid #24486a;
@@ -1501,8 +1519,19 @@ color: #0f766e;
 	font-size: 14px;
 	color: #111827;
 	position: fixed;
-	z-index: 3000;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
   }
+
+.seat-layer.is-open {
+	display: flex !important;
+}
   
   /* ================= Header ================= */
   
