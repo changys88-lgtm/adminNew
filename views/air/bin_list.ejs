@@ -1,0 +1,179 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<form name="frmSearch" id="frmSearch"  method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="항공사 Bin 넘버 관리(발권 카드 번호)">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<button type="button" class="btn btn-yellow " href="javascript://"  onClick="newReg()"><i class="fas fa-project-diagram" style="font-size:0.8em;"></i>&nbsp;&nbsp;신규등록</button>
+                    <button type="button" class="btn btn-yellow " href="javascript://"  onClick="newReg('','excel')"><i class="fas fa-project-diagram" style="font-size:0.8em;"></i>&nbsp;&nbsp;엑셀 업로드</button>
+				</div>
+				<div class="search_action_right">
+					
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					<select name="sFrom" class="search_action_select">
+						<option value="bin_number"	>Bin넘버</option>
+						<option value="aircode"		>2코드</option>
+						<option value="aircode2"	>3코드</option>
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr>
+					<th>No</th>
+					<th>2코드</th>
+					<th>3코드</th>
+					<th>Card Bin</th>
+					<th>Bin Company</th>
+					<th>명칭</th>
+					<th>Bin 넘버</th>
+					<th>등록일</th>
+					<th>삭제</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+	</div>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="uid">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    async function newReg (uid='',mode='input') {
+        frmModify.uid.value      = uid;
+        frmModify.mode.value     = mode;
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/air/binSave');
+		title   = json.title;
+		html    = json.html;
+        name    = json.name;
+		drawer.open(900, { title, html  });
+        LoadingStop();
+        
+	}
+
+	async function binDel (uid) {
+		var Rc = confirm("선택한 Bin 넘버를 삭제 합니다.");
+		if (Rc) {
+			frmModify.uid.value = uid;
+            frmModify.mode.value = 'del';
+            json = await dataSaveSend ('frmModify','/air/binSave');
+            success = json.success;
+		    if (success === "ok") {
+                formSearch(event,frmSearch.page.value);
+                drawer.close();
+            } else {
+                newAlert('오류 발생');
+            }
+		}
+		return false;
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/air/bin_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`항공사 Bin (${json.totalCount})`);
+			frmSearch.titleData.value = `항공사 Bin (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+    var oEditors = [];
+	
+    async function inputCheck () {
+        Obj = document.frmDetail;
+		if(Obj.aircode.value == ""){
+			alert("2코드를 입력해 주세요");
+		} else {
+            json = await dataSaveSend ('frmDetail','/air/binSave');
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            uid      = json.uid;
+            if (success === "ok") {
+                formSearch(event,frmSearch.page.value);
+                drawer.close();
+            } else {
+                newAlert('에러:'+errorMsg);
+            }
+		}
+		return false;
+	}
+
+    async function excelCheck () {
+        Obj = document.frmDetail;
+		if(Obj.aircode.value == ""){
+			alert("2코드를 입력해 주세요");
+        //} else if(Obj.pic.value == ""){
+		//	alert("엑셀 파일을 선택해 주세요");
+		} else {
+            json = await dataSaveSend ('frmDetail','/air/binUpload','file');
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            uid      = json.uid;
+            if (success === "ok") {
+                drawer.close();
+                newAlert('신규등록:'+json.newCount);
+            } else {
+                newAlert('에러:'+errorMsg);
+            }
+		}
+		return false;
+	}
+
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

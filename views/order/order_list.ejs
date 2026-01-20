@@ -1,0 +1,177 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<form name="frmSearch" id="frmSearch" enctype="multipart/form-data" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="interSearch">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					
+				</div>
+				<div class="search_action_right">
+					<input class='custom-control-input' type='checkbox' name='cancel' id='cancel' value='Y'  >
+					<span class="unit">취소포함</span>
+					<input name="listCount" type="text" value="20" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					<select name="GU5" class="search_action_select">
+						<option value="">주문채널
+					</select>
+					<select name="GU1" class="search_action_select">
+						<option value="">결제상태
+						<option value="W">결제대기
+						<option value="D">계약금
+						<option value="Y">결제완료
+						<option value="B">환불대기
+						<option value="C">환불완료
+					</select>
+					<select name="GU3" class="search_action_select">
+						<option value="">진행상태
+						<option value="1"> 대기
+						<option value="T"> 견적서
+						<option value="W"> 부재중
+						<option value="2"> 진행중
+						<option value="4"> 확정
+						<option value="5"> 완료
+						<option value="8"> 취소요청
+						<option value="9"> 취소
+						<option value="R"> 환불
+					</select>
+					<select name="GU6" class="search_action_select">
+						<option value="">날짜검색
+						<option value="start_day"> 이용일
+						<option value="order_date"> 구매일
+					</select>
+					<input name="start_date" id="start_date" type="text" autocomplete="off" class="date"  >
+					<span class="tilde">~</span>
+					<input name="end_date" id="end_date" type="text" autocomplete="off" class="date"  >
+					<span class="tilde">~</span>
+					<select name="GU8" class="search_action_select">
+						<option value="">    정렬
+						<option value="uid"> 주문
+						<option value="start1"> 이용일(오름)
+						<option value="start2"> 이용일(내림)
+						<option value="start3"> 확정일(오름)
+					</select>
+					<select name="GU9" class="search_action_select">
+						<option value=""> 날짜지정 
+						<option value="Y"> 지정
+						<option value="N"> 미지정
+					</select>
+					<select name="sFrom" class="search_action_select">
+						<option value="order_name"> 구매자명
+						<option value="tourName"> 상품명
+						<option value="c.booking_number"> 컨펌번호
+						<option value="c.tourNumber"> 상품코드
+						<option value="userid"> 아이디
+						<option value="handphone"> 연락처
+						<option value="a.order_num"> 주문번호
+						<option value="e.trno"> PG거래번호
+						<option value="a.uid"> 정산번호
+						<option value="orderPos"> 주문채널	
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>	
+				</div>
+			</div>
+			
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" >
+			<table class='table table-light text-center mt-3' border='1' bordercolor='#ddd' style="border-bottom:1px solid #ddd;" id='dtBasic'>
+				<tr style="background-color:#eee;">
+					<th class="border-bottom-0 th-sm wh40"><input type="checkbox" id="cbx_chkAll" /></th>
+					<th class="wh120">No</th>
+					<th  class='border-bottom-0 th-sm'>구매일</th>
+					<th  class='border-bottom-0 th-sm'>상품명</th>
+					<th  class='border-bottom-0 th-sm'>구매자명</th>
+					<th  class='border-bottom-0 th-sm'>연락처</th>
+					<th  class='border-bottom-0 th-sm'>이용일</th>
+					<th  class='border-bottom-0 th-sm'>판매가</th>
+					<th  class='border-bottom-0 th-sm'>원가</th>
+					<th  class='border-bottom-0 th-sm'>상태</th>
+					<th  class='border-bottom-0 th-sm'>결제</th>
+					<th  class='border-bottom-0 th-sm'>TL</th>
+					<th  class='border-bottom-0 th-sm'>컨펌번호</th>
+					<th  class='border-bottom-0 th-sm'>담당자</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split" ID="bottomFrame">
+
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" ID="pagingHTML">
+		</div>
+		<div class="action_area_right">				
+			
+			&nbsp; 
+		</div>
+		
+	</div>
+
+</div>
+
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    function newReg (order_num) {
+		sFile = "/order/order_detail?order_num="+order_num;
+		OpenWindowA(sFile,"",1,1400,1000);
+    }
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event);
+	});
+
+    async function formSearch (e) {
+        if (e) e.preventDefault();
+        LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/order/order_list');
+        success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            const totalCount = json.totalCount || '';
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+            if (totalCount) $("#totCount").html(`(${totalCount})`);
+			parent.$("#topTitleData").html(`주문 관리 (${totalCount})`);
+            frmSearch.titleData.value = `주문 관리 (${totalCount})`;
+            LoadingStop();
+        } else {
+            console.log('검색중오류:' + err)
+        }
+        return false;
+	};
+
+    // function memoList (order_num) {
+	// 	document.all.HiddenRuleLayer.style.display = "none";
+	// 	sFile = "memo_list.php?order_num="+order_num;
+	// 	frames["HIDE_ACTION"].location.href = sFile;
+	// 	return false;
+	// }
+    async function memoList (order_num) {
+        json = await dataGetSend('orderMemo',order_num);
+        smallPopShow ('',1000,700);
+        $("#smallPopupData").html(json.datas);
+    }
+	
+//-->
+</script>
+
+<%- include('../footer_log') %>

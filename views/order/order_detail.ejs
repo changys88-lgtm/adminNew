@@ -1,0 +1,208 @@
+<%- include('../header') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>주문 상세</title>
+</head>
+<body>
+    <div class='reservation_pop_box tableNone'>
+        <div class='reservation_pop regis_bg'>  
+            <div ID="orderMenuPage"></div>
+            <div ID="orderBasePage"></div>
+            <div ID="orderPaxPage"></div>
+            <div ID="orderProductPage"></div>
+            <div ID="orderAirPage"></div>
+            <div ID="orderContainPage"></div>
+            <div ID="orderInputPage"></div>
+            <div ID="orderOutputPage"></div>
+            <div ID="orderMemoPage"></div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+
+    //window.addEventListener('DOMContentLoaded', orderGetData );
+    $(document).ready(function() { orderGetData(); });
+    const order_num = "<%= order_num %>";
+    async function orderGetData () {
+        const data = "order_num="+order_num;
+        const res  = await fetch('/order/order_detail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        });
+
+        const json  = await res.json();
+        //console.log(datas);
+        $("#orderMenuPage").html(json.menu);
+        $("#orderBasePage").html(json.base);
+        $("#orderPaxPage").html(json.paxs);
+        $("#orderProductPage").html(json.product);
+        $("#orderContainPage").html(json.contains);
+        $("#orderInputPage").html(json.inputs);
+        $("#orderOutputPage").html(json.outputs);
+        $("#orderMemoPage").html(json.memos);
+
+       
+        // formData = json.forms;
+        // datas = JSON.parse(formData);
+        // for (const [key, val] of Object.entries(datas)) {
+        //     const input = `<input type='text' name='${key}' value='${val}'>`;
+        //     $("#frmReserve").append(input);
+        // }
+        // methodChangeStart ();
+	};
+
+    function methodChange () {
+		$(".PriceModify").hide();
+		$(".PriceModifyAlram").removeClass("none");
+		$(".PriceModifyAlram").addClass("blink");
+		$("#MethodSave").removeClass("none");
+	}
+
+    function dataChange (table,uid,minor_num,field,val) {
+        dataGhangeSend('Change',table, uid ,minor_num,field,val);
+    }
+
+    function methodChangeStart () {
+		$(".methodChangeChk").change( function () {
+			methodChange ();
+		});
+	};
+
+	function togglePax() {
+		if ($("#viewButton").html === "보기") txt = "닫기";
+		else txt = "보기";
+        $("#viewButton").html(txt);
+		$("#paxArea").toggle();
+	}
+
+    async function saveContain () {
+        try {
+            json = await dataSaveSend('frmContain','/order/orderSave') ;
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            if (success === 'ok') {
+                location.reload();
+            } else {
+                newAlert('저장중 오류: '+errorMsg);
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    async function savePassenger () {
+        try {
+            json = await dataSaveSend('frmPax','/order/orderSave') ;
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            if (success === 'ok') {
+                location.reload();
+            } else {
+                newAlert('저장중 오류: '+errorMsg);
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    firstMenu = 'Base';
+    async function orderMenuChange (gubun,ir='') {
+        if (firstMenu !== gubun || ir === "re") {
+            orderAllClear ();
+            $("#Menu_"+firstMenu).removeClass('btn-yellow-bg-sm');
+            $("#Menu_"+firstMenu).addClass('btn-lightgrey-bg-sm');
+            $("#Menu_"+gubun).removeClass('btn-lightgrey-bg-sm');
+            $("#Menu_"+gubun).addClass('btn-yellow-bg-sm');
+            firstMenu = gubun;
+            if (gubun === "Base") orderGetData ();
+            else {
+                json = await dataGetSend (gubun, order_num,'order/order_detail');
+                //console.log(json);
+                $("#orderBasePage").html(json.datas);
+            }
+        }
+
+    }
+    function orderAllClear() {
+        //$("#orderMenuPage").html('');
+        //$("#orderBasePage").html('');
+        $("#orderPaxPage").html('');
+        $("#orderProductPage").html('');
+        $("#orderContainPage").html('');
+        $("#orderInputPage").html('');
+        $("#orderOutputPage").html('');
+        $("#orderMemoPage").html('');
+    }
+
+
+    async function menuClick(s,FileName,view,receiver,gubun) {
+		if (s == "5") {
+			sFile = "file_add.php?order_num=<?=$order_num?>";
+			OpenWindowA(sFile,"",0,500,405);
+		} else if (s == "1" || s == "2") {
+			if (s == "1") mode = "saveEstimate";
+			else if (s == "2") mode = "saveConfirmed";
+            frmTmp.mode.value = "saveConfirmed";
+            json = await dataSaveSend('frmTmp','/order/orderSave') ;
+            if (json.success === "ok") {
+                orderMenuChange(gubun,'re');
+            } else {
+                newAlert(json.errorMSg);
+            }
+		} else {
+			var qryStr = "";
+			if(s == "4"){
+				var site_code = $("#site_code").val();
+				qryStr = "&siteCode="+site_code;
+			}
+			sFile = "invoice.php?order_num=<?=$order_num?>&s="+s+"&FileName="+FileName+"&view="+view+"&receiver="+receiver+qryStr;
+			OpenWindowA(sFile,"",0,1080,900);
+		}
+		return false;
+	}
+	async function attDel(order_num,minor_num,gubun) {
+		var Rc = confirm("첨부 내용을 삭제 합니다.");
+		if (Rc) {
+			frmTmp.mode.value      = "attDel";
+            frmTmp.minor_num.value = minor_num;
+            frmTmp.gubun.value     = gubun;
+            json = await dataSaveSend('frmTmp','/order/orderSave') ;
+            console.log(json)
+            if (json.success === "ok") {
+                orderMenuChange(gubun,'re');
+            } else {
+                newAlert(json.errorMSg);
+            }
+		}
+		return false;
+	}
+
+</script>
+
+
+<div style="display:none">
+    <form name="frmTmp" id="frmTmp" method="post" >
+        <input type="hidden" name="uid" value="">
+        <input type="hidden" name="minor_num" value="">
+        <input type="hidden" name="field"     value="">
+        <input type="hidden" name="val"       value="">
+        <input type="hidden" name="mode"      value="">
+        <input type="hidden" name="gubun"     value="">
+        <input type="hidden" name="order_num"      value="<%= order_num %>">
+    </form>
+
+    <form name="frmPicture" method="post" enctype="multipart/form-data" action="pass_picture.php" >
+    <input type="text" name="uid"       value="">
+    <input type="text" name="minor_num" value="">
+    <input type="text" name="mode"      value="input">
+    <input type="text" name="field"      value="">
+    <input type="file" name="passport_img" value="" ID="passport_img" onChange="imgCheck()">
+    </form>
+    </div>
+<%- include('../footer') %>

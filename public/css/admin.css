@@ -1,0 +1,589 @@
+
+@import url("dashboard.css");
+@import url("sidebar.css");
+@import url("international.css");
+@import url("calendar.css");
+@import url("search.css");
+@import url("detail.css");
+@import url("login.css");
+@import url("common.css");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Noto Sans KR", system-ui, sans-serif;
+  background: #f5f7fa;
+  color: #222;
+}
+
+:root {
+  --bg-panel: #ffffff;
+  --bg-header: #f8fafc;
+  --line-soft: #e5e7eb;
+  --line-strong: #cbd5e1;
+
+  --text-main: #0f172a;
+  --text-sub: #475569;
+  --text-muted: #94a3b8;
+
+  --accent-main: #1f3a5f;   /* AviaNext 블루 */
+  --accent-soft: #e6eff8;
+
+  --status-done-bg: #e6f1ff;
+  --status-done-text: #1d4ed8;
+
+  --status-wait-bg: #fef3c7;
+  --status-wait-text: #92400e;
+}
+
+/* ===== App Layout ===== */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* ===== Main ===== */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Header ===== */
+.header {
+  height: 56px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-left h1 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+}
+
+/* ===== Content ===== */
+.content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.03);
+}
+
+.page-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.empty-area {
+  height: calc(100vh - 140px);
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+/* 헤더 */
+.panel-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+}
+
+.panel-head h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background: rgba(255,255,255,.25);
+}
+
+/* 바디 */
+.panel-body {
+  padding: 26px;
+  overflow-y: auto;
+  flex: 1;
+  background: #f8fafc;
+}
+
+/* 폼 */
+.form-row {
+  margin-bottom: 20px;
+}
+
+.form-row label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+  background: #fff;
+  transition: .2s;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.18);
+}
+
+.form-row.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.inline {
+  display: flex;
+  gap: 8px;
+}
+
+.radio-group,
+.check-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+}
+
+.radio-group label,
+.check-group label {
+  font-size: 13px;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.panel-footer {
+  padding: 20px 26px;
+  border-top: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+.city-layer, .date-layer, .pax-layer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.city-layer.is-open, .date-layer.is-open, .pax-layer.is-open {
+  display: flex;
+}
+
+.mainFrame {
+	width:100%;
+	height:100%;
+}
+.mainFrame.on {
+	display: block;
+}
+.mainFrame.off {
+	display: none;
+}
+
+.menu-list {
+  display: flex;
+  flex-wrap: wrap;      /* ← 줄바꿈 */
+  gap: 4px ;       /* 세로 / 가로 간격 */
+}
+
+.menu-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.menu-star {
+  cursor: pointer;
+  font-size: 16px;
+  color: #2c4a9a;
+}
+
+.menu-label {
+  font-size: 13px;
+  color: #111;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+
+.allmenu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 9999;
+  display: none;        /* 기본 숨김 */
+}
+
+.allmenu-overlay.active {
+  display: block;
+}
+
+.allmenu-panel {
+  position: fixed;
+  top: 72px;
+  left: 280px;
+  right: 32px;
+
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 28px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.12),
+    0 30px 60px rgba(0,0,0,.08);
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+.fixed-tabs {
+  position: fixed;                 /* ⭐ 핵심 */
+  left: calc(260px + 300px);       /* 사이드바 + 400px */
+  z-index: 100;
+  top: 12px;   
+  display: flex;             /* ⭐ 핵심 */
+  align-items: center;       /* ⭐ 핵심 */
+  gap: 8px;   
+  
+}
+
+/* 탭 버튼 (기존 스타일 유지 가능) */
+.reserve-tab {
+  cursor: pointer;
+  height: 22px;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.reserve-tab:hover {
+  background: #f1f5f9;
+}
+
+.reserve-tab.active {
+  background: #1f3a5f;
+  border-color: #1f3a5f;
+  color: #ffffff;
+}
+
+
+/* 햄버거 버튼 */
+.menu-toggle {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+/* 오버레이 */
+.allmenu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 9999;
+
+  display: none;
+}
+
+/* 패널 */
+.allmenu-panel {
+  box-shadow: 
+  0 10px 30px rgba(0,0,0,0.12),
+  0 30px 60px rgba(0,0,0,0.08);
+  position: absolute;
+  top: 60px;
+  left: 260px; /* 사이드바 폭 */
+  right: 40px;
+
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.allmenu-panel {
+  height: calc(100vh - 54px);
+  overflow-y: auto;
+  position: fixed;
+  top: 54px;                /* 헤더 아래 */
+  left: 240px;              /* 사이드바 + 여백 */
+  right: 0px;
+
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 28px;
+
+  box-shadow: 0 24px 48px rgba(0,0,0,0.18);
+}
+/* 헤더 */
+.allmenu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.allmenu-header strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+/* 닫기 */
+.allmenu-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: #f1f5f9;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.allmenu-close:hover {
+  background: #e2e8f0;
+}
+/* 메뉴 그리드 */
+.allmenu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+}
+
+/* 그룹 */
+.menu-group h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1f3a5f;
+}
+
+/*
+.menu-group span {
+  display: block;
+  padding: 7px 0;
+  font-size: 13px;
+  color: #334155;
+  text-decoration: none;
+}
+
+.menu-group span:hover {
+  color: #1f3a5f;
+  text-decoration: underline;
+}
+*/
+/* 오버레이 기본 */
+.allmenu-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+/* 활성 */
+.allmenu-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 패널 애니메이션 */
+.allmenu-panel {
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+.allmenu-overlay.active .allmenu-panel {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.menu-toggle.active {
+  background: #e5e7eb;
+  border-radius: 6px;
+}
+
+
+
+
+
+
+/* 공지사항 상세 */
+
+/* 테이블 기본 */
+table.regis-hotel {
+  width: 100%;
+  border-collapse: collapse;
+  background: #000;
+  font-size: 14px;
+}
+
+/* 행 구분선 */
+table.regis-hotel tr {
+  border-bottom: 1px solid #eef1f4;
+}
+
+/* 좌측 라벨 */
+table.regis-hotel th.regis-hotel-td1 {
+  background: #f8fafc;
+  color: #333;
+  font-weight: 600;
+  padding: 14px 16px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* 우측 입력 영역 */
+table.regis-hotel td.regis-hotel-td2 {
+  padding: 14px 16px;
+  vertical-align: middle;
+  color: #222;
+}
+
+/* 필수 항목 표시 */
+table.regis-hotel th[required]::after {
+  content: " *";
+  color: #e53935;
+  font-weight: 700;
+}
+
+/* 인풋 / 셀렉트 / 텍스트영역 */
+table.regis-hotel .form-control {
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid #dfe3e8;
+  font-size: 14px;
+  padding: 0 14px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+table.regis-hotel .form-control-sm {
+  height: 36px;
+  font-size: 13px;
+}
+
+table.regis-hotel textarea.form-control,
+table.regis-hotel textarea {
+  height: auto;
+  padding: 12px 14px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+/* 포커스 */
+table.regis-hotel .form-control:focus {
+  border-color: #2979ff;
+  box-shadow: 0 0 0 3px rgba(41,121,255,0.12);
+}
+
+/* 사이즈 input */
+table.regis-hotel .wh100 {
+  width: 100px !important;
+  display: inline-block;
+}
+
+table.regis-hotel .wh90 {
+  width: 90px !important;
+  display: inline-block;
+}
+
+/* 체크박스 */
+table.regis-hotel label {
+  font-size: 14px;
+  color: #222;
+  cursor: pointer;
+}
+
+table.regis-hotel input[type="checkbox"] {
+  margin-right: 6px;
+  transform: translateY(1px);
+}
+
+/* readonly input (날짜) */
+table.regis-hotel input[readonly] {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* 내용 영역 (에디터) */
+table.regis-hotel #ir1 {
+  border: 1px solid #dfe3e8;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+
+
+
+
+

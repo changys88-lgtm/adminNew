@@ -1,0 +1,145 @@
+<%- include('../header') %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>주문 상세</title>
+</head>
+<body>
+    <form name="frmReserve" id="frmReserve" method="post" class='order_detail'>
+    <div class='reservation_pop_box tableNone'>
+        <div class='reservation_pop regis_bg'>  
+            <div ID="orderMenuPage"></div>
+            <div ID="orderRoutePage"></div>
+            <div ID="orderRevPage"></div>
+            <div ID="orderMemberPage"></div>
+            <div ID="orderPricePage"></div>
+            <div ID="orderPaxPage"></div>
+            <div ID="orderPaymentPage"></div>
+            <div ID="orderLogViewPage"></div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        const data = "uid=<%= uid %>";
+        const res  = await fetch('/air/order_detail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        });
+
+        const json  = await res.json();
+        //console.log(datas);
+        $("#orderMenuPage").html(json.menu);
+        $("#orderRoutePage").html(json.route);
+        $("#orderRevPage").html(json.revData);
+        $("#orderMemberPage").html(json.memberData);
+        $("#orderPricePage").html(json.priceData);
+        $("#orderPaxPage").html(json.paxData);
+        $("#orderPaymentPage").html(json.paymentData);
+        $("#orderLogViewPage").html(json.logData);
+       
+        formData = json.forms;
+        datas = JSON.parse(formData);
+        for (const [key, val] of Object.entries(datas)) {
+            const input = `<input type='text' name='${key}' value='${val}'>`;
+            $("#frmReserve").append(input);
+        }
+        methodChangeStart ();
+	});
+
+	in_status      = "";
+	cardAuthStatus = "";
+	function cardCheck(pax_num,sex,price) {
+		methodChange ();
+		price = StrClear(price);
+		if (sex == "F" || sex == "M") base_price = Number(document.frmReserve.adult_amount.value);
+		else if (sex == "FI" || sex == "MI") base_price = Number(document.frmReserve.infant_amount.value);
+		else base_price = Number(document.frmReserve.child_amount.value);
+		if (price == "") price = Number(base_price);
+		else {
+			price = Number(price);
+			if (price > base_price) {
+				alert("개인별 결제 금액을 초과 하였습니다.");
+				price = base_price;
+			}
+		}
+		if (pax_num > 1) {
+			pre_pax = pax_num - 1;
+		}
+		$("#cardHolder_"+pax_num).fadeIn();
+		eval("document.all.aMethod_"+pax_num)[1].checked = true;
+		document.getElementById("cash_price_"+pax_num).value = commaSplit(base_price - price);
+		document.getElementById("card_price_"+pax_num).value = commaSplit(price);
+		if (document.all.actionButton2) document.all.actionButton2.disabled = true;
+	}
+	function cashCheck(pax_num,sex,price) {
+		methodChange ();
+		tasf1 = Number(document.frmReserve.issueComm1.value);
+		tasf2 = Number(document.frmReserve.issueComm2.value);
+		if (sex == "F" || sex == "M") base_price = Number(document.frmReserve.adult_amount.value)+tasf1;
+		else if (sex == "FI" || sex == "MI") base_price = Number(document.frmReserve.infant_amount.value);
+		else base_price = Number(document.frmReserve.child_amount.value)+tasf2;
+		if (price == "") price = Number(base_price);
+		else {
+			price = Number(price);
+			if (price > base_price) {
+				alert("개인별 결제 금액을 초과 하였습니다.");
+				return false
+			}
+		}
+		$("#cardHolder_"+pax_num).hide();
+		document.getElementById("cash_price_"+pax_num).value = commaSplit(price);
+		document.getElementById("card_price_"+pax_num).value = 0;
+		if (document.all.actionButton2) document.all.actionButton2.disabled = true;
+	}
+    function methodChange () {
+		$(".PriceModify").hide();
+		$(".PriceModifyAlram").removeClass("none");
+		$(".PriceModifyAlram").addClass("blink");
+		$("#MethodSave").removeClass("none");
+	}
+    async function interlineLogView (uid) {
+        json = await dataGetSend('interLog',uid);
+        smallPopShow ('',800,700);
+        $("#smallPopupData").html(json.datas);
+    }
+    function dataChange (table,uid,minor_num,field,val) {
+        dataGhangeSend('Change',table, uid ,minor_num,field,val);
+    }
+
+    function methodChangeStart () {
+		$(".methodChangeChk").change( function () {
+			methodChange ();
+		});
+	};
+
+</script>
+
+
+<div style="display:none">
+    <form name="frmTmp" action="../interline/data_change.php" target="HIDE_ACTION">
+        <input type="hidden" name="uid" value="<?=$uid?>">
+        <input type="hidden" name="minor_num" value="">
+        <input type="hidden" name="field"     value="">
+        <input type="hidden" name="val"       value="">
+        <input type="hidden" name="mode"      value="">
+    </form>
+
+    <form name="frmPicture" method="post" enctype="multipart/form-data" action="pass_picture.php" target="HIDE_ACTION">
+    <input type="text" name="uid"       value="<?=$uid?>">
+    <input type="text" name="minor_num" value="">
+    <input type="text" name="mode"      value="input">
+    <input type="text" name="field"      value="">
+    <input type="file" name="passport_img" value="" ID="passport_img" onChange="imgCheck()">
+    </form>
+    </div>
+<%- include('../footer') %>

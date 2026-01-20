@@ -1,0 +1,174 @@
+<%- include('../header') %>
+<main class="content dashboard">
+
+    <!-- 상단 요약 -->
+    <section class="dashboard-summary">
+      <div class="kpi-card">
+        <p class="kpi-title">오늘 예약</p>
+        <strong class="kpi-value">12건</strong>
+      </div>
+      <div class="kpi-card">
+        <p class="kpi-title">이번달 예약</p>
+        <strong class="kpi-value">324건</strong>
+      </div>
+      <div class="kpi-card">
+        <p class="kpi-title">대기 예약</p>
+        <strong class="kpi-value wait">8건</strong>
+      </div>
+      <div class="kpi-card">
+        <p class="kpi-title">취소 요청</p>
+        <strong class="kpi-value cancel">3건</strong>
+      </div>
+    </section>
+
+    <!-- 중단 -->
+    <section class="dashboard-middle">
+      <div class="rev_data">
+        <h3>예약 현황 요약</h3>
+        <ul class="status-list">
+          <li>예약완료 <strong>210</strong></li>
+          <li>발권대기 <strong>45</strong></li>
+          <li>취소 <strong>12</strong></li>
+        </ul>
+      </div>
+
+      <div class="rev_data">
+        <h3>오늘 일정</h3>
+        <p class="muted">오늘 처리할 예약이 <strong>5건</strong> 있습니다.</p>
+      </div>
+    </section>
+
+    <!-- 하단 리스트 -->
+    <section class="dashboard-bottom rev_data">
+      <h3>최근 예약</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>예약번호</th>
+            <th>고객명</th>
+            <th>구간</th>
+            <th>상태</th>
+            <th>예약일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A20251201</td>
+            <td>김민지</td>
+            <td>ICN → NRT</td>
+            <td><span class="badge done">완료</span></td>
+            <td>2025-12-01</td>
+          </tr>
+          <tr>
+            <td>A20251202</td>
+            <td>이정훈</td>
+            <td>ICN → BKK</td>
+            <td><span class="badge wait">대기</span></td>
+            <td>2025-12-01</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="dashboard-bottom rev_data" ID="BusinessArea" style="position:relative;  "></section>
+
+  </main>
+<form name="frmSearch" id="frmSearch">
+    <input type="hidden" name="mode"      value="">
+    <input type="hidden" name="cMode"     value="">
+    <input type="hidden" name="cYear"     value="">
+    <input type="hidden" name="cMonth"    value="">
+    <input type="hidden" name="titleData" value="">
+</form>
+<script>
+    
+    window.addEventListener('DOMContentLoaded', async () => {
+        //json = await dataGetSend('Notice');
+        //const notice = json.noticeData;
+        //const shake = json.shakeData;
+        //$("#noticeArea").html(notice);
+        //$("#shakeArea").html(shake);
+        formSearch(event);
+    });
+    
+    async function formSearch (e) {
+        if (e) e.preventDefault();
+        //LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/business/business_list');
+        success = json.success;
+        if (success === "ok") {
+          const datas  = json.listData;
+          const paging = json.pageData;
+          frmSearch.cYear.value  = json.cYear;
+          frmSearch.cMonth.value = json.cMonth;
+          $("#BusinessArea").html(datas);
+          parent.$("#topTitleData").html('대시보드');
+          frmSearch.titleData.value = '대시보드';
+        } else {
+          newAlert('생성중 오류 발생');
+        }
+        //LoadingStop();
+        //return false;
+    };
+    async function busiDel () {
+      var Rc = confirm("삭제된 내역이 복구가 안됩니다, 삭제 하시겠습니까?");
+      if (Rc) {
+              frmForm.mode.value = 'Clear';
+        json = await dataSaveSend ('frmForm','/business/businessSave');
+              success = json.success;
+              if (success === "ok") {
+                  frmSearch.cMode.value = '';
+                  $("#drawerClose").click();
+                  formSearch(event);
+              } else {
+                  newAlert(json.errorMsg);
+              }
+      }
+      return false;
+    }
+    function businessChange  (cMode) {
+          frmSearch.cMode.value = cMode;
+          formSearch(event);
+    }
+    async function newBusiness (date='',uid='') {
+      json = await dataGetSend('Business',uid+'__'+date,'business/businessSave');
+      success = json.success;
+      errorMSg = json.errorMSg;
+      title = json.title;
+      html  = json.html;
+      if (success === "ok"){
+          drawer.open(800, { title, html  });
+      } else {
+          newAlert ("에러:"+errorMSg);
+      }            
+    }
+
+    async function inputCheck () {
+      Obj   = document.frmForm;
+      mode  = Obj.mode.value;
+      cycle = Obj.cycle.value;
+      if (Obj.subject.value == "") {
+        alert("제목을 입력하세요!");
+      } else if (Obj.start_date.value == "" && cycle == "") {
+        alert("시작날짜를 입력하여 주세요");
+      } else if (Obj.start_time.value == "" && cycle == "") {
+        alert("시작시간을 입력하여 주세요");
+      } else if (Obj.end_date.value == "" && cycle == "") {
+        alert("종료날짜를 입력하여 주세요");
+      } else if (Obj.end_time.value == "" && cycle == "") {
+        alert("종료시간을 입력하여 주세요");
+      } else {
+        json = await dataSaveSend ('frmForm','/business/businessSave');
+        success = json.success;
+        if (success === "ok") {
+                  frmSearch.cMode.value = '';
+          formSearch (event);
+          $("#drawerClose").click();
+        } else {
+          //newAlert(json.errorMsg);
+        }
+      }
+      return false;
+    }
+</script>
+<%- include('../footer_log') %>

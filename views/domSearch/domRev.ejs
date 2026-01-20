@@ -1,0 +1,405 @@
+<%- include('../header') %>
+<script language="JavaScript" src="../scripts/domeClass.js?v=<?=$v?>"></script>
+
+<main class="main international">
+
+</main>
+<!--page_item--->
+<div id="content">
+
+	<div>
+		<form name="frmForm" id="frmForm" method="post" class="search-form">
+		<div class="search-box>
+			<div class="flight-type">
+				<label class="fl-way-block is-checked" ID="ticketType2" onClick="typeChange('2')">
+					<input type="radio" class="radio-box">
+					<span class="radio-txt" >왕복</span>
+				</label>
+				<label class="fl-way-block" ID="ticketType1" onClick="typeChange('1')">
+					<input type="radio" class="radio-box">
+					<span class="radio-txt" >편도</span>
+				</label>
+
+			</div>
+
+			<div class="air-page-quickbar" style="margin-right:25px">
+				<!--
+				<div class="map_search" onclick="searchAction () ">
+					<i class="fa fa-search search_icon"></i>검색
+				</div>
+				-->
+				<!--선택정보확인-->
+				<div class="aq-box">
+					<div class="aq-top">
+						선택한 항공편
+					</div>
+					<div class="aq-body">
+						<div class="item-1">
+							<p class="f1">
+								<span class="s1">[가는편]</span>
+								<span class="s2" id="depAirNameR"></span>
+								<span class="s3">잔여(<span style="color:#ff0;" id="depReaminR">0</span>석)</span>
+							</p>
+							<div class="wt-box">
+								<span class="qb-item">
+									<span>구간</span><span class="tkt-way" id="depNameR"></span>
+								</span>
+								<span class="qb-item">
+									<span>출발일시</span><span class="tkt-way" id="depDateR"></span>
+								</span>
+								<span class="qb-item">
+									<span>편명</span><span class="tkt-way" id="depAirFlightR"></span>
+								</span>
+								<span class="qb-item">
+									<span>소계<span class="s1">(성인 1인기준)</span></span><span class="tkt-way" id="depPriceR"></span>
+								</span>
+							</div>
+						</div>
+						<div class="item-1">
+							<p class="f1">
+								<span class="s1">[오는편]</span>
+								<span class="s2" id="arrAirNameR"></span>
+								<span class="s3">잔여(<span style="color:#ff0;" id="arrReaminR">0</span>석)</span>
+							</p>
+							<div class="wt-box">
+								<span class="qb-item">
+									<span>구간</span><span class="tkt-way" id="arrNameR"></span>
+								</span>
+								<span class="qb-item">
+									<span>출발일시</span><span class="tkt-way" id="arrDateR"></span>
+								</span>
+								<span class="qb-item">
+									<span>편명</span><span class="tkt-way" id="arrAirFlightR"></span>
+								</span>
+								<span class="qb-item">
+									<span>소계<span class="s1">(성인 1인기준)</span></span><span class="tkt-way" id="arrPriceR"></span>
+								</span>
+							</div>
+						</div>
+						
+						<div class="item-1">
+							<div class="wt-box" id="adtArea">
+								<span class="qb-item cnt">
+									성인<span id="adtMemR"> 1</span>명<span class="tkt-way" id="adtPriceR">0원</span>
+								</span>
+								<span class="qb-item">
+									<span>운임</span><span class="tkt-way" id="adtAirPriceR">0원</span>
+								</span>
+								<span class="qb-item">
+									<span>유류할증료</span><span class="tkt-way" id="adtAirFuelR">0원</span>
+								</span>
+								<span class="qb-item">
+									<span>세금</span><span class="tkt-way" id="adtAirTaxR">0원</span>
+								</span>
+							</div>
+							<div class="wt-box" id="chdArea" style="display:none">
+								<span class="qb-item cnt">
+									소아<span id="chdMemR"> 0</span>명<span class="tkt-way" id="chdPriceR">0원</span>
+								</span>
+								<span class="qb-item">
+									<span>운임</span><span class="tkt-way" id="chdAirPriceR">0원</span>
+								</span>
+								<span class="qb-item">
+									<span>유류할증료</span><span class="tkt-way" id="chdAirFuelR">0원</span>
+								</span>
+								<span class="qb-item">
+									<span>세금</span><span class="tkt-way" id="chdAirTaxR">0원</span>
+								</span>
+							</div>
+							<div class="wt-box" id="infArea" style="display:none">
+								<span class="qb-item cnt">
+									유아<span id="infMemR"> 1</span>명<span class="tkt-way" id="infPriceR">무임</span>
+								</span>
+							</div>
+						</div>
+						<div class="item-1" style="border-bottom:none;">
+							<div class="wt-box">
+								<span class="qb-item " title="타스프 금액은 성인/소아 1인 기준입니다.">
+									<span>마크업(Tasf)/인당</span><span class="sum"><input type="text" class="d-inline wh70 ar"  name="tasfDome" id="tasfDome" onChange="return tasfChange()" value="0">원</span>
+								</span>
+								<span class="qb-item">
+									<span>총 결제금액</span><span class="sum" id="TotalAmount">0원</span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="aq_btn" id="reserveButton" onClick="return airConfirm ()" style="display:none">
+						예약하기
+					</div>
+					
+				</div>
+			</div>
+
+			<div class="page_item_content2" style="width: calc(100% - 250px);">	
+				<!--여행지역 선택-->
+				<div class="travel-area">
+	
+					<div class="item-1">
+	
+						<div class="tr-item city-toggle">
+							<p class="t1">출발도시</p>
+							<span class="input-con">
+								<input type="text" class="city-input" name="depName" id="depName" onClick="startOpen()" readonly value="김포" placeholder="">
+							</span>
+							<div class="area-layer" id="start_area" style="display:none;left:0px;top:81px;">
+								<div class="area-layer_b">
+									<ul ID="depArea">
+										
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="tr-swap">
+							<a href="#"><img src="/images/ico_swap-w.png"></a>
+						</div>
+						<div class="tr-item city-toggle">
+							<p class="t1">도착도시</p>
+							<span class="input-con">
+								<input type="text" class="city-input" name="arrName" id="arrName" onClick="endOpen()" readonly  placeholder="">
+							</span>
+							<div class="area-layer" id="end_area" style="display:none;left:350px !important; top :81px;">
+								<div class="area-layer_b">
+									<ul ID="arrArea">
+										
+									</ul>
+								</div>
+							</div>
+						</div>
+	
+					</div>
+	
+					<!--가는날/오는날-->
+					<div class="item-2">
+						<div class="tr-item ">
+							<p class="t1">가는날</p>
+							<span class="date-span" id="dep_date_name"  
+							onClick="return generateDomCalendars('dep_date','CalendarLayer')"
+							>
+							<!--onClick="return CalendarDomeBasic('dep_date','frmForm','CalendarLayer','','','','')" -->
+							선택하세요
+							</span>
+						</div>
+						<div class="tr-swap">
+						</div>
+						<div class="tr-item " id="arrDateArea">
+							<p class="t1">오는날</p>
+							<span class="date-span" id="arr_date_name"  onClick="return CalendarDomeBasic('arr_date','frmForm','CalendarLayer','','','','')">
+								선택하세요
+							</span>
+						</div>
+					</div>
+					<!--//가는날/오는날-->
+	
+					<!--//검색-->
+					<div class='city_search_box' style="display:none" ID="CitySearchBox">
+						<div class='pop_section'>
+							<div class='pa815 title_bold'>도시정보</div>
+							<img class='cal_close_img' src='/images/close_img.png'>
+						</div>
+						<div class='pa15 f13' ID="CitySearchBoxData" style="max-height:260px;overflow-y: auto;">
+						</div>
+					</div>
+				</div>
+				<!--//여행지역 선택-->
+				<div class="multi-travel-area2" style="float:right;">
+					<div class="item-3">
+						<input type="text" readonly="readonly" class="seat-in" value="성인 1, 일반석"  id="seat-box" onClick="seatView()">
+					</div>
+					<div class="travel-search" onClick="return searchAction()">
+						검색
+					</div>
+					
+					<%- include ('mem.inc') %>
+				</div>
+			</div>
+			<div class='calendar-layer' style='display:none;top:145px;left:25px;' ID='CalendarLayer'>
+			</div>
+	
+			<input type="hidden" name="depCode"     value="GMP">
+			<input type="hidden" name="arrCode"     value="">
+		
+			<input type="hidden" name="dep_date"    value="">
+			<input type="hidden" name="arr_date"    value="">
+		
+			<input type="hidden" name="depTime1"    value="">
+			<input type="hidden" name="depTime2"    value="">
+			<input type="hidden" name="arrTime1"    value="">
+			<input type="hidden" name="arrTime2"    value="">
+			<input type="hidden" name="depAirCode"  value="">
+			<input type="hidden" name="arrAirCode"  value="">
+			<input type="hidden" name="depAirName"  value="">
+			<input type="hidden" name="arrAirName"  value="">
+			<input type="hidden" name="depAirClass" value="">
+			<input type="hidden" name="arrAirClass" value="">
+		
+			<input type="hidden" name="depCodeShare" value="">
+			<input type="hidden" name="arrCodeShare" value="">
+		
+			<input type="hidden" name="depUid"      value="">
+			<input type="hidden" name="depIdx"      value="">
+			<input type="hidden" name="depMinor"    value="">
+			<input type="hidden" name="arrUid"      value="">
+			<input type="hidden" name="arrIdx"      value="">
+			<input type="hidden" name="arrMinor"    value="">
+			<input type="hidden" name="depPrice"    value="">
+			<input type="hidden" name="arrPrice"    value="">
+			<input type="hidden" name="airType"     value="KE/OZ/7C/LJ/TW/BX/RS/RF/4H/4V/ZE/WE">
+		
+		
+			<input type="hidden" name="adtMem"      value="1">
+			<input type="hidden" name="chdMem"      value="0">
+			<input type="hidden" name="infMem"      value="0">
+
+			<input type="hidden" name="adtDepAmt"      value="0">
+			<input type="hidden" name="chdDepAmt"      value="0">
+			<input type="hidden" name="infDepAmt"      value="0">
+			<input type="hidden" name="adtDepTax"      value="0">
+			<input type="hidden" name="chdDepTax"      value="0">
+			<input type="hidden" name="adtDepFuel"     value="0">
+			<input type="hidden" name="chdDepFuel"     value="0">
+
+			<input type="hidden" name="adtArrAmt"      value="0">
+			<input type="hidden" name="chdArrAmt"      value="0">
+			<input type="hidden" name="infArrAmt"      value="0">
+			<input type="hidden" name="adtArrTax"      value="0">
+			<input type="hidden" name="chdArrTax"      value="0">
+			<input type="hidden" name="adtArrFuel"     value="0">
+			<input type="hidden" name="chdArrFuel"     value="0">
+		
+			<input type="hidden" name="grade"       value="Y">
+		
+			<input type="hidden" name="DepCheck"    value="">
+			<input type="hidden" name="ArrCheck"    value="">
+		
+			<input type="hidden" name="ticket_type" value="2">
+	
+			<div class="Search-Area" style="width: calc(100% - 250px);">	
+				<div class="search-wrap">
+					<table class="form">
+						<tbody>				
+							<tr >
+								<td class="th wh100">
+									<div class="check-group check-group2 custom-checkbox" onClick="return airCheckAll()">
+										<input class="custom-control-input" type="checkbox" checked name="air_ALL" id="air_ALL" value="Y"><label class="custom-control-label" for="air_ALL">전체</label>
+									</div>
+								</td>
+								<td class="td" style="width:460px;" colspan="3">
+									<%- include ('air.inc') %>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div style="display:flex;margin-top:10px; width: calc(100% - 250px);">
+			<!--page_item_content-->
+				<div class="page_item_content page_item_content2" id="SearchMain" style="display:none">	
+	
+					<!--list-wrap-->
+					<div class="list-wrap" >
+						<!--가는편-->
+						<div class="list-wrap-50" style="margin-right:2%;">
+							<p class="tit"><img src="/images/departure.png" class="icon_img">가는편</p>
+							<p class="arr_txt" id="depCityName">출발지 -> 도착지</p>
+							<div class="info_date">
+								<span class="pre"><img src="/images/pre.png" class="info_control"></span>
+								<span class="s1"><span id="depDateName"></span></span>
+								<span class="next"><img src="/images/next.png" class="info_control"></span>
+							</div>
+							<div class="bar"></div>
+							
+							<!--list-->
+							<div class="list air-list-form2">
+								<div class="list-roll" ID="depAreaList">
+									
+								</div>
+							</div>
+							<!--//list-->
+						</div>
+						<!--//가는편-->
+	
+						<!--오는편-->
+						<div class="list-wrap-50">
+							<p class="tit"><img src="/images/arrive.png" class="icon_img">오는편</p>
+							<p class="arr_txt" id="arrCityName">출발지 -> 도착지</p>
+							<div class="info_date">
+								<span class="pre"><img src="/images/pre.png" class="info_control"></span>
+								<span class="s1"><span id="arrDateName"></span></span>
+								<span class="next"><img src="/images/next.png" class="info_control"></span>
+							</div>
+							<div class="bar"></div>
+							
+							<!--list-->
+							<div class="list air-list-form2">
+								<div class="list-roll" ID="arrAreaList">
+									
+								</div>
+							</div>
+							<!--//list-->
+						</div>
+						<!--//오는편-->
+	
+					</div>
+					<!--//list-wrap-->
+				</div>
+			<!--//page_item_content-->
+				<div class="result-panel" style="margin-top: 10px; margin-left: 25px; margin-right: 25px; width: calc(100% - 50px);">
+					<div class="page_item_content page_item_content2">
+						<div id="SearchNotice" class="mat10">
+							<div class="border regis-tle-box shadow-sm">
+								<h5 class="regis-tle">
+									<i class="fas fa-edit" style="color:#777;font-size:16px;"></i>&nbsp;&nbsp;항공사뉴스&nbsp;&nbsp;
+								</h5>
+							</div>
+							<div ID=listFrameSub >
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			<!--air-page-quickbar-->
+			<!--//air-page-quickbar-->
+	
+	
+			</div>
+			
+
+		</form>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+        searchDatas ("SET");    
+        //firstSet();
+		startOpen();
+		startClose();
+	});
+
+
+	async function searchDatas (mode,uid='') {
+        //if (mode == "CITY") {
+            const data = 'mode='+mode+'&uid='+uid;
+            const res  = await fetch('/domSearch/searchDomGet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: data
+            });
+        //}
+
+        const json  = await res.json();
+        if (mode == "SET") {
+            //("#cityData").html(json.city);
+            $("#listFrameSub").html(json.news);
+        } 
+	};
+
+//-->
+</script>
+<%- include('../footer_log') %>

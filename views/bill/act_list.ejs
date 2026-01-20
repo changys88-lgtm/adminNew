@@ -1,0 +1,200 @@
+<%- include('../header') %>
+
+<div id="content" class="whp100 patNot">
+
+	<div class="border regis-tle-box shadow-sm">
+		<h5 class="regis-tle">
+			<i class="fas fa-edit" style="color:#777;font-size:16px;"></i>&nbsp;&nbsp;입출금 관리 &nbsp;&nbsp;
+			<span style="color:#bbb; font-size:14px;" id="totCount">(0) </span>
+
+			<span class="fr btn_basic btn_yellow " onClick="dupChecks()" id="dupOrderCheck">중복 주문서</span>
+			<span class="fr btn_basic btn_purple none" id="errorDepoCheck"   title="현금 발권후 예치금 미차감건"></span>
+			<span class="fr btn_basic btn_red none"    id="errorOrderCheck"  title="예치금 차감후 발권 안된건"></span>
+			<span class="fr btn_basic btn_blue none"   id="errorCardCheck"   title="카드미취소건(KE등)"></span>
+			<div class="fr" id="dupDataArea" style="display:none; z-index:999;border:1px solid #bbb ; width:450px; right:0px; height:250px; position:absolute;margin:0 40px 0 0;background-color:#fff;overflow:hidden;overflow-y:auto; ">
+			</div>
+
+		</h5>
+	</div>
+
+	<form name="frmSearch" id="frmSearch" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+		<div id="searchFrame">
+			<div class="row">
+				<div class="col-12 mt-3" >
+					<div class="row float-right">
+						
+						
+						<div class="d-inline mr-2">
+							<div class='custom-control custom-checkbox mr-2 d-inline'>
+								<input class='custom-control-input' type='checkbox' name='cancel' id='cancel' value='Y'  ><label class="custom-control-label mb-2" for='cancel'>취소포함</label>
+							</div>
+						</div>
+						
+						<div class="d-inline mr-2">
+							<span class="d-inline mt-1"><i class="fas fa-bars" style='padding-top:2px'></i>&nbsp;줄수&nbsp;</span>
+							<input type="text" name="listCount" class="d-inline form-control form-control-sm wh40" value="20" style='width:30px;'>
+						</div>
+						
+						<div class="d-inline mr-2">
+							<span class="d-inline mt-1"></span>
+							<input name='start_date' id='start_date' type='text' autocomplete="off" class='d-inline form-control form-control-sm wh100'  onClick="return datePick('start_date')">
+							&nbsp;<i class='fas fa-calendar-alt' onClick="return datePick('start_date')" style='color:#555;'></i>
+							
+						</div>
+						<div class="d-inline mr-3">
+							<span class="d-inline mt-1"></i></span>
+							<input name='end_date' id='end_date' type='text' autocomplete="off" class='d-inline form-control form-control-sm wh100' onClick="return datePick('end_date')">
+							&nbsp;<i class='fas fa-calendar-alt' onClick="return datePick('end_date')" style='color:#555;'></i>
+							
+						</div>
+                        <div class="d-inline mr-2">
+                            <select name="GU1" class="d-inline form-control form-control-sm"  style='width:90px;' >
+                                <option value="a.order_date"	 >신청일
+                                <option value="d.in_date"		 >출발일
+                                <option value="a.issue_date"	 >발권일
+                                <option value="e.in_date"		 >귀국일
+                            </select>
+                        </div>
+						
+                        <div class="d-inline  mr-2">
+                            <select name="GU2" class="d-inline form-control form-control-sm" >
+                                <option value=""		 >입지결
+                                <option value="1"		 >입금전표
+                                <option value="2"		 >지결전표
+                                <option value="X"		 >>미지결
+                                <option value="AC"		 >계정미기입
+                            </select>
+                        </div>
+						<div class="d-inline mr-2">
+                            <select name="sFrom" class="d-inline form-control form-control-sm"  >
+                                <option value="siteName"		>거래처
+                                <option value="out_site"		>거래처코드
+                                <option value="username"		>작성자
+                                <option value="a.ticket_num"	>전표번호
+                                <option value="total_amount"	>금액(합계)
+                                <option value="amount1"			>금액1(개별)
+                                <option value="amount2"			>금액2(개별)
+                                <option value="amount3"			>금액3(개별)
+                                <option value="amount4"			>금액4(개별)
+                                <option value="content1"		>결의서내용
+                                <option value="pnr"			    >패스예약번호
+                                <option value="account"			>계정코드
+                                <option value="finish_date"		>송금날자
+                                <option value="d_account_name"	>예금주
+                            </select>
+                        </div>
+						<div class="d-inline mr-3">
+							<div class="input-group">
+                                <input name="sWord" class="form-control form-control-sm py-2" style="line-height:10px;width:100px;"  placeholder="검색" id="example-search-input">
+                                <span class="input-group-append">
+                                <button class="btn btn-dark" type="submit" style="background-color:#555;" >
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                </span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" >
+			<table class='table table-light text-center mt-3' bordercolor='#ddd' style="border-bottom:1px solid #ddd;" id='dtBasic'>
+				<tr style="background-color:#eee;">
+					<th width=90>전표번호</th>
+					<th width=90>작성일</th>
+					<th width=50>구분</th>
+					<th  width=200>계정</th>
+					<th >거래처</th>
+					<th >직접입력<br>예금주</th>
+					<th >결의서내용</th>
+					<th width=90>금액</th>
+					<th width=60>작성자</th>
+					<th width=110>처리일</th>
+					<th width=60 onClick="allCheck()">지출</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div style="clear:both;" ID="bottomFrame">
+
+		<div class="whp33 fl">
+			&nbsp;
+			
+		</div>
+		<div class="whp33 fl ac" ID="pagingHTML">
+		</div>
+		<div class="row float-right mr-0 fr">			
+			<button class="btn_basic btn-gray "     href="javascript://" onClick="return excelDown()" >엑셀다운</button>
+		</div>
+		
+	</div>
+
+</div>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="ticket_num">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    async function newReg (ticket_num='',gubun='2',type='1',mode='input') {
+        frmModify.ticket_num.value = ticket_num;
+        frmModify.money_type.value = type;
+        frmModify.gubun_code.value = gubun;
+        frmModify.mode.value       = mode;
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/bill/actSave');
+		title = json.title;
+		html  = json.html;
+        name  = json.name;
+		drawer.open(1500, { title, html  });
+        LoadingStop();
+	}
+
+	$(document).ready(function() {
+		formSearch (event);
+	});
+
+    
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/bill/act_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			$("#totCount").html(`(${json.totCount})`);
+		} else {
+            newAlert('검색중오류'+json.err);
+		}
+		LoadingStop();
+        return false;
+	};
+	function issueStart(uid) {
+		sFile = "/air/order_detail?uid="+uid;
+		OpenWindowA(sFile,"",1,1200,800);
+	}
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

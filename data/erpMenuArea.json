@@ -1,0 +1,18 @@
+[
+    { "code": "INTERLIST"   , "name": "국제선예약목록" , "link" : "/air/order_list" },
+    { "code": "DSRLIST"     , "name": "DSR목록"       , "link" : "" },
+    { "code": "REFUND"      , "name": "환불관리"      , "link" : ""   },
+    { "code": "INOUTLIST"   , "name": "입출금대장"    , "link" : ""    },
+    { "code": "SETTLE"      , "name": "정산관리"      , "link" : ""    },
+    { "code": "GOODS"       , "name": "상품관리"      , "link" : "/Goods/goods_list"},
+    { "code": "ORDERLIST"   , "name": "예약목록"      , "link" : "/order/order_list"},
+    { "code": "INTERORDER"  , "name": "국제선예약"    , "link" : "/interSearch/interRev"},
+    { "code": "DOMELIST"    , "name": "국내선예약목록" , "link" : "/domSearch/dom_list" },
+    { "code": "DOMEORDER"   , "name": "국내선예약"    , "link" : "/domSearch/domRev"},
+    { "code": "DEV"         , "name": "개발요청"      , "link" : ""    },
+    { "code": "BLOCKMANAGE" , "name": "블럭관리"      , "link" : ""    },
+    { "code": "ACTLIST"     , "name": "입출금대장"    , "link" : "/bill/act_list"},
+    { "code": "VISUALBANK"  , "name": "온라인통장"    , "link" : "/visualBank/visual_list"},
+    { "code": "INOUTLIST"   , "name": "결의서대장"    , "link" : ""  },
+    { "code": "TOTALBOOK"   , "name": "통합주문서"    , "link" : ""  } 
+]

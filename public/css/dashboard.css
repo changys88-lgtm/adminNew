@@ -1,0 +1,121 @@
+
+/* ================================
+   Dashboard
+================================ */
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  /* ===== KPI ===== */
+  .dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  
+  .kpi-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .kpi-title {
+    font-size: 13px;
+    color: #6b7280;
+  }
+  
+  .kpi-value {
+    display: block;
+    margin-top: 6px;
+    font-size: 26px;
+    font-weight: 700;
+  }
+  
+  .kpi-value.wait {
+    color: #f59e0b;
+  }
+  
+  .kpi-value.cancel {
+    color: #ef4444;
+  }
+  
+  /* ===== Middle ===== */
+  .dashboard-middle {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+  
+  .rev_data {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .rev_data h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  
+  /* ===== Status List ===== */
+  .status-list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .status-list li {
+    font-size: 14px;
+  }
+  
+  .status-list strong {
+    margin-left: 4px;
+  }
+  
+  /* ===== Table ===== */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  
+  .table th {
+    text-align: left;
+    padding: 10px;
+    background: #f9fafb;
+    color: #374151;
+  }
+  
+  .table td {
+    padding: 10px;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  /* ===== Badge ===== */
+  .badge {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+  
+  .badge.done {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+  
+  .badge.wait {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .muted {
+    color: #6b7280;
+    font-size: 14px;
+  }
+  
+  

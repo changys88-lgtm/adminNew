@@ -1,0 +1,177 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<input type="hidden" name="titleData" value="">
+	<form name="frmSearch" id="frmSearch"  method="post"  onsubmit="return formSearch(event,'1');">
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="interSearch">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<span onClick="newReg('','input')"  class="search_action_btn_primary">
+						+ 신규등록
+					</span>
+				</div>
+				<div class="search_action_right">
+					<input class='custom-control-input' type='checkbox' name='cancel' id='cancel' value='Y'  >
+					<span class="unit">취소포함</span>
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					<input type="date" class="date" name="start_date" />
+					<span class="tilde">~</span>
+					<input type="date" class="date" name="end_date" />
+					<select name="GU1" class="search_action_select">
+						<option value="a.order_date"	 >신청일
+						<option value="d.in_date"		 >출발일
+						<option value="a.issue_date"	 >발권일
+						<option value="e.in_date"		 >귀국일
+					</select>
+					<select name="GU6" class="search_action_select">
+						<option value="">    전체
+						<option value='Y'     > 완료
+						<option value='N'     > 미수금
+						<option value='G'     > Group
+						<option value='F'     > Fit
+						<option value='EMD'   > EMD
+						<option value='NAVER' > NAVER
+					</select>
+					<select name="GU2" class="search_action_select">
+						<option value=""> 전체 
+						<option value="RQ"		>발권요청
+						<option value="WT"		>발권대기
+						<option value="OK"		>발권완료
+						<option value="REF"		>환불대기
+						<option value="PN"		>발권오류
+						<option value="MISS"	>TASF미승인
+						<option value="CX"		>취소완료
+						<option value="CXL"		>취소요청중
+					</select>
+					<select name="GU11" class="search_action_select">
+						<option value=""> 티켓상태 
+						<option value="HK"		 >HK 상태
+						<option value="TE"		 >TE 상태
+						<option value="RF"		 >RF 상태
+						<option value="CX"		 >CX 상태
+					</select>
+					<select name="sFrom" class="search_action_select">
+						<option value="a.uid"			>주문번호
+						<option value="pnrAlpha"		>PNR
+						<option value="a.site_code"		>거래처코드
+						<option value="routing"			>구간
+						<option value="a.airPnr"		>항공사PNR
+						<option value="pax_name"		>탑승자
+						<option value="d.air_code"		>출발항공
+						<option value="e.air_code"		>귀국항공
+						<option value="ticket_number"	>티켓넘버
+						<option value="a.order_name"	>예약자
+						<option value="a.issue_manager"	>발권자
+						<option value="priceNumber"		>후급번호
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr style="background-color:#eee;">
+					<th class="wh80">No.</th>
+                    <th>거래처</th>
+                    <th class="wh110">탑승일</th>
+                    <th class="wh100">항공</th>
+                    <th>구간</th>
+                    <th class="wh50">구분</th>
+                    <th>PNR</th>
+                    <th class="wh50">승객</th>
+                    <th>금액</th>
+                    <th class="wh100">TL</th>
+                    <th class="wh130">신청일 <br> 완료일</th>
+                    <th class="wh100">예약<br>발권</th>
+                    <th class="wh150">상태</th>
+                    <th class="wh100">환불</th>
+                    <th>발권</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+
+		<div class="action_area_left">
+			&nbsp;
+			
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+		
+	</div>
+
+</main>
+
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+	function createOutData () {
+		var Rc = confirm("선택하신 주문서를 자동 출금 결의서 처리 합니다.");
+		if (Rc) {
+			Obj = document.frmForm;
+			Obj.action = "../bill/auto_settleinter.php";
+			Obj.method = "POST";
+			Obj.target = "HIDE_ACTION";
+			Obj.submit();
+			Obj.target = "_self";
+		}
+		return false;
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/domSearch/dom_list_search');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`국내선 예약 (${json.totalCount})`);
+			frmSearch.titleData.value = `국내선 예약 (${json.totalCount})`;
+		} else {
+            newAlert('검색중오류'+json.err);
+		}
+		LoadingStop();
+        return false;
+	};
+
+	function domStart(uid) {
+		sFile = "/domSearch/dom_detail?uid="+uid;
+		OpenWindowA(sFile,"",1,1400,800);
+	}
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

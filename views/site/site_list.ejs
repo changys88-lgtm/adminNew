@@ -1,0 +1,231 @@
+<%- include('../header') %>
+
+<main class="content">
+
+
+	<form name="frmSearch" id="frmSearch" method="post" onsubmit="return formSearch(event);">
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="interSearch">
+	<input type="hidden" name="page"      value="1">
+    <input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<span onClick="newReg('','input')"  class="search_action_btn_primary">
+                        + 신규등록
+                    </span>
+				</div>
+				<div class="search_action_right">
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					<select name="sFrom" class="search_action_select">
+						<option value="site_name">거래처명							</option>
+						<option value="site_code">거래처코드							</option>
+						<option value="BSP_USE">BSP 가입                                </option>
+						<option value="president">대표자							</option>
+						<option value="manager">담당자							</option>
+						<option value="man_id">아이디							</option>
+						<option value="domain">홈페이지							</option>
+						<option value="site_number">사업자 번호							</option>
+						<option value="comm_grade">커미션등급							</option>
+						<option value="address1">주소							</option>
+						<option value="telephone">전화						</option>
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr>
+                    <th>No</th>
+					<th>거래처코드</th>
+					<th>거래처명</th>
+					<th>연락처</th>
+					<th>담당자</th>
+					<th>사용자수</th>
+					<th>BSP</th>
+					<th>판매채널</th>
+					<th>전용계좌</th>
+					<th>영업담당</th>
+					<th>등록일</th>
+					<th>잔액</th>
+					<th>대기</th>
+					<th>발권</th>
+					<th>취소</th>
+					<th>로그인</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+	</div>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="manPass">
+	<input type="hidden" name="man_id">
+	<input type="hidden" name="val">
+	<input type="hidden" name="site_code">
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+	async function newReg (uid='') {
+		json = await dataGetSend('Site',uid,'site/siteSave');
+		title = json.title;
+		html  = json.html;
+		drawer.open(1200, { title, html  });
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event);
+	});
+
+    async function formSearch (e) {
+        if (e) e.preventDefault();
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/site/site_list');
+		success = json.success;
+		if (success === "ok") {
+			const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`거래처 관리 (${json.totalCount})`);
+			frmSearch.titleData.value = `거래처 관리 (${json.totalCount})`;
+		} else {
+			newAlert('저장중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+
+	async function InputCheck(){
+		var Obj = document.frmDetail;
+		
+		if (trim(Obj.site_name.value) == ""){
+			alert('거래처명을 입력하여 주십시요.');
+			Obj.site_name.focus();
+		} else if (trim(Obj.president.value) == ""){
+			alert('대표자를 입력하여 주십시요.');
+			Obj.president.focus();
+		} else if (trim(Obj.tel_number.value) == ""){
+			alert('대표번호를 입력하여 주십시요.');
+			Obj.tel_number.focus();
+		} else if (trim(Obj.address1.value) == ""){
+			alert('주소를 입력하여 주십시요.');
+			Obj.address1.focus();
+		} else if (Obj.barobill_id.value != "" && Obj.site_number.value == ""){
+			alert('바로빌 등록시 사업자번호는 필수 입니다.');
+			Obj.site_number.focus();
+		} else if (Obj.dup.value == "N"){
+			alert('마스터아이디의 중복확인을 눌러 주세요.');
+		} else {
+			json = await dataSaveSend ('frmDetail','/site/siteSave');
+			success = json.success;
+			//console.log(json);
+			if (success === "ok") {
+				formSearch (event);
+				$("#drawerClose").click();
+			} else {
+				newAlert('저장중 오류 발생');
+			}
+		}
+	}
+	async function manModify (site_code,man_id,val) {
+		var Rc = confirm("등록된 사용자의 비밀반호를 변경합니다.");
+		if (Rc) {
+			frmModify.site_code.value	= site_code;
+			frmModify.man_id.value		= man_id;
+			frmModify.val.value			= val;
+			json = await dataSaveSend ('frmModify','/site/siteSave');
+			success = json.success;
+			if (success === "ok") {
+				formSearch (event);
+				$("#drawerClose").click();
+			} else {
+				newAlert('저장중 오류 발생');
+			}
+		}
+	}
+	async function newUser () {
+		var Obj    = document.frmDetail;
+		id_length  = Obj.new_id.value.length;
+		new_passwd = Obj.new_passwd.value;
+		g = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(new_passwd);
+		if (Obj.new_id.value == ""){
+			alert('사용자아이디를 입력하여 주십시요.');
+			Obj.new_id.focus();
+		} else if (id_length < 4){
+			alert('사용자아이디를 4자 이상으로 입력하여 주십시요.');
+			Obj.new_id.focus();
+		} else if (Obj.new_passwd.value == ""){
+			alert('비밀번호를 입력하여 주십시요.');
+			Obj.new_passwd.focus();
+		} else if (g == false){
+			alert('비밀번호를 영문+숫자+특수기호 8자리 이상으로 입력하여 주세요.');
+			Obj.new_passwd.focus();
+		} else if (Obj.new_name.value == ""){
+			alert('사용자명을 입력하여 주십시요.');
+			Obj.new_name.focus();
+		} else {
+			Obj.mode.value = "newUser";
+			//Obj.target = "HIDE_ACTION";
+			//Obj.submit();
+			json = await dataSaveSend ('frmDetail','/site/siteSave');
+			success = json.success;
+			if (success === "ok") {
+				formSearch (event);
+				$("#drawerClose").click();
+			} else {
+				newAlert('저장중 오류 발생\n'+json.errorMsg);
+			}
+		}
+		return false;
+	}
+	async function manDel (site_code,man_id) {
+		var Rc = confirm("등록된 사용자를 삭제 합니다.");
+		if (Rc) {
+			document.frmModify.mode.value      = 'manDel';
+			document.frmModify.site_code.value = site_code;
+			document.frmModify.man_id.value    = man_id;
+			json = await dataSaveSend ('frmModify','/site/siteSave');
+			success = json.success;
+			if (success === "ok") {
+				formSearch (event);
+				$("#drawerClose").click();
+			} else {
+				newAlert('삭제중 오류 발생');
+			}
+		}
+		return false;
+	}
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

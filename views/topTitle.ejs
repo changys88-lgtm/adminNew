@@ -1,0 +1,195 @@
+<div class="main">
+  <header class="header">
+    <div class="header-left">
+      <span id="menuToggle" class="menu-toggle" onClick="return allMenuOpen()">☰</span>
+      <h1 id="topTitleData"></h1>
+    </div>
+
+    <div class="header-reserve-tabs fixed-tabs">
+
+      <!-- 즐겨찾기 -->
+      <span class="icon-btn favorite" title="즐겨찾기">★</span>
+      <div id="tabMenu">
+        <!--
+        <span href="#" class="reserve-tab active">Main</span>
+        <span href="#" class="reserve-tab">국제선예약</span>
+        <span href="#" class="reserve-tab">국내선예약</span>
+        <span href="#" class="reserve-tab">입출금대장</span>
+        <span href="#" class="reserve-tab">온라인통장</span>
+        <span href="#" class="reserve-tab">현금영수증</span>
+        -->
+      </div>
+      <!-- 플러스 
+      <span class="icon-btn add" title="추가">＋</span>
+      -->
+
+    </div>
+  
+    <div class="header-right">
+      🔔
+      <span><%= typeof userName !== 'undefined' ? userName : 'Guest' %></span>
+      <span id="countdown" style="color: #bbb; display: none; padding-left: 10px; width: 80px; " >3:00:00</span>
+      <span id="logoutBtn" class="btn-logout" onClick="location.href='/logout'">
+        <%= (typeof userName !== 'undefined' ? "로그아웃" : "로그인") %>
+      </span>
+    </div>
+  </header>
+
+
+
+<script>
+  if ("<%= typeof userName !== 'undefined' ? userName : 'Guest' %>" !== "Guest") {
+    $("#countdown").show();
+    const loginTime = new Date(); // 또는 서버에서 전달된 로그인 시각
+    window.expireTime = loginTime.getTime() + 3 * 60 * 60 * 1000; // 3시간 후
+    const countdownEl = document.getElementById('countdown');
+
+    function updateCountdown() {
+        const now = new Date();
+        let remaining = Math.max(0, window.expireTime - now); // 남은 ms
+
+        if (remaining  > 0) {
+            requestAnimationFrame(updateCountdown);
+        } else {
+            countdownEl.textContent = "00:00:00";
+            top.newAlert('⏰ 로그인 시간이 만료되었습니다.','reload');
+            return;
+        }
+
+        const hours = String(Math.floor(remaining / 3600000)).padStart(2, '0');
+        const minutes = String(Math.floor((remaining % 3600000) / 60000)).padStart(2, '0');
+        const seconds = String(Math.floor((remaining % 60000) / 1000)).padStart(2, '0');
+
+
+        countdownEl.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    requestAnimationFrame(updateCountdown);
+}
+
+</script>
+
+
+
+<div class="allmenu-overlay" id="allMenu" style="display: block;">
+  <div class="allmenu-panel">
+
+    <div class="allmenu-header">
+      <strong>전체메뉴</strong>
+      <button class="allmenu-close" id="menuClose" onClick="return allMenuClose()">✕</button>
+    </div>
+
+    <div class="allmenu-grid" id="allMenuData">
+
+      <div class="menu-group">
+        <h4>예약관리</h4>
+        <a href="#">★ 국제선 예약</a>
+        <a href="#">☆ 국내선 예약</a>
+        <a href="#">☆ 라인결제</a>
+      </div>
+
+      <div class="menu-group">
+        <h4>상품관리</h4>
+        <a href="#">☆ 상품 리스트</a>
+        <a href="#">☆ 재고 관리</a>
+        <a href="#">☆ 운임 관리</a>
+      </div>
+
+      <div class="menu-group">
+        <h4>정산/회계</h4>
+        <a href="#">☆ 현금영수증</a>
+        <a href="#">☆ 세금계산서</a>
+        <a href="#">☆ 매출관리</a>
+      </div>
+
+      <div class="menu-group">
+        <h4>시스템</h4>
+        <a href="#">☆ 공지사항</a>
+        <a href="#">☆ 권한관리</a>
+        <a href="#">☆ 관리자 설정</a>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- 전체메뉴 열기닫기 -->
+<script>
+  /*
+  document.addEventListener('DOMContentLoaded', () => {
+  
+    const menuToggle = document.getElementById('menuToggle');
+    const allMenu = document.getElementById('allMenu');
+    const menuClose = document.getElementById('menuClose');
+  
+    if (!menuToggle || !allMenu || !menuClose) {
+      console.error('전체메뉴 관련 요소가 없습니다');
+      return;
+    }
+  
+    function openMenu() {
+      allMenu.classList.add('active');
+      document.body.classList.add('menu-open');
+      menuToggle.classList.add('active');
+    }
+  
+    function closeMenu() {
+      allMenu.classList.remove('active');
+      document.body.classList.remove('menu-open');
+      menuToggle.classList.remove('active');
+    }
+  
+    menuToggle.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
+  
+    allMenu.addEventListener('click', (e) => {
+      if (e.target === allMenu) closeMenu();
+    });
+  
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    });
+  
+    document.querySelectorAll('.menu-group a').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+  
+  });
+  */
+ function allMenuOpen() {
+    $("#allMenu").addClass('active');
+    menuOpenActive ();
+ }
+ function allMenuClose() {
+    $("#allMenu").removeClass('active');
+ }
+ async function menuSignal(code, label) {
+    if ($("#menu_" + code + "_signal").text() == '★') $("#menu_" + code + "_signal").text('☆');
+    else $("#menu_" + code + "_signal").text('★');  
+    const data = "mode=menuChange&data="+code+"&label="+label;
+    const res  = await fetch('/menuGet', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: data
+    });
+    const json        = await res.json();
+    const success     = json.success;
+    if (success == 'ok') {
+        const data = "mode=menu";
+        const res1  = await fetch('/menuGet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        });
+        const json1 = await res1.json();
+        const tabMenuData = json1.tabMenu;
+        const frameData   = json1.frameMenu;
+        $("#tabMenu").html(tabMenuData);
+        $("#mainContent").html(frameData);
+    }
+ }
+  </script>

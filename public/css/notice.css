@@ -1,0 +1,721 @@
+/*공지사항*/
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.page-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.page-head .count {
+  font-size: 14px;
+  color: #64748b;
+  margin-left: 6px;
+}
+
+.notice-panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.notice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.notice-table th {
+  background: #f8fafc;
+  padding: 12px;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.notice-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.notice-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.notice-table .title a {
+  color: #0f172a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.notice-table .title a:hover {
+  text-decoration: underline;
+}
+
+/* 버튼 */
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-line {
+  padding: 5px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 12px;
+  margin-right: 6px;
+}
+
+.btn-danger {
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* 뱃지 */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge.blue {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+/*notice_write*/
+
+.notice-form {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 900px;
+}
+
+/* 테이블 폼 */
+.form-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.form-table th {
+  width: 140px;
+  text-align: left;
+  padding: 14px 12px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 600;
+  color: #334155;
+}
+
+.form-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.form-table input[type="text"],
+.form-table select,
+.form-table textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+}
+
+.form-table textarea {
+  resize: vertical;
+}
+
+.check-row {
+  display: flex;
+  gap: 20px;
+}
+
+.check-row label {
+  font-size: 14px;
+  color: #475569;
+}
+
+/* 하단 버튼 */
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+/* 등록 버튼 */
+.submit-btn {
+  width: 100%;
+  height: 50px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #1e4fd7;
+}
+
+.btn-add {
+  margin-left: auto;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+
+
+
+
+/* 공지사항 검색 */
+/* 전체 바 */
+.notice_action_bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #e5e8ef;
+  border-radius: 6px;
+  margin: 0 0 10px 0;
+}
+
+/* 좌측 */
+.notice_action_left {
+  display: flex;
+  align-items: center;
+}
+
+/* 신규등록 버튼 */
+.notice_action_btn_primary {
+  height: 36px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 6px;
+  background: #2962ff; /* 하나투어 계열 블루 */
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notice_action_btn_primary:hover {
+  background: #1e4fe0;
+}
+
+/* 우측 */
+.notice_action_right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* select 공통 */
+.notice_action_select {
+  height: 36px;
+  padding: 0 10px;
+  font-size: 13px;
+  border: 1px solid #d7dce5;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+}
+
+.notice_action_select:focus {
+  outline: none;
+  border-color: #2962ff;
+}
+
+/* 줄수 텍스트 */
+.notice_action_unit {
+  font-size: 13px;
+  color: #555;
+  margin-right: 6px;
+}
+
+/* 검색 input */
+.notice_action_search_input {
+  height: 36px;
+  width: 220px;
+  padding: 0 10px;
+  font-size: 13px;
+  border: 1px solid #d7dce5;
+  border-radius: 4px;
+}
+
+.notice_action_search_input::placeholder {
+  color: #aaa;
+}
+
+.notice_action_search_input:focus {
+  outline: none;
+  border-color: #2962ff;
+}
+
+/* 검색 버튼 */
+.notice_action_icon_btn {
+  height: 36px;
+  width: 40px;
+  border: none;
+  border-radius: 4px;
+  background: #3b3f4a;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.notice_action_icon_btn:hover {
+  background: #2f333d;
+}
+
+span.notice_action_btn_primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;   
+  color: #fff;             
+}
+
+span.notice_action_btn_primary:hover {
+  text-decoration: none;
+}
+
+
+
+
+  /* 공지사항 상세 테이블 */
+  .table.regis-hotel {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(47, 58, 90, 0.06);
+    border: 1px solid #e5e8ef;
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-top: 2px solid #2f3a5a; /* 헤더 강조 */
+    font-size: 14px;
+  }
+  
+  /* 공통 th */
+  .table.regis-hotel th {
+    padding: 14px 12px;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 600;
+    color: #333;
+    background: #f8f9fc;
+    border-bottom: 1px solid #e5e8ef;
+    white-space: nowrap;
+  }
+  
+  /* 공통 td */
+  .table.regis-hotel td {
+    padding: 14px 12px;
+    color: #444;
+    border-bottom: 1px solid #e5e8ef;
+    line-height: 1.6;
+  }
+  
+  /* 좌측 타이틀 셀 */
+  .regis-hotel-td1 {
+    width: 130px;
+    background: #f8f9fc;
+    color: #555;
+  }
+  
+  /* 값 영역 */
+  .regis-hotel-td2 {
+    background: #fff;
+  }
+  
+  /* 마지막 라인 제거 */
+  .table.regis-hotel tr:last-child th,
+  .table.regis-hotel tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* 내용 영역 */
+  .table.regis-hotel td[colspan="3"] {
+    font-size: 14px;
+  }
+  
+  /* 내용 본문 */
+  .table.regis-hotel td.border-bottom {
+    padding: 20px 16px;
+    background: #fff;
+    color: #333;
+  }
+  
+  /* 내용 내부 텍스트 */
+  .table.regis-hotel td.border-bottom p {
+    margin: 0 0 10px;
+  }
+  
+  /* 이미지 정렬 */
+  .table.regis-hotel td.border-bottom img {
+    max-width: 100%;
+    margin-top: 12px;
+    border-radius: 6px;
+  }
+  
+  /* 링크 주소 */
+  .table.regis-hotel a {
+    color: #2962ff;
+    text-decoration: underline;
+  }
+  
+  .table.regis-hotel a:hover {
+    text-decoration: none;
+  }
+  
+  /* required 표시용 (확장 대비) */
+  .table.regis-hotel th[required]::after {
+    content: ' *';
+    color: #e53935;
+    font-weight: 700;
+  }
+  
+  .table.regis-hotel tr:nth-child(even) td {
+    background: #fcfdff;
+  }
+  
+  @media (max-width: 768px) {
+    .table.regis-hotel th {
+      width: 90px;
+      font-size: 13px;
+    }
+  }
+
+  /* 상세 상단 타이틀 */
+.notice_view_title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e5e8ef;
+}
+
+
+
+
+
+
+/* 공지사항 하단 */
+
+.action_bar_split {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  align-items: center;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #e5e8ef;
+  border-radius: 6px;
+}
+
+/* 공통 영역 */
+.action_area_left,
+.action_area_center,
+.action_area_right {
+  display: flex;
+  align-items: center;
+}
+
+/* LEFT */
+.action_area_left {
+  gap: 6px;
+}
+
+/* CENTER */
+.action_area_center {
+  justify-content: center;
+  gap: 4px;
+}
+
+/* RIGHT */
+.action_area_right {
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* 날짜 */
+.action_bar_split .date {
+  height: 36px;
+  padding: 0 8px;
+  font-size: 13px;
+  border: 1px solid #d7dce5;
+  border-radius: 4px;
+}
+
+.action_bar_split .tilde {
+  font-size: 13px;
+  color: #666;
+}
+
+/* select */
+.action_select {
+  height: 36px;
+  padding: 0 10px;
+  font-size: 13px;
+  border: 1px solid #d7dce5;
+  border-radius: 4px;
+  background: #fff;
+}
+
+/* 페이지 버튼 */
+.action_page_btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #d7dce5;
+  background: #fff;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+}
+
+.action_page_btn:hover {
+  background: #f4f6fb;
+}
+
+.action_page_btn.is-active {
+  background: #2962ff;
+  border-color: #2962ff;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 다운로드 버튼 공통 */
+.action_btn_download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  height: 36px;
+  padding: 0 14px;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+
+  background: #f8f9fc;
+  border: 1px solid #d7dce5;
+  border-radius: 8px;
+
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* 아이콘 */
+.action_btn_download .icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* hover */
+.action_btn_download:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+/* 엑셀 전용 */
+.action_btn_download.excel {
+  color: #1f7a4f;
+}
+
+.action_btn_download.excel:hover {
+  background: #e8f6ef;
+  border-color: #b7e4cd;
+}
+
+/* 파일 전용 */
+.action_btn_download.file {
+  color: #2957a4;
+}
+
+.action_btn_download.file:hover {
+  background: #eef4ff;
+  border-color: #cfe0ff;
+}
+
+
+
+
+
+.notice-view-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+}
+
+/* 행 */
+.notice-view-table tr {
+  border-bottom: 1px solid #e9edf2;
+}
+
+/* 라벨 */
+.notice-view-table th {
+  width: 140px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  color: #333;
+  font-weight: 600;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* 값 */
+.notice-view-table td {
+  padding: 14px 16px;
+  color: #111;
+  vertical-align: middle;
+}
+
+/* 우측 라벨 (등록자 / 팝업사이즈 등) */
+.notice-view-table th.right {
+  width: 120px;
+}
+
+/* 제목 강조 */
+.notice-view-table .subject {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* 링크 */
+.notice-view-table a {
+  color: #2979ff;
+  text-decoration: underline;
+}
+
+/* 내용 영역 */
+.notice-view-content {
+  padding: 20px 16px;
+  line-height: 1.8;
+  white-space: pre-line;
+  color: #222;
+}
+
+/* 하단 수정 버튼 */
+.notice-view-action {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+
+.notice-view-action button {
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+}
+
+.notice-view-action button:hover {
+  text-decoration: underline;
+}
+
+
+
+.notice-title-text {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2563eb; 
+  letter-spacing: -0.2px;
+}
+
+
+
+
+/* 수정하기 하단 버튼 */
+.regis-btn {
+  margin-top: 32px;
+}
+
+/* 수정하기 버튼 */
+.regis-btn .btn-yellow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 260px !important;
+  height: 46px;
+
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+
+  border: none;
+  border-radius: 24px;
+
+  font-size: 15px !important;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+  transition: all .25s ease;
+}
+
+/* hover */
+.regis-btn .btn-yellow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
+}
+
+/* active */
+.regis-btn .btn-yellow:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+/* 아이콘 추가하고 싶을 때 */
+.regis-btn .btn-yellow::before {
+  content: "✏";
+  margin-right: 8px;
+  font-size: 14px;
+}

@@ -1,0 +1,125 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<form name="frmSearch" id="frmSearch" method="post" onsubmit="return formSearch(event);">
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="List">
+    <input type="hidden" name="cMode"     value="">
+    <input type="hidden" name="cYear"     value="">
+    <input type="hidden" name="cMonth"    value="">
+    <input type="hidden" name="titleData" value="재고 관리">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					
+				</div>
+				<div class="search_action_right">
+                    <div class="" id='GU2_'>
+                    </div>
+                    <div class="" id='GU3_'>
+                    </div>
+                    <div class="" id='selTourNumber_'>
+                    </div>
+                    <div class="" id='selMinor_'>
+                    </div>
+					
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="상품명입력" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				
+				
+			</table>
+		</div>
+	</div>
+	</form>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="tourNumber">
+	<input type="hidden" name="uid">
+    <input type="hidden" name="daily_Cnt">
+    <input type="hidden" name="airseg_Cnt">
+    <input type="hidden" name="dayTypes" value="A">
+    <input type="hidden" name="DailyCnt">
+    <input type="hidden" name="minor_num">
+    <input type="hidden" name="minor">
+    <input type="hidden" name="minor_num2">
+    <input type="hidden" name="cMode">
+    <input type="hidden" name="cYear">
+    <input type="hidden" name="cMonth">
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+    
+    function calChange (g) {
+        frmSearch.cMode.value = g;
+        formSearch(event,'1');
+    }
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/Goods/Stocks_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            $("#listFrameSub").html(datas);
+            $("#GU2_").html(json.GU2);
+            $("#GU3_").html(json.GU3);
+            $("#selTourNumber_").html(json.selTourNumber);
+            $("#selMinor_").html(json.selMinor);
+            frmSearch.cYear.value = json.year;
+            frmSearch.cMonth.value = json.month;
+            parent.$("#topTitleData").html(`재고 관리`);
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+    
+    async function modifyCheck () {
+        json = await dataSaveSend ('frmDetail','/Goods/StocksSave');
+        success  = json.success;
+        errorMSg = json.errorMSg;
+        if (success === "ok"){
+            newAlert("저장완료");
+        } else {
+            newAlert("에러:"+errorMSg);
+        }
+    }
+    async function dailyCntChange (tourNumber) {
+        frmModify.tourNumber.value = tourNumber;
+        frmModify.mode.value       = 'segChange';
+        frmModify.daily_Cnt.value  = frmDetail.daily_Cnt.value;
+        frmModify.airseg_Cnt.value = frmDetail.airseg_Cnt.value;
+        json = await dataSaveSend ('frmModify','/Goods/StocksSave');
+        success  = json.success;
+        errorMSg = json.errorMSg;
+        if (success === "ok"){
+            newReg (tourNumber,'GoodsDay');
+        } else {
+            newAlert('에러:'+errorMSg);
+        }
+    }
+    
+//-->
+</script>
+
+<%- include('../footer_log') %>

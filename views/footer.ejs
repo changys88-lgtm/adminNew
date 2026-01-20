@@ -1,0 +1,43 @@
+
+
+
+</div>
+<div id="smallPopup"  style="display: none;">		
+    <div id="smallPopup_arti" >
+        <img src="/img/detail_img_closed_gray.png" id="closeBtn" class="wh20 hh20" onClick="smallPopHide ()">
+        <div ID="smallPopupData"></div>
+    </div>
+</div>
+
+<div id="smallPopupSec"  style="display: none;">
+    <div id="smallPopupSec_arti" >
+        <img src="/img/detail_img_closed_gray.png" id="closeBtn" class="wh20 hh20" onClick="smallPopSecHide ()">
+        <div ID="smallPopupSecData"></div>
+    </div>
+</div>
+
+<div id="smallPopupWhite"  style="display: none;">		
+    <div id="smallPopup_arti">
+        <div ID="smallPopupWhiteData"></div>
+    </div>
+</div>
+
+
+
+<style>
+	.alert_layer_wrap {width: 100%;height: 100%; margin: 0 auto;transform: translateX(-50%);left: 50%;background:rgba(0,0,0,0.5);position:fixed;top:0px;z-index:99999999;}
+	.alert_layer_wrap .alert {width: 360px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 40px 30px 40px; border: 1px solid #1c1c1c;}
+	.alert_layer_wrap .alert div {width: 100%; min-height: 100px; line-height: 18px; font-size: 15px; color:#1c1c1c; font-family: 'Pretendard-Regular';}
+	.alert_layer_wrap .alert button {width: 40%; background: #1c1c1c;font-family: 'Pretendard-Regular'; font-size: 16px; color:#fff; display:block; margin: 0 auto; border: 0; height: 50px; line-height: 50px;}
+</style>
+
+<div class="alert_layer_wrap type-confirm" style="display:none">
+    <div class="alert">
+        <div id="alert_layer_text" class="menu_msg"></div>
+        <div id="alertLayerAction" class=""></div>
+        
+    </div>
+</div>
+
+<div id="basePopUp" style="display:none"></div>
+

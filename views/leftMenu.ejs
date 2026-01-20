@@ -1,0 +1,38 @@
+<div class="app">
+ <aside class="sidebar" aria-label="좌측 메뉴">
+    <div class="brand cursor" onClick="menuChange('MAIN','/main/body','MAIN')">
+      <div class="brand-title">AviaNext</div>
+      <div class="brand-sub" >Admin Dashboard</div>
+    </div>
+    <nav class="nav" id="leftMenuArea">
+       
+    </nav>
+  </aside>
+
+<script>
+    window.addEventListener('DOMContentLoaded', async () => {
+        const data = "mode=aviaMenu";
+        const res  = await fetch('/menuGet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        });
+        const json  = await res.json();
+        const datas = json.leftMenu;
+        //console.log(datas);
+        $("#leftMenuArea").html(datas);
+    });
+    cMenu = "";
+	function menuShow (s) {
+		$('#menu'+cMenu).hide();        
+		if (cMenu != s) {
+			$('#menu'+s).show();
+			cMenu = s;
+		} else {
+			cMenu = "";
+		}
+	}
+
+</script>

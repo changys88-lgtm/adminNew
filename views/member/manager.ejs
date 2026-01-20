@@ -1,0 +1,139 @@
+<%- include('../header') %>
+
+<main class="content">
+
+
+	<form name="frmSearch" id="frmSearch"  method="post"  onsubmit="return formSearch(event,'1');">
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="interSearch">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<span onClick="newReg('','input')"  class="search_action_btn_primary">
+                        + 신규등록
+                    </span>
+				</div>
+				<div class="search_action_right">
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					<select name="sFrom" class="search_action_select"  >
+						<option value="username"		>한글이름
+                        <option value="eng_name"		>영문이름
+                        <option value="sale_manager"	>판매관리
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+	
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr>
+					<th>No</th>
+					<th>관리자코드</th>
+					<th>도장</th>
+					<th>한글이름</th>
+					<th>직급</th>
+					<th>영문이름</th>
+					<th>핸드폰</th>
+					<th>직통번호</th>
+					<th>이메일</th>
+					<th>소속그룹</th>
+					<th>판매관리</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="action_bar_split">
+
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">		
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+	</div>
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="uid">
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+	async function newReg (uid='',mode='input') {
+		frmModify.uid.value      = uid;
+		frmModify.mode.value     = 'Manager';
+		LoadingStart ();
+		json = await dataSaveSend ('frmModify','/member/managerSave');
+		title = json.title;
+		html  = json.html;
+		drawer.open(1000, { title, html  });
+		LoadingStop();
+	}
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event);
+	});
+
+    async function formSearch (e) {
+        if (e) e.preventDefault();
+        json = await dataSaveSend ('frmSearch','/member/manager');
+		success = json.success;
+		LoadingStart ();
+		if (success === "ok") {
+			const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`관리자 관리 (${json.totalCount})`);
+            frmSearch.titleData.value = `관리자 관리 (${json.totalCount})`;
+		} else {
+			newAlert(json.msg);
+		}
+		LoadingStop();
+        return false;
+	};
+
+	async function inputCheck() {
+		Obj = document.frmForm;
+		mode = Obj.mode.value;
+		if (Obj.member_code.value == "") {
+			alert("관리자코드를 입력하세요");
+		} else if (Obj.passwd.value == "" && mode == "input") {
+			alert("비밀번호를 입력하여 주세요");
+		} else {
+			json = await dataSaveSend ('frmForm','/member/managerSave');
+			success = json.success;
+			if (success === "ok") {
+				formSearch (event);
+				$("#drawerClose").click();
+			} else {
+				newAlert(json.errorMsg);
+			}
+		}
+		return false;
+	}
+	function passCheck (pass) {
+		g = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(pass);
+		if (g == false) {
+			alert("영문 + 숫자 + 특수기호 포함 8자 이상으로 변경하여 주세요!");
+			frmForm.passwd.value = "";
+		}
+	}
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

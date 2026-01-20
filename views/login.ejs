@@ -1,0 +1,103 @@
+<!-- 로그인 팝업 -->
+<div id="loginOverlay" class="login-overlay is-open">
+	<form class="" name=frmlogin method=post onSubmit="return loginCheck()" >
+	<input type="hidden" name="mode" value="check">
+	<div class="login-popup" id="loginPopup">
+  
+
+	</div>
+	</form>
+</div>
+<script>
+	window.addEventListener('DOMContentLoaded', async () => {
+        const data = "mode=Login";
+        const res  = await fetch('/menuGet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        });
+        const json  = await res.json();
+        const datas = json.loginData;
+        //console.log(datas);
+        $("#loginPopup").html(datas);
+	});
+	function loginCheck() {
+		Obj = document.frmlogin;
+		userid = Obj.userid.value;
+		passwd = Obj.passwd.value;
+		if (userid == "ID" || userid == "") {
+			alert('아이디를 입력하여 주세요~');
+		} else if (Obj.man_id && Obj.man_id.value == "") {
+			alert('담당자 아이디 (관리자 아이디)를 입력하여 주세요~');
+		} else if (passwd == "PASSWORD" || passwd == "") {
+			alert('패스워드를 입력하여 주세요~');
+		} else {
+			//Obj.action="login_check"
+			//Obj.target="HIDE_ACTION"
+			//Obj.submit();
+			(async () => {
+				const formData = new FormData(Obj);
+				const data = new URLSearchParams(formData);
+
+				const res = await fetch('/login_check', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					body: data
+				});
+      
+
+				const text = await res.text();
+				// document.write(text);  // 또는 성공 시 redirect 등 처리
+				//alert(text);
+				if (text != '"OK"') {
+					alert(text);
+				} else {
+					window.location.href = '/dashboard';
+				}
+      		})();
+		}
+		return false;
+	}
+	
+	function Shake () {
+		$("#RuleArea").show();
+		sFile = "../main/partner.html";
+		frames["HIDE_ACTION"].location.href = sFile;
+	}
+	
+	function ruleHidden () {
+		$("#RuleArea").hide();
+	}
+	
+	function partnerCheck () {
+		Obj = document.frmQna;
+		companyNumber = StrClear(Obj.companyNumber.value);
+		if (Obj.site_name.value == "") {
+			alert("업체명을 입력하여 주세요");
+		} else if (Obj.manager.value == "") {
+			alert("담당자를 입력하여 주세요");
+		} else if (Obj.tel_number.value == "") {
+			alert("연락처를 입력하여 주세요");
+		} else if (Obj.email.value == "") {
+			alert("이메일을 입력하여 주세요");
+		} else if (companyNumber.length != 10) {
+			alert("사업자등록번호를 10자리로 입력하여 주세요");
+		} else if (Obj.contents.value == "") {
+			alert("문의내용을 입력하여 주세요");
+		} else if (Obj.agree1.checked == false) {
+			alert("개인정보 제공에 동의해 주세요");
+		} else {
+			var Rc = confirm("문의 내용을 접수합니다.");
+			if (Rc) {
+				Obj.target = "HIDE_ACTION";
+				Obj.action = "../main/partner_save.php";
+				Obj.submit();
+			}
+		}
+	}
+
+</script>

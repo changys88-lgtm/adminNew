@@ -1,0 +1,139 @@
+<%- include('../header') %>
+
+<main class="content">
+    
+    <section class="dashboard-bottom rev_data" ID="BusinessArea" style="position:relative;top:20px;width:100%; float:left ">
+	</section>
+    
+</main>
+
+<form name="frmSearch" id="frmSearch">
+<input type="hidden" name="cMode"  value="">
+<input type="hidden" name="cYear"  value="">
+<input type="hidden" name="cMonth" value="">
+<input type="hidden" name="titleData" value="업무 일정 관리">
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+	async function newReg (uid='') {
+		json = await dataGetSend('Site',uid,'site/siteSave');
+		title = json.title;
+		html  = json.html;
+		drawer.open(1200, { title, html  });
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event);
+	});
+
+    function businessChange  (cMode) {
+        frmSearch.cMode.value = cMode;
+        formSearch(event);
+    }
+	async function busiDel () {
+		var Rc = confirm("삭제된 내역이 복구가 안됩니다, 삭제 하시겠습니까?");
+		if (Rc) {
+            frmForm.mode.value = 'Clear';
+			json = await dataSaveSend ('frmForm','/business/businessSave');
+            success = json.success;
+            if (success === "ok") {
+                frmSearch.cMode.value = '';
+                $("#drawerClose").click();
+                formSearch(event);
+            } else {
+                newAlert(json.errorMsg);
+            }
+		}
+		return false;
+	}
+    async function formSearch (e) {
+        if (e) e.preventDefault();
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/business/business_list');
+		success = json.success;
+		if (success === "ok") {
+			const datas  = json.listData;
+            const paging = json.pageData;
+            frmSearch.cYear.value  = json.cYear;
+            frmSearch.cMonth.value = json.cMonth;
+            $("#BusinessArea").html(datas);
+			parent.$("#topTitleData").html('업무 일정 관리');
+		} else {
+			newAlert('생성중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+	async function newBusiness (date='',uid='') {
+		json = await dataGetSend('Business',uid+'__'+date,'business/businessSave');
+        success = json.success;
+        errorMSg = json.errorMSg;
+		title = json.title;
+		html  = json.html;
+		if (success === "ok"){
+            drawer.open(800, { title, html  });
+        } else {
+            newAlert ("에러:"+errorMSg);
+        }            
+	}
+
+	async function inputCheck () {
+		Obj   = document.frmForm;
+		mode  = Obj.mode.value;
+		cycle = Obj.cycle.value;
+		if (Obj.subject.value == "") {
+			alert("제목을 입력하세요");
+		} else if (Obj.start_date.value == "" && cycle == "") {
+			alert("시작날짜를 입력하여 주세요");
+		} else if (Obj.start_time.value == "" && cycle == "") {
+			alert("시작시간을 입력하여 주세요");
+		} else if (Obj.end_date.value == "" && cycle == "") {
+			alert("종료날짜를 입력하여 주세요");
+		} else if (Obj.end_time.value == "" && cycle == "") {
+			alert("종료시간을 입력하여 주세요");
+		} else {
+			json = await dataSaveSend ('frmForm','/business/businessSave');
+			success = json.success;
+			if (success === "ok") {
+                frmSearch.cMode.value = '';
+				formSearch (event);
+				$("#drawerClose").click();
+			} else {
+				//newAlert(json.errorMsg);
+			}
+		}
+		return false;
+	}
+
+	function cycleChange () {
+		Obj = document.frmForm;
+		cycle = Obj.cycle.value;
+		if (cycle == "") {
+			$("#cycleNone").removeClass("none");
+			$("#cycleStart").addClass("none");
+		} else {
+			$("#cycleNone").addClass("none");
+			$("#cycleStart").removeClass("none");
+
+			$("#cycleMonth").removeClass("none");
+			$("#cycleDay").removeClass("none");
+			$("#cycleWeekOrder").removeClass("none");
+			if (cycle == "Y") {
+				//$("#cycleMonth").addClass("none");
+			} else if (cycle == "M") {
+				$("#cycleMonth").addClass("none");
+			} else if (cycle == "W") {
+				$("#cycleMonth").addClass("none");
+				$("#cycleDay").addClass("none");
+				$("#cycleWeekOrder").addClass("none");
+			}
+
+		}
+	}
+//-->
+</script>
+
+<%- include('../footer_log') %>

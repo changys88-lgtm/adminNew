@@ -1,0 +1,125 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	
+
+	<form name="frmSearch" id="frmSearch" enctype="multipart/form-data" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+    <input type="hidden" name="GU4"       value="Inter">
+    <input type="hidden" name="GU5"       value="DAY">
+	<input type="hidden" name="titleData" value="">
+		<div id="searchFrame" >
+			<div class="search_action_bar">
+				
+				<div class="search_action_left">
+					<span class="unit" id="GU4_Inter" onClick="modeChange('GU4','Inter')">국제선</span>
+					<span style="margin:0 10px 0 10px;" class="unit" id="GU4_Dome"  onClick="modeChange('GU4','Dome')">국내선</span>
+				</div>
+				
+				<div class="search_action_right">
+					<select  name="GU1" class="search_action_select"  onchange=" formSearch (event,'1'); ">
+						<option value="ISSUE">발권일</option>
+						<option value="DEP">출발일</option>
+						<option value="ORDER">신청일</option>
+					</select>
+
+					<span id="cYearData">
+					<select  name="cYear" class="search_action_select">
+						<% 
+						var currentYear = new Date().getFullYear();
+						for (var year = 2020; year <= currentYear; year++) {
+							const s = year === currentYear ? 'selected' : '';
+						%>
+						<option value="<%= year %>" <%= s %>><%= year %>년</option>
+						<% } %>
+					</select>
+					</span>
+
+					<span id="cMonthData">
+						<select  name="cMonth"class="search_action_select">
+						<%
+						var currentMonth = new Date().getMonth()+1;
+						for (var month = 1; month <= 12; month++) {
+							const s = month === currentMonth ? 'selected' : '';
+						%>
+						<option value="<%= month %>" <%= s %>><%= month %>월</option>
+						<% } %>
+						</select>
+					</span>
+					
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" >
+			<table class='search-table'  id='dtBasic'>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div style="clear:both;" ID="bottomFrame">
+
+		<div class="whp33 fl">
+			&nbsp;
+			
+		</div>
+		<div class="whp33 fl ac" ID="pagingHTML">
+		</div>
+		<div class="row float-right mr-0 fr">			
+			<button class="btn_basic btn-gray "     href="javascript://" onClick="return excelDown()" >엑셀다운</button>
+		</div>
+		
+	</div>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="AccountCode">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+	async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/stats/air_calendar');
+		const success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+            parent.$("#topTitleData").html(`항공권 예약현황 (${json.totalCount})`);
+            frmSearch.titleData.value = `항공권 예약현황 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+//-->
+
+</script>
+
+<%- include('../footer_log') %>

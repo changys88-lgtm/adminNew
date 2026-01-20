@@ -1,0 +1,147 @@
+<%- include('../header') %>
+<script type="text/javascript" src="/SmartEditor/js/HuskyEZCreator.js" ></script>
+<main class="content">
+	
+	<form name="frmSearch" id="frmSearch" enctype="multipart/form-data" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+		<div class="search_action_bar">
+			<div class="row">
+				<div class="search_action_left">
+					<span class="search_action_btn_primary" onClick="newReg('','input')">
+						+ 신규등록
+					</span>
+				</div>
+				<div class="search_action_right">
+					<input name="listCount" class="search_action_search_input wh40" value="20">
+					<span class="unit">줄수</span>
+					<select name="sFrom" class="search_action_select"  >
+						<option value="airCode"			 >항공사</option>
+						<option value="departure_city"	 >출발지역</option>
+						<option value="arrive_city"		 >도착지역</option>
+						<option value="site_code"		 >거래처코드</option>
+					</select>
+					<input name="sWord" class="search_action_search_input" placeholder="검색">
+						<button class="search_action_icon_btn" type="submit" aria-label="검색" >🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr >
+                    <th >No</th>
+					<th >항공</th>
+					<th >등록업체</th>
+					<th >출발</th>
+					<th >도착</th>
+					<th >판매기간</th>
+					<th >출발기간</th>
+					<th >클래스</th>
+					<th >금액</th>
+					<th >거래처</th>
+					<th >사용</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+
+	<div class="action_bar_split">
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>	
+	</div>
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="uid">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" class="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    async function newReg (uid='',mode='input') {
+        frmModify.uid.value      = uid;
+        frmModify.mode.value     = mode;
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/air/priceSave');
+		title   = json.title;
+		html    = json.html;
+        name    = json.name;
+		drawer.open(1000, { title, html  });
+        LoadingStop();
+        
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/air/price_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`지역별 요금 관리 (${json.totalCount})`);
+            frmSearch.titleData.value = `지역별 요금 관리 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+	
+    var oEditors = [];
+	
+    async function inputCheck () {
+        Obj = document.frmDetail;
+		if(Obj.airCode.value == ""){
+			alert("항공사를 입력해 주세요");
+		} else {
+            json = await dataSaveSend ('frmDetail','/air/priceSave');
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            uid      = json.uid;
+            if (success === "ok") {
+                formSearch(event,frmSearch.page.value);
+                drawer.close();
+            } else {
+                newAlert('에러:'+errorMsg);
+            }
+		}
+		return false;
+	}
+
+
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

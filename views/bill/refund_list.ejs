@@ -1,0 +1,149 @@
+<%- include('../header') %>
+<main class="content">
+
+	
+
+	<form name="frmSearch" id="frmSearch" enctype="multipart/form-data" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					
+				</div>
+				<div class="search_action_right">
+					<input class='custom-control-input' type='checkbox' name='cancel' id='cancel' value='Y'  >
+					<span class="unit">취소포함</span>
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					
+					<input type="date" class="date" name="start_date" />
+					<span class="tilde">~</span>
+					<input type="date" class="date" name="end_date" />
+					<select name="iMode" class="search_action_select">
+						<option value="A"		>입지결
+						<option value="1"		>입금전표
+						<option value="2"		>지결전표
+						<option value="X"		>환불미처리
+					</select>
+					<select name="sFrom" class="search_action_select">
+						<option value="ticket_num"		>주문번호
+						<option value="siteName"		>거래처
+						<option value="total_amount"	>금액(합계)
+						<option value="finish_date"		>송금날자
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div ID="listFrame" >
+		<div ID="listFrameSub" >
+			<table class='search-table' id='dtBasic'>
+				<tr >
+                    <th >전표번호</th>
+					<th >작성일</th>
+					<th >구분</th>
+					<th >상세 내용</th>
+					<th >거래처</th>
+					<th >결의서내용</th>
+					<th >금액</th>
+					<th >작성자</th>
+					<th >처리일</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</form>
+	<div  ID="bottomFrame">
+
+		<div class="action_area_left">
+			&nbsp;
+			
+		</div>
+		<div class="action_area_center" ID="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+		
+	</div>
+
+</div>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="AccountCode">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    async function newReg (AccountCode='',mode='input') {
+        frmModify.AccountCode.value = AccountCode;
+        frmModify.mode.value        = mode;
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/bill/refundSave');
+		title = json.title;
+		html  = json.html;
+        name  = json.name;
+		drawer.open(800, { title, html  });
+        LoadingStop();
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+	async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/bill/refund_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`상품 환불대장 (${json.totalCount})`);
+			frmSearch.titleData.value = `상품 환불대장 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+    async function inputCheck () {
+        Obj = document.frmDetail;
+		if(Obj.AccountCode.value == ""){
+			alert("계정코드를 입력해 주세요");
+		} else {
+            json = await dataSaveSend ('frmDetail','/bill/refundSave');
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            uid      = json.uid;
+            if (success === "ok") {
+                formSearch(event,frmSearch.page.value);
+                drawer.close();
+            } else {
+                newAlert('에러:'+errorMsg);
+            }
+		}
+		return false;
+	}
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

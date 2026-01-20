@@ -1,0 +1,11 @@
+{
+    "watch": ["src", "public", "lib","handlers"],
+    "ext": "js, json, html, css, scss, ejs",
+    "ignore": ["node_modules", "logs", "*.test.js", "*.log"],
+    "delay": "1000",
+    "exec": "node ./server.js",
+    "env": {
+      "NODE_ENV": "development",
+      "PORT": 3001
+    }
+}

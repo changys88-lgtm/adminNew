@@ -1,0 +1,456 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<form name="frmSearch" id="frmSearch" method="post" onsubmit="return formSearch(event);">
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="List">
+	<input type="hidden" name="page"      value="1">
+    <input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<span onClick="newReg('','input')"  class="search_action_btn_primary">
+                        + 신규등록
+                    </span>
+				</div>
+				<div class="search_action_right">
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+                    <div class="" id='GU2_'>
+                    </div>
+                    <div class=" none" id='GU3_'>
+                    </div>
+                    <div class=" " id='ca1_'>
+                    </div>
+                    <div class=" " id='ca2_'>
+                    </div>
+                    <div class=" " id='ca3_'>
+                    </div>
+                    <div class=" " id='ca4_'>
+                    </div>
+                    <div class=" " id='GU4_'>
+                    </div>
+					<select name="sFrom" class="search_action_select">
+						<option value="tourName" selected="">상품명</option>
+                        <option value="tourNumber">상품코드</option>
+                        <option value="a.proChannel">채널</option>
+                        <option value="exposureCheck">노출여부</option>
+                        <option value="c.site_name">거래처명</option>
+                        <option value="a.site_code">거래처코드</option>
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr >
+                    <th>No</th>
+					<th>상태</th>
+					<th>미리보기&nbsp;<i class="fa fa-search"></i></th>
+					<th>상품코드</th>
+					<th>카테고리</th>
+					<th>도시</th>
+					<th>상품명</th>
+					<th>상품타입 수	</th>
+					<th>등록일</th>
+					<th>카드</th>
+					<th>판매담당자 &nbsp;<i class="fas fa-user"></i></th>
+					<th>노출순서</th>
+					<th>노출</th>
+					<th>추천</th>
+					<th>채널</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+		
+	</div>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="tourNumber">
+	<input type="hidden" name="uid">
+    <input type="hidden" name="daily_Cnt">
+    <input type="hidden" name="airseg_Cnt">
+    <input type="hidden" name="dayTypes" value="A">
+    <input type="hidden" name="DailyCnt">
+    <input type="hidden" name="minor_num">
+    <input type="hidden" name="minor">
+    <input type="hidden" name="minor_num2">
+    <input type="hidden" name="cMode">
+    <input type="hidden" name="cYear">
+    <input type="hidden" name="cMonth">
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCindMjIQCYh92KIUYwK7e8Gp-IS7HSWm4&callback=mapView&region=kr"></script>
+<script type="text/javascript">
+<!--
+	async function newReg (tourNumber='',gubun='Goods') {
+        if (gubun)      frmModify.mode.value = gubun;
+        if (tourNumber) frmModify.tourNumber.value = tourNumber;
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/Goods/goodsSave');
+		title = json.title;
+		html  = json.html;
+        lat   = Number(json.la);
+        lon   = Number(json.lo);
+        name  = json.name;
+		drawer.open(1500, { title, html  });
+        if (gubun === "Goods" && lat && lon) {
+            setTimeout(() => mapView(lat,lon,'map_canvas_trip',name),2000);
+        } else if (gubun === "GoodsStock") {
+            frmModify.cYear.value  = json.year;
+            frmModify.cMonth.value = json.month;
+        }
+        LoadingStop();
+        frmModify.cMode.value = '';
+	}
+	function mapView(la,lo,maps,introduce) {
+        if (la && lo) {
+            const center = { lat: la, lng: lo };
+            const map = new google.maps.Map(document.getElementById("map_canvas_trip"), {
+                zoom: 15,
+                center: center,
+            });
+
+            new google.maps.Marker({
+                position: center,
+                map: map,
+                label: introduce
+            });
+        }
+	}
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+    
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/Goods/goods_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`상품관리 (${json.totalCount})`);
+            frmSearch.titleData.value = `상품관리 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        pullSelect();
+        return false;
+	};
+    
+	async function pullSelect () {
+        frmSearch.mode.value = 'pullSel';
+		//json = await dataGetSend('pullSel','','Goods/goodsSave');
+        json = await dataSaveSend ('frmSearch','/Goods/goodsSave');
+        success  = json.success;
+        errorMSg = json.errorMSg;
+        if (success === "ok"){
+            $("#GU2_").html(json.GU2);
+            $("#GU4_").html(json.GU4);
+            $("#ca1_").html(json.ca1);
+            $("#ca2_").html(json.ca2);
+            $("#ca3_").html(json.ca3);
+            $("#ca4_").html(json.ca4);
+        } else {
+            newAlert("에러:"+errorMSg);
+        }
+	}
+
+    async function modifyCheck () {
+        json = await dataSaveSend ('frmDetail','/Goods/goodsSave');
+        success  = json.success;
+        errorMSg = json.errorMSg;
+        if (success === "ok"){
+            newAlert("저장완료");
+        } else {
+            newAlert("에러:"+errorMSg);
+        }
+    }
+    async function dailyCntChange (tourNumber) {
+        frmModify.tourNumber.value = tourNumber;
+        frmModify.mode.value       = 'segChange';
+        frmModify.daily_Cnt.value  = frmDetail.daily_Cnt.value;
+        frmModify.airseg_Cnt.value = frmDetail.airseg_Cnt.value;
+        json = await dataSaveSend ('frmModify','/Goods/goodsSave');
+        success  = json.success;
+        errorMSg = json.errorMSg;
+        if (success === "ok"){
+            newReg (tourNumber,'GoodsDay');
+        } else {
+            newAlert('에러:'+errorMSg);
+        }
+    }
+    async function inputCheck () {
+		Obj = document.frmDetail;
+
+		if (Obj.tourName.value == "") {
+			alert("상품명을 입력하세요!");
+		} else if (Obj.tourName.value == "") {
+			alert("상품구분을 선택하세요!");
+		} else {
+			var Rc = confirm("수정하시겠습니까?");
+			if (Rc) {
+				json = await dataSaveSend ('frmDetail','/Goods/goodsSave');
+                success  = json.success;
+                errorMSg = json.errorMSg;
+                if (success === "ok"){
+                    newAlert("저장완료");
+                } else {
+                    newAlert("에러:"+errorMSg);
+                }
+			}
+		}
+		return false;
+	}
+    async function imgDel_new (tourNumber,uid) {
+		var Rc = confirm("선택하신 이미지를 삭제 합니다..");
+		if (Rc) {
+            frmModify.tourNumber.value = tourNumber;
+            frmModify.uid.value        = uid;
+            frmModify.mode.value       = 'imgDel';
+            json = await dataSaveSend ('frmModify','/Goods/goodsSave');
+            success  = json.success;
+            errorMSg = json.errorMSg;
+		}
+		return false;
+	}
+    async function googlePick (tourNumber) {
+		json = await dataGetSend('googleMapPick' , tourNumber ,file='dataGet');
+        success  = json.success;
+        errorMSg = json.errorMSg;
+        lat      = json.lat;
+        lon      = json.lon;
+        if (success === 'ok') {
+            frmDetail.latitude.value  = lat;
+            frmDetail.longitude.value = lon;
+        } else {
+            newAlert('에러:'+errorMSg);
+        }
+	}
+
+    function dailyShow (cnt) {
+		$(".Tabitem").removeClass('on');
+		$("#dailyBox_"+cnt).addClass('on');
+		$(".DailyData").hide();
+		$(".DailyData_"+cnt).show();
+		frmModify.DailyCnt.value = cnt;
+	}
+	function typeChange (tourNumber,type) {
+		frmModify.dayTypes.value = type;
+		newReg (tourNumber,'GoodsDay');
+	}
+    function dailyReset (tourNumber) {
+		var Rc = confirm("초기화 하면 입력된 데이터복구는 되지 않습니다.");
+		if (Rc) {
+			sFile = "../Goods/data_change.php?mode=dailyReset&tourNumber="+tourNumber;
+			frames["HIDE_ACTION"].location.href = sFile;
+		}
+	}
+    async function typeAdd () {
+		var Rc = confirm("일정표를 신규 추가 합니다. 추가시 'A' style 일정을 복사 합니다.");
+		if (Rc) {
+            frmModify.mode.value       = 'AddStyle';
+            json = await dataSaveSend ('frmModify','/Goods/goodsSave');
+            success  = json.success;
+            errorMSg = json.errorMSg;
+            if (success === "ok") {
+                newReg ('','GoodsDay');
+            } else {
+                newAlert('에러:'+errorMSg);
+            }
+		}
+	}
+	function addClick (ik,ix) {
+		document.getElementById("DailyAdd"+ik+"_"+ix).innerHTML = "";
+		ik = Number(ik) + 1;
+		sub = `
+			<div class='cell'>
+				<ul style='width:100%;height:100%; border:0px solid;display:flex'>
+					<li style='width:25%' class='  ' ><input    name='daily${ix}_title[]'   type='text' maxlength='50'  class='form-control form-control-sm mt-2 hh50' value=''></li>
+					<li style='width:50%' class='  ' ><textarea name='daily${ix}_content[]' type='text' maxlength='500' onfocus="lineCheck(this)" onkeyup="lineCheck(this)" class='form-control form-control-sm mt-2 ' value=''></textarea></li>
+					<li style='width:20%' class=' ' >
+						<ul class='upload-file'>
+							<li class=' cursor' id='reviewImg${ik}_${ix}_1' onclick= "picCheck('${ik}','${ix}','1','')"></li>
+							<li class=' cursor' id='reviewImg${ik}_${ix}_2' onclick= "picCheck('${ik}','${ix}','2','')"></li>
+							<li class=' cursor' id='reviewImg${ik}_${ix}_3' onclick= "picCheck('${ik}','${ix}','3','')"></li>
+							<li class=' cursor' id='reviewImg${ik}_${ix}_4' onclick= "picCheck('${ik}','${ix}','4','')"></li>
+						</ul>
+						<input type='file' name='DailyDataImg${ik}_${ix}_1' class='none' accept='image/*' value='' ID='DailyDataImg${ik}_${ix}_1' onchange="setThumbnail(event,'${ik}','${ix}','1');">
+						<input type='file' name='DailyDataImg${ik}_${ix}_2' class='none' accept='image/*' value='' ID='DailyDataImg${ik}_${ix}_2' onchange="setThumbnail(event,'${ik}','${ix}','2');">
+						<input type='file' name='DailyDataImg${ik}_${ix}_3' class='none' accept='image/*' value='' ID='DailyDataImg${ik}_${ix}_3' onchange="setThumbnail(event,'${ik}','${ix}','3');">
+						<input type='file' name='DailyDataImg${ik}_${ix}_4' class='none' accept='image/*' value='' ID='DailyDataImg${ik}_${ix}_4' onchange="setThumbnail(event,'${ik}','${ix}','4');">
+						<span id='DailyDataImg${ik}_${ix}'></span>
+					</li>
+					<li style='width:5%'  class='  cursor' id='DailyAdd${ik}_${ix}'><span class='btn_slim btn_yellow' onClick="addClick('${ik}','${ix}')">추가</span></li>
+				</ul>
+			</div>
+		`;
+		document.getElementById("DailyDataDetail_"+ix).insertAdjacentHTML('beforeend',sub);
+	}
+	async function delClick (ik,ix) {
+		var Rc = confirm("선택하신 라인을 삭제 합니다. \복구는 되지 않습니다.");
+		if (Rc) {
+			frmModify.mode.value       = 'lineDel';
+            frmModify.minor_num2.value = ik;
+            frmModify.minor_num.value  = ix;
+            json = await dataSaveSend ('frmModify','/Goods/goodsSave');
+            success  = json.success;
+            errorMSg = json.errorMSg;
+            if (success === "ok") {
+                newReg ('','GoodsDay');
+            } else {
+                newAlert('에러:'+errorMSg);
+            }
+		}
+		return false;
+	}
+    async function minorChange (minor) {
+        frmModify.minor.value = minor;
+        mode = frmDetail.orgMode.value;
+        newReg ('',mode);
+    }
+
+    async function optionCheck(mode) {
+		Obj = document.frmDetail;
+		Obj.mode.value = mode;
+		if (Obj.roomType.value == "") {
+			alert("옵션타입을 입력하세요!");
+		} else {
+            json = await dataSaveSend ('frmDetail','/Goods/goodsSave');
+            success  = json.success;
+            errorMSg = json.errorMSg;
+            if (success === "ok") {
+                newReg ('','GoodsOpt');
+            } else {
+                newAlert('에러:'+errorMSg);
+            }
+		}
+
+	}
+    async function newStock () {
+        Obj = document.frmDetail;
+        newStockName = Obj.newStockName.value;
+        if (!newStockName) {
+            alert("재고명칭을 입력 하세요");
+        } else {
+            var Rc = confirm(newStockName + " 재고명을 생성 합니다.");
+            if (Rc) {
+                Obj.mode.value = "newStockSave";
+                json = await dataSaveSend ('frmDetail','/Goods/goodsSave');
+                success  = json.success;
+                errorMSg = json.errorMSg;
+                minor    = json.minor;
+                if (success === "ok") {
+                    frmModify.minor.value = minor;
+                    newReg ('','GoodsStock');
+                } else {
+                    newAlert('에러:'+errorMSg);
+                }
+            }
+        }
+    }
+
+    function calChange (g) {
+        frmModify.cMode.value = g;
+        mode = frmModify.mode.value ;
+        newReg ('',mode);
+    }
+    function weekCheckCount() {
+        const WEEK_CHECKS = document.querySelectorAll('.WeekCheck');
+        const checkedCount = [...WEEK_CHECKS].filter(chk => chk.checked).length;
+        return checkedCount;
+    }
+    function weekCheck() {
+        const checkedCount = weekCheckCount ();
+        document.getElementById('week_A').checked = (checkedCount === 7);
+    }
+
+    function weekCheckAll() {
+        const WEEK_CHECKS = document.querySelectorAll('.WeekCheck');
+        const check = document.getElementById('week_A').checked || '';
+        WEEK_CHECKS.forEach(chk => chk.checked = check);
+    }
+    function stockConfirm () {
+        const checkedCount = weekCheckCount ();
+        stock = frmDetail.stock.value;
+        if (checkedCount === 0) {
+            alert("적용할 요일을 선택하세요!");
+        } else if (!stock) {
+            alert("적용할 재고를 입력하세요!");
+        } else {
+            document.querySelectorAll('.WeekCheck').forEach(box => {
+                if (box.checked) {
+                    $(`.week_${box.value}`).val(stock);
+                }
+            });
+        }
+    }
+    async function stockSave () {
+        Obj = document.frmDetail;
+        var Rc = confirm(" 현재의 재고를 저장합니다.");
+        if (Rc) {
+            Obj.mode.value = "stockSave";
+            json = await dataSaveSend ('frmDetail','/Goods/goodsSave');
+            success  = json.success;
+            errorMSg = json.errorMSg;
+            if (success === "ok") {
+                newReg ('','GoodsStock');
+            } else {
+                newAlert('에러:'+errorMSg);
+            }
+        }
+    }
+    function bTest () {
+        drawerBottom.open('80vh', { title: '바텀', html: '<p>내용</p>' });
+    }
+
+//-->
+</script>
+<style>
+.preview { margin-bottom:4px; padding: 0 20px; border-radius: 20px; color:#fff}
+.cell_tit {width:100%; display:flex; background: #eeeeee;}
+.cell_tit div { border-right: 1px solid #dee2e6; color:#222; line-height: 40px; text-align: center; font-weight: 600;}
+.cell_tit div:last-child { border-right: 0;}
+.cell ul {display:flex; align-items: center; border-bottom: 1px solid rgb(0 0 0 / 10%);margin-bottom: 0;}
+.cell ul li {padding: 6px;}
+.cell ul li textarea {height: 100%; min-height:100px;}
+.cell ul li .upload-file {width: 100%; overflow: hidden; display: flex; justify-content: center; border: 0; background: transparent;padding: 0;margin: 0; }
+.cell ul li .upload-file li {align-items: center; width: 50px;height: 50px; background-image: url(../images/x-1.png); margin-right: 10px; overflow:hidden; padding: 0;}
+.cell ul li .upload-file li img{ width:100%; height: 100%;}
+.cell ul li .btn_yellow {color: #ffffff !important;text-align: center;width: 100% !important;font-size: 11px;border-radius: 20px;margin-top: 3px; cursor: pointer;}
+
+</style>
+<%- include('../footer_log') %>

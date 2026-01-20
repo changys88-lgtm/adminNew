@@ -1,0 +1,133 @@
+<%- include('../header') %>
+
+<main class="content">
+
+
+	<form name="frmSearch" id="frmSearch" method="post" onsubmit="return formSearch(event);">
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+    <input type="hidden" name="GU4"       value="Inter">
+    <input type="hidden" name="GU5"       value="DAY">
+	<input type="hidden" name="titleData" value="항공권 매출 통계">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<span class="btn_basic btn_gray btn_yellow GU4" id="GU4_Inter" onClick="modeChange('GU4','Inter')">국제선</span>
+					<span class="btn_basic btn_gray            GU4" id="GU4_Dome"  onClick="modeChange('GU4','Dome')">국내선</span>
+				</div>
+				<div class="search_action_right">
+					<div class="">
+						<span class="btn_basic btn_gray btn_yellow GU5" id="GU5_DAY"   onClick="modeChange('GU5','DAY')">일별</span>
+						<span class="btn_basic btn_gray            GU5"   id="GU5_MONTH" onClick="modeChange('GU5','MONTH')">월별</span>
+					</div>
+					<select name="GU1" class="search_action_select">
+						<option value="ISSUE">발권일</option>
+						<option value="DEP">출발일</option>
+						<option value="ORDER">신청일</option>
+					</select>
+					<div class="d-inline mr-2" id="cYearData">
+						<select name="cYear"  class="d-inline form-control form-control-sm">
+							<% 
+							var currentYear = new Date().getFullYear();
+							for (var year = 2020; year <= currentYear; year++) {
+								const s = year === currentYear ? 'selected' : '';
+							%>
+							<option value="<%= year %>" <%= s %>><%= year %>년</option>
+							<% } %>
+						</select>
+					</div>
+					<div class="d-inline mr-2" id="cMonthData">
+						<select name="cMonth"  class="d-inline form-control form-control-sm">
+							<%
+							var currentMonth = new Date().getMonth()+1;
+							for (var month = 1; month <= 12; month++) {
+								const s = month === currentMonth ? 'selected' : '';
+							%>
+							<option value="<%= month %>" <%= s %>><%= month %>월</option>
+							<% } %>
+						</select>
+					</div>
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr style="background-color:#eee;">
+                    <tr style="background-color:#eee;">
+                        <th class="wh200">구분</th>
+                        <th class="wh200">예약건</th>
+                        <th class="wh200">인원</th>
+                        <th>총금액</th>
+                        <th>항공운임</th>
+                        <th>택스</th>
+                    </tr>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+	</div>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="AccountCode">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+	async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/stats/total_list');
+		const success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+            //$("#cYearData").html(json.cYearData);
+            //$("#cMonthData").html(json.cMonthData);
+            parent.$("#topTitleData").html(`항공권 매출 통계 (${json.totalCount})`);
+            frmSearch.titleData.value = `항공권 매출 통계 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+//-->
+
+</script>
+
+<%- include('../footer_log') %>

@@ -1,0 +1,339 @@
+<style>
+	:root{
+	  --drawer-width: 480px;
+	  --drawer-duration: 0.4s; /* ≈1초 */
+	  --drawer-ease: cubic-bezier(.22,.61,.36,1); /* 자연스러운 ease-out */
+	}
+  
+	/* 푸시될 메인 캔버스 */
+	.canvas{
+	  transition: transform var(--drawer-duration) var(--drawer-ease);
+	  will-change: transform;
+	}
+	/* 드로어 열릴 때 메인 캔버스를 왼쪽으로 밀기 */
+	body.push .canvas{
+	  transform: translateX(calc(-1 * var(--drawer-width)));
+	}
+  
+	/* 드로어 뼈대: display는 항상 block → visibility/pointer-events로 제어 */
+	.drawer{
+	  position: fixed; inset: 0; z-index: 9999; display: block;
+	  visibility: hidden; pointer-events: none;
+	}
+	.drawer[data-state="opening"],
+	.drawer[data-state="open"]{
+	  visibility: visible; pointer-events: auto;
+	}
+  
+	.backdrop{
+	  position: absolute; inset: 0;
+	  background: rgba(0,0,0,.32);
+	  opacity: 0;
+	  transition: opacity var(--drawer-duration) linear;
+	}
+	.drawer[data-state="opening"] .backdrop,
+	.drawer[data-state="open"] .backdrop{
+	  opacity: 1;
+	}
+  
+	/* 패널: 너비 트랜지션으로 “우→좌로 펼쳐지는” 느낌 + 우측 고정 */
+	.panel{
+	  position: absolute; top: 0; right: 0;
+	  height: 100%; width: 0; max-width: 100vw;
+	  background: #fff; overflow: hidden;
+	  box-shadow: -8px 0 24px rgba(0,0,0,.12);
+	  display: flex; flex-direction: column;
+	  transition: width var(--drawer-duration) var(--drawer-ease);
+	  will-change: width;
+	}
+	.drawer[data-state="opening"] .panel,
+	.drawer[data-state="open"] .panel{
+	  width: var(--drawer-width);
+	}
+  
+	.panel-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eee; }
+	.panel-title {width:100%;}
+	.panel-body{ padding:16px; overflow:auto; height:100%; /*opacity:0;*/ transition: opacity calc(var(--drawer-duration)*0.6) ease .15s; }
+	.drawer[data-state="open"] .panel-body{ opacity:1; }
+  
+	.panelclose{ border:0; background:transparent; font-size:24px; line-height:1; cursor:pointer; }
+	body.noscroll{ overflow: hidden; }
+  
+	@media (prefers-reduced-motion: reduce){
+	  .canvas, .panel, .backdrop, .panel-body{ transition: none !important; }
+	}
+
+
+	/* === Bottom Sheet 추가 === */
+	:root{
+		--sheet-height: 60vh;           /* 바텀 패널 높이 */
+		--sheet-duration: var(--drawer-duration);
+		--sheet-ease: var(--drawer-ease);
+	}
+
+	/* 바텀 드로어 컨테이너 */
+	.drawer-bottom{
+		position: fixed; inset: 0; z-index: 10005; display: block;
+		visibility: hidden; pointer-events: none;
+	}
+	.drawer-bottom[data-state="opening"],
+	.drawer-bottom[data-state="open"]{
+		visibility: visible; pointer-events: auto;
+	}
+
+	/* 바텀 백드롭 */
+	.drawer-bottom .backdrop{
+		position: absolute; inset: 0;
+		background: rgba(0,0,0,.32);
+		opacity: 0;
+		transition: opacity var(--sheet-duration) linear;
+	}
+	.drawer-bottom[data-state="opening"] .backdrop,
+	.drawer-bottom[data-state="open"] .backdrop{
+		opacity: 1;
+	}
+
+	/* 바텀 패널: 아래에서 위로 높이(Height)로 열림 */
+	.drawer-bottom .sheet{
+		position: absolute; left: 0; right: 0; bottom: 0;
+		height: 0; width: 50%; max-height: 100vh;
+		margin: 0 auto;
+		background: #fff; overflow: hidden;
+		border-top-left-radius: 14px; border-top-right-radius: 14px;
+		box-shadow: 0 -8px 24px rgba(0,0,0,.12);
+		display: flex; flex-direction: column;
+		transition: height var(--sheet-duration) var(--sheet-ease);
+		will-change: height;
+	}
+	.drawer-bottom[data-state="opening"] .sheet,
+	.drawer-bottom[data-state="open"] .sheet{
+		height: var(--sheet-height);
+	}
+
+	.sheet-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eee; }
+	.sheet-body{ padding:16px; overflow:auto; height:100%; transition: opacity calc(var(--sheet-duration)*0.6) ease .15s; }
+	.drawer-bottom[data-state="open"] .sheet-body{ opacity:1; }
+	.sheetclose{ border:0; background:transparent; font-size:24px; line-height:1; cursor:pointer; }
+
+	/* 모션 축소 환경 */
+	@media (prefers-reduced-motion: reduce){
+		.drawer-bottom .sheet,
+		.drawer-bottom .backdrop,
+		.sheet-body{ transition:none !important; }
+	}
+
+
+</style>
+
+<div id="drawer" class="drawer" data-state="closed" aria-hidden="true" role="dialog" aria-modal="true">
+	<div class="backdrop" id="drawerBackdrop"></div> <!-- 배경 클릭해도 닫히지 않도록 data-close 제거 -->
+	<aside class="panel" tabindex="-1">
+	  <header class="panel-head">
+		<h2 class="panel-title" id="panelTitle">
+			<!-- 패널 제목 -->
+		</h2>
+		<button class="btn-close-avianext" id="drawerClose" aria-label="닫기">&times;</button>
+	  </header>
+	  <div class="panel-body" id="panelData">
+		<!-- 콘텐츠를 여기에 넣으세요. -->
+	  </div>
+	</aside>
+</div>
+<div id="drawerBottom" class="drawer-bottom" data-state="closed" aria-hidden="true" role="dialog" aria-modal="true">
+	<div class="backdrop"></div> <!-- 배경 클릭 닫힘 막으려면 data-close 안 씀 -->
+	<aside class="sheet" tabindex="-1">
+	  <header class="sheet-head">
+		<h2 class="sheet-title" id="sheetTitle"><!-- 바텀 제목 --></h2>
+		<button class="sheetclose" id="sheetClose" aria-label="닫기">&times;</button>
+	  </header>
+	  <div class="sheet-body" id="sheetData">
+		<!-- 바텀 콘텐츠 -->
+		bottom
+	  </div>
+	</aside>
+  </div>
+<script>
+	const drawer = (() => {
+	  const root      = document.getElementById('drawer');
+	  const panel     = root.querySelector('.panel');
+	  const closeBtn  = root.querySelector('#drawerClose');
+	  const canvas    = document.querySelector('.canvas'); // 배경 래퍼
+	  const backdrop  = document.getElementById('drawerBackdrop');
+	  let lastFocused = null;
+  
+	  function setWidth(width){
+		const v = (typeof width === 'number') ? `${width}px` : String(width);
+		root.style.setProperty('--drawer-width', v);
+	  }
+  
+	  function open(width = 480, { title, html, onOpen } = {}){
+		setWidth(width);
+		setTimeout(changeCheckStart,1000);
+        if (title != null) root.querySelector('.panel-title').innerHTML = title;
+		if (html  != null) root.querySelector('.panel-body').innerHTML = html;
+  
+		lastFocused = document.activeElement;
+		// ✅ AT에 보이도록 먼저 false
+		root.setAttribute('aria-hidden', 'false');
+
+		// ✅ 배경 비활성화(포커스 차단)
+		canvas?.setAttribute('inert','');
+		// 시작 상태를 확정: 닫힌 상태로 두고 한 프레임 강제 리플로 → 애니메이션 시작
+		root.setAttribute('data-state', 'closed');
+		document.body.classList.add('noscroll', 'push');     // push 효과 + 바탕 스크롤 잠금
+		panel.getBoundingClientRect();                       // reflow(중요!)
+		root.setAttribute('data-state', 'opening');
+  
+		// 열림 완료 후 포커스 이동
+		const onEndOpen = (e) => {
+		  if (e.propertyName !== 'width') return;
+		  root.setAttribute('data-state', 'open');
+		  panel.removeEventListener('transitionend', onEndOpen);
+		  const focusable = panel.querySelector('[autofocus], button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+		  (focusable || panel).focus();
+		  if (typeof onOpen === 'function') onOpen();
+		};
+		panel.addEventListener('transitionend', onEndOpen);
+	  }
+  
+	  function close(){
+		// 닫기 시작 → width 0으로 트랜지션
+		root.setAttribute('data-state', 'closing');
+
+
+		// ✅ 배경 다시 활성화
+		canvas?.removeAttribute('inert');
+
+		// ✅ 드로어를 숨기기(aria-hidden=true) 전에 포커스 이동
+		const fallback = canvas || document.body;
+		const target = (lastFocused && document.contains(lastFocused)) ? lastFocused : fallback;
+		target.focus({ preventScroll:true });
+
+		const onEndClose = (e) => {
+		  if (e.propertyName !== 'width') return;
+		  panel.removeEventListener('transitionend', onEndClose);
+		  root.setAttribute('data-state', 'closed');
+		  document.body.classList.remove('push', 'noscroll');
+		  if (lastFocused) lastFocused.focus();
+		};
+		panel.addEventListener('transitionend', onEndClose);
+	  }
+  
+	  // 닫기는 내부 버튼만
+	  closeBtn.addEventListener('click', close);
+	  backdrop.addEventListener('click', closeCheck); // ← 백드롭 클릭 시 닫기 추가
+  
+	  return { open, close, setWidth, el: root };
+	})();
+  
+	// 사용 예:
+	// drawer.open(600);          // 600px로 약 1초에 밀면서 열림
+	// drawer.open('40vw');       // 비율 기반
+
+	let isChanged = "";
+	function changeCheckStart() {
+		isChanged = false;
+		document.querySelectorAll('#frmForm input, #frmForm textarea, #frmForm select').forEach(el => {
+			el.addEventListener('change', () => { isChanged = true; });
+			el.addEventListener('input', () => { isChanged = true; });
+		});
+		document.querySelectorAll('#frmDetail input, #frmDetail textarea, #frmDetail select').forEach(el => {
+			el.addEventListener('change', () => { isChanged = true; });
+			el.addEventListener('input', () => { isChanged = true; });
+		});
+	}
+	function closeCheck() {
+		let Rc = true;
+		if (isChanged) {
+			Rc = confirm("작성한 내용을 취소 하시겠습니까?");
+		}
+		if (Rc) drawer.close();
+	}
+
+
+
+</script>
+<script>
+	const drawerBottom = (() => {
+	  const root      = document.getElementById('drawerBottom');
+	  const sheet     = root.querySelector('.sheet');
+	  const closeBtn  = root.querySelector('#sheetClose');
+	  const canvas    = document.querySelector('.canvas');
+	  let lastFocused = null;
+  
+	  function setHeight(h){
+		const v = (typeof h === 'number') ? `${h}px` : String(h);
+		root.style.setProperty('--sheet-height', v);
+	  }
+  
+	  // 사이드가 여전히 활성인지 확인 (opening/open/closing 중 하나면 잠금 유지)
+	  const sideActive = () => {
+		const st = document.getElementById('drawer')?.dataset?.state;
+		return st === 'opening' || st === 'open' || st === 'closing';
+	  };
+	  const bottomActive = () => {
+		const st = root?.dataset?.state;
+		return st === 'opening' || st === 'open' || st === 'closing';
+	  };
+  
+	  function open(height = '60vh', { title, html, onOpen } = {}){
+		setHeight(height);
+		if (title != null) root.querySelector('.sheet-title').innerHTML = title;
+		if (html  != null) root.querySelector('.sheet-body').innerHTML  = html;
+  
+		lastFocused = document.activeElement;
+		root.setAttribute('aria-hidden', 'false');
+  
+		// 배경 인터랙션 잠금 (사이드가 잠그지 않았더라도 바텀 단독으로 잠금)
+		canvas?.setAttribute('inert', '');
+		document.body.classList.add('noscroll');
+  
+		// 애니메이션 시퀀스
+		root.setAttribute('data-state', 'closed');
+		sheet.getBoundingClientRect(); // reflow
+		root.setAttribute('data-state', 'opening');
+  
+		const onEndOpen = (e) => {
+		  if (e.propertyName !== 'height') return;
+		  root.setAttribute('data-state', 'open');
+		  sheet.removeEventListener('transitionend', onEndOpen);
+		  const focusable = sheet.querySelector('[autofocus], button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+		  (focusable || sheet).focus();
+		  if (typeof onOpen === 'function') onOpen();
+		};
+		sheet.addEventListener('transitionend', onEndOpen);
+	  }
+  
+	  function close(){
+		root.setAttribute('data-state', 'closing');
+  
+		// 포커스 복원 대상
+		const fallback = canvas || document.body;
+		const target   = (lastFocused && document.contains(lastFocused)) ? lastFocused : fallback;
+		target.focus?.({ preventScroll: true });
+  
+		const onEndClose = (e) => {
+		  if (e.propertyName !== 'height') return;
+		  sheet.removeEventListener('transitionend', onEndClose);
+		  root.setAttribute('data-state', 'closed');
+		  root.setAttribute('aria-hidden', 'true');
+  
+		  // 사이드가 아직 열려 있지 않다면만 inert/스크롤 해제
+		  if (!sideActive()) {
+			canvas?.removeAttribute('inert');
+			document.body.classList.remove('noscroll');
+		  }
+		  if (lastFocused) lastFocused.focus?.();
+		  lastFocused = null;
+		};
+		sheet.addEventListener('transitionend', onEndClose);
+	  }
+  
+	  closeBtn.addEventListener('click', close);
+  
+	  return { open, close, setHeight, el: root };
+	})();
+  
+	// 사용 예:
+	// drawerBottom.open('70vh', { title: '바텀', html: '<p>내용</p>' });
+  </script>

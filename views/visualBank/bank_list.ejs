@@ -1,0 +1,130 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<form name="frmSearch" id="frmSearch" enctype="multipart/form-data" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="계좌 번호 관리">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<span onClick="newReg('','input')"  class="search_action_btn_primary">+ 신규등록</span>
+				</div>
+				<div class="search_action_right">
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					<input name="start_date" type="date" value="" class="date-input" placeholder="시작일" />
+					<span class="tilde">~</span>
+					<input name="end_date" type="date" value="" class="date-input" placeholder="종료일" />
+					<select name="GU1" class="search_action_select">
+						<option value=""		>전체
+						<option value="Y"		>지정
+						<option value="N"		>미지정
+					</select>
+					<select name="sFrom" class="search_action_select">
+						<option value="acct_no"		>계좌번호
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr >
+					<th>은행</th>
+					<th>계좌번호/통장표기명</th>
+					<th>상태</th>
+					<th>총거래금액</th>
+					<th>거래조건</th>
+					<th>수납회차</th>
+					<th>입금가능일</th>
+					<th>입금마감일</th>
+					<th>지정업체</th>
+					<th>등록일</th>
+				</tr>
+			</table>	
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+	</div>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="uid">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    async function newReg (ticket_num='',gubun='2',type='1',mode='input') {
+        frmModify.ticket_num.value = ticket_num;
+        frmModify.money_type.value = type;
+        frmModify.gubun_code.value = gubun;
+        frmModify.mode.value       = mode;
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/visualBank/visualSave');
+		title = json.title;
+		html  = json.html;
+        name  = json.name;
+		drawer.open(1500, { title, html  });
+        LoadingStop();
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/visualBank/bank_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`계좌 번호 관리 (${json.totalCount})`);
+			frmSearch.titleData.value = `계좌 번호 관리 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+	function issueStart(uid) {
+		sFile = "/air/order_detail?uid="+uid;
+		OpenWindowA(sFile,"",1,1200,800);
+	}
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

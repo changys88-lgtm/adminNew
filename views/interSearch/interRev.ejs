@@ -1,0 +1,81 @@
+<%- include('../header') %>
+<!-- <link rel="stylesheet" href="/css/interSearch.css"> -->
+
+<link rel="stylesheet" href="/css/international.css">
+
+<main class="content international">
+	<div id="searchFrame">
+		<div class="top-tabs">
+
+			<button class="tab active" id="searchBox_1">
+			  <span class="tab-text" id="searchTop_1" onclick="return sShow('1')">검색</span>
+			  
+			</button>
+		
+			<button class="tab plus" id="searchBox_End" onclick="return addFrame('')">+</button>
+		
+		  </div>
+		
+		  <div id="searchFrame_1" class="main_frame">
+			<iframe class="search_frame" src="/interSearch/Search?searchFrameNumber=1"></iframe>
+		  </div>
+		</div>
+	</div>
+</main>
+<form name="frmSearch" id="frmSearch" method="post">
+	<input type="hidden" name="departure_name" id="departure_name">
+	<input type="hidden" name="arrive_name" id="arrive_name">
+	<input type="hidden" name="titleData" value="국제선예약">
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+	searchCnt = 1;
+	totalCnt  = 1;
+	docHeight = 0;
+	function addFrame (url) {
+		$(".tab").removeClass("active");
+		if (totalCnt < 12) {
+			searchCnt ++;
+			totalCnt  ++;
+			$("#searchBox_End").before(`
+			<button class='tab active' id='searchBox_${searchCnt}'>
+				<span class='tab-text' id='searchTop_${searchCnt}' onclick="return sShow('${searchCnt}')">검색</span>
+				<span class='tab-close' onclick="event.cancelBubble=true;return sClose('${searchCnt}')" >x</span>
+			</button>`);
+			$("#searchFrame").append(`<div id='searchFrame_${searchCnt}' style='height: ${docHeight}px;' class='main_frame' ><iframe class='search_frame' style='height: ${docHeight}px;'  src='/interSearch/Search?searchFrameNumber=${searchCnt}${url}'></iframe></div>`);
+			sShow(searchCnt);
+		}
+	}
+
+	function sShow(searchCnt) {
+		$(".main_frame").hide();
+		$("#searchFrame_"+searchCnt).fadeIn();
+		$(".tab").removeClass("active");
+		$("#searchBox_"+searchCnt).addClass("active");
+	}
+	function sClose(searchCnt) {
+		$("#searchBox_"+searchCnt).remove();
+		$("#searchFrame_"+searchCnt).remove();
+		totalCnt --;
+		sShow("1");
+	}
+	function mOver (cnt) {
+		$("#searchClose_"+cnt).addClass("moveoutView");
+	}
+	function mOut () {
+		$(".moveout").removeClass("moveoutView");
+	}
+	$(document).ready(function(){
+		docHeight = parent.$(".mainFrame.on").height();
+		docHeight = docHeight - 85;
+		$(".main_frame").css("height",docHeight );
+		$(".search_frame").css("height",docHeight );
+		parent.$("#topTitleData").html(`국제선예약`);
+	});
+
+//-->
+</script>
+
+
+<%- include('../footer_log') %>

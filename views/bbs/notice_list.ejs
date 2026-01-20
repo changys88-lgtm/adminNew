@@ -1,0 +1,259 @@
+<%- include('../header') %>
+
+<script type="text/javascript" src="/SmartEditor/js/HuskyEZCreator.js" ></script>
+<main class="content">
+
+<!-- 페이지 헤더 
+    <div class="page-head">
+        <h2>공지사항 관리 <span class="count" id="totCount">(0)</span></h2>
+
+        <div class="page-actions">
+          <a href="notice_write.html" class="btn-primary">+ 신규등록</a>
+        </div>
+    </div>
+-->
+	<form name="frmSearch" id="frmSearch"  method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+    <input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+		
+            <div class="search_action_bar">
+                <!-- 좌측 -->
+                <div class="search_action_left">
+                  <span onClick="newReg('','input')"  class="search_action_btn_primary">
+                    + 신규등록
+                  </span>
+                </div>
+              
+                <!-- 우측 -->
+                <div class="search_action_right">
+                  <input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+                  <span class="unit">줄수</span>
+              
+                  <select name="sFrom" class="search_action_select">
+                    <option value="subject">제목</option>
+                    <option value="content">내용</option>
+                  </select>
+              
+                  <input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+              
+                  <button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+                </div>
+            </div>
+        </div>
+	</form>
+
+  
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr >
+                    <th  class=''>No</th>
+                    <th  class=''>구분</th>
+                    <th  class=''></th>
+                    <th  class=''>제목</th>
+                    <th  class=''>노출위치</th>
+                    <th  class=''>링크주소</th>
+                    <th  class=''>등록자</th>
+                    <th  class=''>등록일</th>
+                    <th  class=''>삭제</th>
+				</tr>
+            
+			</table>
+		</div>
+	</div>
+	</form>
+<!-- 공지사항 하단 
+	<div class="" ID="bottomFrame">
+
+		<div class="whp33 fl">
+			&nbsp;
+			
+		</div>
+		<div class="whp33 fl ac" ID="pagingHTML">
+		</div>
+		<div class="">			
+			<span class=" "    onClick="return excelDown()" >엑셀다운</span>
+		</div>
+		
+	</div>
+-->
+
+    <!-- 공지사항 하단 -->
+    <div class="action_bar_split">
+
+        <!-- LEFT : 검색 -->
+        <div class="action_area_left date-wrap">
+          <input type="date" class="date" />
+          <span class="tilde">~</span>
+          <input type="date" class="date" />
+      
+          <select class="action_select">
+            <option>전체</option>
+            <option>예약완료</option>
+            <option>취소</option>
+            <option>대기</option>
+            <option>발권완료</option>
+          </select>
+        </div>
+      
+        <!-- CENTER : 페이지 -->
+        <div class="action_area_center" id="pagingHTML">
+          
+        </div>
+      
+        <!-- RIGHT : 다운로드 -->
+        <div class="action_area_right">
+          <button class="action_btn_download excel">
+            <span class="icon">📊</span>
+            엑셀 다운로드
+          </button>
+        
+          <button class="action_btn_download file none">
+            <span class="icon">📁</span>
+            파일 다운로드
+          </button>
+        </div>
+      
+    </div>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="uid">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    async function newReg (uid='',mode='view') {
+        frmModify.uid.value      = uid;
+        frmModify.mode.value     = mode;
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/bbs/noticeSave');
+		title = json.title;
+		html  = json.html;
+        name  = json.name;
+        con   = json.con;
+		drawer.open(1000, { title, html  });
+        LoadingStop();
+        if (mode === "input") {
+            nhnStart ();
+        } else if (mode === "modify") {
+            nhnStart ();
+            setTimeout(() => {
+                pasteHTML(con);   // 에디터 준비됐을 거라고 보고 실행
+            }, 1000);
+        }
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/bbs/notice_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			//$("#totCount").html(`(${json.totalCount})`);
+            parent.$("#topTitleData").html(`공지사항 (${json.totalCount})`);
+            frmSearch.titleData.value = `공지사항 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+    var oEditors = [];
+	
+    async function inputCheck () {
+        Obj = document.frmDetail;
+		content =  showHTML();
+		Obj.content.value = content;	
+		if(Obj.subject.value == ""){
+			alert("제목을 입력해 주세요");
+		} else {
+            json = await dataSaveSend ('frmDetail','/bbs/noticeSave');
+            success  = json.success;
+            errorMSg = json.errorMSg;
+            uid      = json.uid;
+            if (success === "ok") {
+                newReg (uid);
+            } else {
+                newAlert('에러:'+errorMSg);
+            }
+		}
+		return false;
+	}
+
+    function nhnStart() {
+        nhn.husky.EZCreator.createInIFrame({
+            oAppRef: oEditors,
+            elPlaceHolder: "ir1",
+            sSkinURI: "../SmartEditor/SmartEditor2Skin.html",	
+            htParams : {
+                bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+                bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+                bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+                //aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
+                fOnBeforeUnload : function(){
+                    //alert("완료!");
+                }
+            }, //boolean
+            fOnAppLoad : function(){
+                //예제 코드
+                //oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+            },
+            fCreator: "createSEditor2"
+        });
+        return true;
+    }
+
+    function pasteHTML(val) {
+        oEditors.getById["ir1"].exec("PASTE_HTML", [val]);
+    }
+
+    function showHTML() {
+        return oEditors.getById["ir1"].getIR();
+    }
+        
+
+    function submitContents(elClickedObj) {
+        oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
+        
+        try {
+            elClickedObj.form.submit();
+        } catch(e) {}
+    }
+
+    function setDefaultFont() {
+        var sDefaultFont = '궁서';
+        var nFontSize = 24;
+        oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
+    }
+    function onInsert() {
+        pasteHTML(`ssss`);
+    }
+
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

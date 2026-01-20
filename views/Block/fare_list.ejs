@@ -1,0 +1,176 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<form name="frmSearch" id="frmSearch" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<span href="javascript://"  onClick="newReg('','input')"  class="search_action_btn_primary">
+						+ 신규등록
+					</span>
+				</div>
+				<div class="search_action_right">
+					
+					<input name="listCount" class="search_action_search_input wh40" value="20">
+					<span class="unit">줄수</span>
+					<select name="sFrom" class="search_action_select"  >
+						<option value="airCode"			>항공편</option>
+                        <option value="routing"			>도시</option>
+                        <option value="a.uid"			>요금번호</option>
+                        <option value="start_day"		>출발일</option>
+                        <option value="pattern"			>패턴</option>   
+					</select>
+					<input name="sWord" class="search_action_search_input" placeholder="검색" id="example-search-input">
+					<button class="search_action_icon_btn" type="submit" aria-label="검색" >🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" class="">
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr >
+                    <th class=''>No</th>
+					<th class=''>FIT</th>
+					<th class=''>구간</th>
+					<th class=''>항공편</th>
+					<th class=''>패턴</th>
+					<th class=''>운항도시</th>
+					<th class=''>요금기간</th>
+					<th class=''>판매기간 / 발권기간</th>
+					<th class=''>운항요일</th>
+					<th class=''>요금</th>
+					<th class=''>좌석수</th>
+					<th class=''>모객수</th>
+					<th class=''>좌석수정</th>
+					<th class=''>모객현황</th>
+					<th class=''>삭제</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+
+		<div class="action_area_left">
+			&nbsp;
+			
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" >
+				<span class="icon"  href="javascript://" onClick="return excelDown()" >📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+		
+	</div>
+
+</main>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="uid">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    async function newReg (uid='',mode='input') {
+        frmModify.uid.value      = uid;
+        frmModify.mode.value     = mode;
+        LoadingStart ();
+        const json = await dataSaveSend ('frmModify','/Block/fareSave');
+		title   = json.title;
+		html    = json.html;
+        name    = json.name;
+		drawer.open(1000, { title, html  });
+        LoadingStop();
+        
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/Block/fare_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`인벤요금 (${json.totalCount})`);
+            frmSearch.titleData.value = `인벤요금 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+	
+    var oEditors = [];
+	
+    async function inputCheck () {
+        Obj = document.frmDetail;
+		if (Obj.airCode.value == "") {
+			alert("항공편을 입력하세요");
+		} else if (Obj.dep_city.value == "") {
+			alert("출발도시를 입력하세요");
+		} else if (Obj.arr_city.value == "") {
+			alert("도착도시를 입력하세요");
+		} else {
+            json = await dataSaveSend ('frmDetail','/Block/fareSave');
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            uid      = json.uid;
+            if (success === "ok") {
+                formSearch(event,frmSearch.page.value);
+                drawer.close();
+            } else {
+                newAlert('에러:'+errorMsg);
+            }
+		}
+		return false;
+	}
+
+    async function funcDel (uid) {
+        var Rc = confirm("삭제 하시겠습니까?");
+        if (Rc) {
+            frmModify.uid.value = uid;
+            frmModify.mode.value = 'delete';
+            LoadingStart ();    
+            json = await dataSaveSend ('frmModify','/Block/fareSave');
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            if (success === "ok") {
+                formSearch(event,frmSearch.page.value);
+            } else {
+                newAlert('에러:'+errorMsg);
+            }
+            LoadingStop();
+        }
+        return false;
+    }
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

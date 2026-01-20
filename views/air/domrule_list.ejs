@@ -1,0 +1,170 @@
+<%- include('../header') %>
+
+<main class="content">
+
+<script type="text/javascript" src="/SmartEditor/js/HuskyEZCreator.js" ></script>
+
+	<form name="frmSearch" id="frmSearch" enctype="multipart/form-data" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+	<div id="searchFrame">
+		<div class="search_action_bar">
+			
+			<div class="search_action_left">
+				
+				<span href="javascript://"  onClick="newReg()"  class="search_action_btn_primary">
+					+ 신규등록
+				</span>
+			</div>
+			
+			<div class="search_action_right">
+
+				<input type="text" name="listCount" class="search_action_search_input wh40" value="20">
+				<span class="unit">줄수</span>
+				<select name="sFrom" class="search_action_select"  >
+					<option value="airCode">항공편</option>
+					<option value="dep_city">출발도시</option>
+					<option value="arr_city">도착도시</option> 
+				</select>
+				<input name="sWord" class="search_action_search_input" placeholder="검색" id="example-search-input">
+				<button class="search_action_icon_btn" type="submit" aria-label="검색" >🔍</button>
+			</div>
+		</div>	
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" >
+			<table class='table table-light text-center mt-3' bordercolor='#ddd' style="border-bottom:1px solid #ddd;" id='dtBasic'>
+				<tr style="background-color:#eee;">
+                    <th class='border-bottom-0'>No</th>
+					<th class='border-bottom-0'>항공</th>
+					<th class='border-bottom-0'>FARE</th>
+					<th class='border-bottom-0'>REFUND</th>
+					<th class='border-bottom-0'>수화물</th>
+					<th class='border-bottom-0'>등록일</th>
+					<th class='border-bottom-0'>수정</th>
+					<th class='border-bottom-0'>삭제</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+
+		<div class="action_area_left">
+			&nbsp;
+			
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">
+			<button class="action_btn_download excel" >
+				<span class="icon"  href="javascript://" onClick="return excelDown()" >📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+		
+	</div>
+</main>
+
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="uid">
+	<input type="hidden" name="money_type">
+    <input type="hidden" name="gubun_code">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    async function newReg (uid='',mode='input') {
+        frmModify.uid.value      = uid;
+        frmModify.mode.value     = mode;
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/air/domruleSave');
+		title   = json.title;
+		html    = json.html;
+        name    = json.name;
+		drawer.open(1000, { title, html  });
+        LoadingStop();
+        
+	}
+    async function funcDel (uid='') {
+        var Rc = confirm("삭제 하시겠습니까?");
+        if (Rc) {
+            frmModify.uid.value      = uid;
+            frmModify.mode.value     = 'delete';
+            LoadingStart ();
+            json = await dataSaveSend ('frmModify','/air/domruleSave');
+            success = json.success;
+            errorMsg = json.errorMsg;
+            if (success === "ok") {
+                formSearch(event,frmSearch.page.value);
+            } else {
+                newAlert('에러:'+errorMsg);
+            }
+            LoadingStop();
+        }
+        return false;
+	}
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/air/domrule_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`국내선 규정 관리 (${json.totalCount})`);
+            frmSearch.titleData.value = `국내선 규정 관리 (${json.totalCount})`;
+			$("#totCount").html(`(${json.totalCount})`);
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+	
+    var oEditors = [];
+	
+    async function inputCheck () {
+        Obj = document.frmDetail;
+		if(Obj.carrierCode.value == ""){
+			alert("항공사를 입력해 주세요");
+		} else {
+            json = await dataSaveSend ('frmDetail','/air/domruleSave');
+            success  = json.success;
+            errorMsg = json.errorMsg;
+            uid      = json.uid;
+            if (success === "ok") {
+                formSearch(event,frmSearch.page.value);
+                drawer.close();
+            } else {
+                newAlert('에러:'+errorMsg);
+            }
+		}
+		return false;
+	}
+
+
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

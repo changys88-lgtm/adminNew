@@ -1,0 +1,515 @@
+<%- include('../header') %>
+
+<link rel="stylesheet" href="/css/international.css">
+<!--page_item--->
+<main class="international">
+    <!--page_item_top-->
+    <form name="frmForm" method="post" id="frmForm" onsubmit="return false">
+    <input type="hidden" name = "tmpData" value ="" id = "tmpData"> 
+    <input type="hidden" name = "tmpData2" value ="" id = "tmpData2"> 
+    <input type="hidden" name="titleData" value="">
+    <div id="searchFrame">
+        <div class="search_action_bar">
+            <div class="search_action_left">
+                <div class="search-options">
+                    <div class="trip-type">
+                        <button class="trip active"  ID="ticketType2" onClick="return typeChange('2')">왕복</button>
+                        <button class="trip"  ID="ticketType1" onClick="return typeChange('1')">편도</button>
+                        <button class="trip"  ID="ticketType3" onClick="return typeChange('3')">다구간</button>
+                        <label class="direct">
+                            <input type="checkbox" name="stopover" value="Y" id="stopover" class="trip"ID="ticketDirect" onClick="return typeChange('1')"> 직항만조회
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="search_action_right">
+                <div class="search-actions tool-buttons">
+                    <button class="btn teal" onClick="filterShow('detail_option')">최적화 검색 설정 ▾</button>
+                    <button class="btn navy secondary" onClick="ageCheck()">나이계산</button>
+                    <button class="btn orange secondary" onClick="monthSearch()">오월별도검색</button>
+                    <button class="btn dark secondary" onClick="recentSearch()">최근검색</button>
+                </div>
+                <%- include("bSearch.inc") %>
+                <%- include("age.inc") %>
+                <div style="position: relative;">
+                    <div id="revPopup" style="display:none; position: absolute; left: -550px; top: 40px; z-index: 9999;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      <!-- 검색바 -->
+      <div class="search-bar">
+
+        <div class="search-item city-select" data-type="from">
+          <span class="label">출발도시</span>
+          <!-- <strong id="fromText">인천</strong> -->
+          <strong id="departure_name_text">
+          <input type="text" class="city-input" name="departure_name" id="departure_name" onClick="cityView('1','0')" onkeyup="autoComplete(this,'1','0')" autocomplete="off" value="인천" placeholder="출발도시">
+          </strong>
+
+        </div>
+
+        <div class="swap">⇄</div>
+
+        <div class="search-item city-select" data-type="to">
+            <span class="label">도착도시</span>
+            <!-- <strong id="toText" class="is-placeholder">도착도시</strong> -->
+            <strong id="arrive_name_text">
+            <input type="text" class="city-input" name="arrive_name" id="arrive_name" onClick="cityView('2','0')" onkeyup="autoComplete(this,'2','0')" autocomplete="off" value="도착도시" placeholder="도착도시">
+            </strong>
+        </div>
+
+        <div class="search-item date-select" id="openCalendar">
+            <span class="label">출발일</span>
+            <!-- <strong id="departText">2025-12-25 (목)</strong> -->
+            <strong class="date-span" id="departure_date_name"  onClick="return generateCalendars('departure_date','CalendarLayer')"></strong>
+        </div>
+
+        <div class="search-item date-select" id="openCalendarReturn">
+            <span class="label">귀국일</span>
+            <!-- <strong id="returnText">2025-12-27 (토)</strong> -->
+            <strong class="date-span" id="arrive_date_name"  onClick="return generateCalendars('arrive_date','CalendarLayer')"></strong>
+        </div>
+
+        <div class="search-item pax-select" onClick="seatView()">
+            <span class="label">인원</span>
+            <strong id="seat-box">성인 1</strong>
+            <div style="position :relative;">
+                <%- include("mem.inc") %>
+            </div>
+        </div>
+        
+        <button class="search-btn">🔍 검색</button>
+      </div>
+    </main>
+  </div>
+</div>
+     
+<div class="city-layer" id="CityLayer">
+    <div class="layer-box city-modal">
+        <div class="city-head">
+            <strong>도시 선택</strong>
+            <button class="close" onClick="$('.city-layer').removeClass('is-open')">×</button>        
+        </div>
+        <div class="city-body city-body-split">
+            <ul class="region-list"></ul>
+
+            <div class="city-list-area">
+                <div class="city-list" id="cityData"></div>
+                </div>   
+            </div>
+        </div>
+    </div>
+    <div class='calendar-layer' style='display:none; position: absolute;'  ID='CalendarLayer'>
+        <div id='' style='position: sticky ; float: right' onClick="calClose ('CalendarLayer')" ><img src='/images/close_img.png'></div>
+        <div class='calendar-layer-data'  ID='CalendarLayerData'>
+        </div>
+    </div>
+    
+
+    <div class='city_search_box' style="display:none;width: 500px;" ID="CitySearchBox">
+        <div class='pop_section'>
+            <div class='pa815 title_bold'>도시정보</div>
+            <img class='cal_close_img' src='/images/close_img.png'>
+        </div>
+        <div class='pa15 f13' ID="CitySearchBoxData" style="max-height:260px;overflow-y: auto;">
+        </div>
+    </div>
+         <!--//여행지역 선택-->
+     </div>
+     <%- include("filter.inc") %>
+     <%- include("form.inc") %> 
+     </form>
+    
+     <div  class="result-panel">
+         <!--page_item_content-->
+         <div  class="page_item_content page_item_content2">	
+             <!--list-wrap-->
+             <div class="banner_btn_wrap none">
+                 <div class="swiper-button-prev bbw bb_prev" onClick="event.cancelBubble=true;"></div>
+                 <div class="swiper-button-next bbw bb_next" style="right:0px !important;"></div>
+             </div>
+             <div class="list-wrap air_container" id="SearchSub" style="display:none;">
+                 <div class="swiper-wrapper">
+                    <% for (let ix = 1; ix < 7; ix++) { 
+                        const non = ix > 2 ? "none" : "";
+                    %>
+                       <div class='list-wrap-50 swiper-slide <%= non %>' style='padding-right:1%; ' id='itiRoute_<%= ix %>'>
+                           <p class='tit' id='RouteImg<%= ix %>'><img src='/images/departure.png' class='icon_img'>여정 <%= ix %></p>
+                   
+                           <p class='arr_txt'>
+                               <span class='preNextButton_<%= ix %> $none' onclick="return prevDaySearch('<%= ix %>')" style='background-color: #3f51b5;padding: 3px 8px; border-radius:4px; margin-right:10px;color:#fff; cursor:pointer;'>이전날</span>
+                               <span id='airCityName<%= ix %>'>출발지 -> 도착지</span>
+                               <span class='preNextButton_<%= ix %> $none' onclick="return nextDaySearch('<%= ix %>')" style='background-color: #3f51b5;padding: 3px 8px; border-radius:4px; margin-left:10px;color:#fff; cursor:pointer;'>다음날</span>
+                           </p>
+                   
+                           <div class='info_date'>
+                               <span class='s1'><span id='airDateName<%= ix %>'></span></span>
+                           </div>
+                           <div class='bar'></div>
+                           <div class='list__ air-list-form2' id='airListForm<%= ix %>'>
+                               <div class='list-roll' id='airListArea<%= ix %>'></div>
+                           </div>
+                       </div>
+                    <% } %>
+                 </div>
+
+                 
+             </div>
+
+            
+                
+                
+ 
+ 
+             
+             <div id="MonthData" class="monthArea mat10" style="display:none">
+ 
+             </div>
+ 
+ 
+ 
+         </div>
+         <!--//page_item_content-->
+         
+     </div>
+     <div>
+     <form name='frmAir' onsubmit="return airCheck()">
+        <div id="searchFrame">
+			<div class="search_action_bar">
+                <div class="search_action_left"></div>
+                <div class="search_action_right">
+                    <span>항공사 뉴스</span>
+                    <span>항공사</span>
+                    <select name="air" class="search-select">
+                            <option value=''>전체</option>
+                            
+                        </select>
+                        
+                        <input type='text' name='word' class='form-smooth wh140'>
+                        <span type="submit" class="btn_basic btn_gy" onClick="airCheck ()">검색</span>
+                    </div>
+                </div>
+                
+            
+ 
+                
+                <div ID="listFrameSub" class="result-panel" >
+                    
+                </div>
+                <div id="pageHTML">
+                  
+                </div>
+            </div>
+        </div>
+        </form>
+        </div>
+ 
+     <!--//air-page-quickbar-->
+ 
+<!--예약상세팝업-->
+<!-- <div id="detail-popup" style="display:none"></div> -->
+ <!--예약상세팝업-->
+ 
+ <div class="popup-layer" id="info_popup">
+     <div class="content">
+         <div class="layer-inner2">
+             <img src="../images/close_img.png" class="close_img" alt="팝업닫기" onClick="$('#info_popup').hide();">
+             <div id="info_data" class="info_data" >
+ 
+             </div>
+         </div>
+     </div>
+ </div>
+ <div id="basePopUp" style="display:none"></div>
+ 
+         <div id="basePopUp2" style="display:none"></div>
+    
+ </div>
+
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+    gData = {};
+	searchCnt   = 1;
+	totalCnt    = 1;
+	docHeight   = 0;
+    monthActive = "";
+	airActive   = "";
+	
+	function modalTabClear (name) {
+		if (document.getElementById("cabinCheck1").checked == true && name != "cabinCheck1") document.getElementById("cabinCheck1").checked = false ;
+		if (document.getElementById("cabinCheck2").checked == true && name != "cabinCheck2") document.getElementById("cabinCheck2").checked = false;
+		for (ix = 1 ; ix < 7 ; ix ++) {
+			if (document.getElementById("cabinCheck"+ix+"_")) {
+                 if (document.getElementById("cabinCheck"+ix+"_").checked == true && name != "cabinCheck"+ix+"_") document.getElementById("cabinCheck"+ix+"_").checked = false;
+            }
+		}
+	}
+	
+
+    function resizeFrame() {
+        const $mainFrame = parent.$(".mainFrame_on");
+        if ($mainFrame.length > 0) {
+            const docHeight = $mainFrame.height() - 85;
+            $(".main_frame, .search_frame").css("height", docHeight);
+        }
+    }
+
+
+	function newsDetail (uid) {
+		$("#info_popup").toggle();
+        searchDatas ('NEWS',uid);
+	}
+
+    function airLikeCheck (code) {
+        searchDatas ('airCheck',code);
+	}
+
+	function ageCheck () {
+        calClose();
+        searchDatas ('ageCheck');
+	}
+    function recentSearch(){
+		searchDatas ('recentCheck');
+	}
+	function calculateAge () {
+		start_date  = $("#start_date").val();
+		birthday    = $("#birthday").val();
+		
+		aStart      = start_date.split("-");
+		aBirth      = birthday.split("-");
+
+		var age = aStart[0] - aBirth[0];
+		// 현재 월과 생일의 월을 비교합니다.
+		if (aStart[1] < aBirth[1]) {
+			age--;
+		}
+		// 현재 월과 생일의 월이 같은 경우, 현재 일과 생일의 일을 비교합니다.
+		else if (aStart[1] === aBirth[1] && aStart[2] < aBirth[2]) {
+			age--;
+		}
+		$("#ageValue").html(age);
+	}
+
+    function firstSet () {
+        if (!document.frmForm || !document.frmForm.departure_date) {
+            return; // form이 아직 로드되지 않았으면 리턴
+        }
+        let date1 = getCookie("AviaSearchDate1");
+        let date2 = getCookie("AviaSearchDate2");
+
+        date1 = date1 || getFutureDate(2); // 기본 2일 뒤
+        const week1 = getWeekFromDateStr(date1);
+        document.frmForm.departure_date.value = date1;
+        $("#departure_date_name").html(CutDate(date1) + " (" + getWeek(week1) + ")");
+
+        date2 = date2 || getFutureDateFrom(date1, 2); // date1 기준 2일 뒤
+        const week2 = getWeekFromDateStr(date2);
+        document.frmForm.arrive_date.value = date2;
+        $("#arrive_date_name").html(CutDate(date2) + " (" + getWeek(week2) + ")");
+    }
+
+	$(document).ready(function(){
+        resizeFrame();
+        searchDatas ("CITY");    
+        // form이 완전히 로드될 때까지 약간의 딜레이
+        setTimeout(function() {
+            firstSet();
+        }, 100);
+	});
+
+    async function searchDatas (mode,uid='') {
+        //if (mode == "CITY") {
+            const data = 'mode='+mode+'&uid='+uid;
+            const res  = await fetch('/searchGet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: data
+            });
+        //}
+
+        const json  = await res.json();
+        if (mode == "CITY") {
+            $("#cityData").html(json.city);
+            $("#listFrameSub").html(json.news);
+            gData = json.cityData;
+            //console.log(json);
+        } else if (mode == "NEWS") {
+            $("#info_data").html(json.detail);
+        } else if (mode == "airCheck") {
+            $("#SearchAirLike").html(json.airData);
+            $("#SearchCityLike").html(json.cityData);
+        } else if (mode == "ageCheck") {
+            smallPopHide ();
+            $("#revPopup").show();
+            $("#revPopup").html(json.ageData);
+        } else if (mode == "recentCheck") {
+            $('.moopen').show();
+            $("#SearchHistoryArea").html(json.recentData);
+        }
+	};
+
+
+    const searchFrameNumber = "<%= searchFrameNumber %>";
+    function searchHistory (ticket_type,dep_date,arr_date,src,src_name,dest,dest_name,adt_mem,chd_mem,inf_mem,week1,week2,stopover,addCode,addDate,addWeek,grade) {
+		typeChange (ticket_type);
+		if (ticket_type == "3") {
+			aDate = addDate.split(",");
+			aCode = addCode.split(",");
+			aWeek = addWeek.split(",");
+			currentCity = 1 ;
+			currentSub  = 1 ;
+			cityChoice(src,src_name);
+			currentCity = 2 ;
+			currentSub  = 1 ;
+			cityChoice(dest,dest_name);
+			cabinChangeSingle(1,grade.substring(0,1));
+
+			// 두번째
+			currentCity = 1 ;
+			currentSub  = 2 ;
+			cityChoice(aCode[0],aCode[1]);
+
+			currentCity = 2 ;
+			currentSub  = 2 ;
+			cityChoice(aCode[2],aCode[3]);
+			cabinChangeSingle(2,grade.substring(1,2));
+
+			if (aCode[4] != "") {
+				if (!$("#Route_3").length) addRouting ("+");
+				// 세번째
+				currentCity = 1 ;
+				currentSub  = 3 ;
+				cityChoice(aCode[4],aCode[5]);
+
+				currentCity = 2 ;
+				currentSub  = 3 ;
+				cityChoice(aCode[6],aCode[7]);
+				//clog('a');
+				cabinChangeSingle(3,grade.substring(2,3));
+
+				//clog('b');
+			}
+
+			if (aCode[8] != "") {
+				if (!$("#Route_4").length) addRouting ("+");
+				// 네번째
+				currentCity = 1 ;
+				currentSub  = 4 ;
+				cityChoice(aCode[8],aCode[9]);
+
+				currentCity = 2 ;
+				currentSub  = 4 ;
+				cityChoice(aCode[10],aCode[11]);
+				cabinChangeSingle(4,grade.substring(3,4));
+			}
+
+			yy = dep_date.substring(0,4);
+			mm = dep_date.substring(4,6);
+			dd = dep_date.substring(6,8);
+			//setInterCal(yy,mm,dd,'dep_date1','frmForm','CalendarLayer','',week1,'','');
+            frmForm.dep_date1.value = yy+mm+dd;
+
+			yy = aDate[0].substring(0,4);
+			mm = aDate[0].substring(4,6);
+			dd = aDate[0].substring(6,8);
+			//setInterCal(yy,mm,dd,'dep_date2','frmForm','CalendarLayer','',aWeek[0],'','');
+            frmForm.dep_date2.value = yy+mm+dd;
+
+			if (aDate[1] != "") {
+				yy = aDate[1].substring(0,4);
+				mm = aDate[1].substring(4,6);
+				dd = aDate[1].substring(6,8);
+				setInterCal(yy,mm,dd,'dep_date3','frmForm','CalendarLayer','',aWeek[1],'','');
+                frmForm.dep_date3.value = yy+mm+dd;
+			}
+			if (aDate[2] != "") {
+				yy = aDate[2].substring(0,4);
+				mm = aDate[2].substring(4,6);
+				dd = aDate[2].substring(6,8);
+				setInterCal(yy,mm,dd,'dep_date4','frmForm','CalendarLayer','',aWeek[2],'','');
+                frmForm.dep_date4.value = yy+mm+dd;
+			}
+		} else {
+			currentCity = 1 ;
+			currentSub  = 0 ;
+			cityChoice(src,src_name);
+			currentCity = 2 ;
+			currentSub  = 0 ;
+			cityChoice(dest,dest_name);
+			yy = dep_date.substring(0,4);
+			mm = dep_date.substring(4,6);
+			dd = dep_date.substring(6,8);
+			//setInterCal(yy,mm,dd,'departure_date','frmForm','CalendarLayer','',week1,'','');
+            frmForm.departure_date.value = yy+mm+dd;
+			cabinChangeSingle(1,grade.substring(0,1));
+
+			yy = arr_date.substring(0,4);
+			mm = arr_date.substring(4,6);
+			dd = arr_date.substring(6,8);
+			//setInterCal(yy,mm,dd,'arrive_date','frmForm','CalendarLayer','',week2,'','');
+            frmForm.arrive_date.value = yy+mm+dd;
+			if (grade.substring(1,2)) cabinChangeSingle(2,grade.substring(1,2));
+		}
+
+		if (stopover == "") {
+			document.frmForm.stopover.checked = false; 
+		} else {
+			document.frmForm.stopover.checked = true; 
+		}
+
+
+		document.frmForm.adt.value = adt_mem;
+		document.frmForm.chd.value = chd_mem;
+		document.frmForm.inf.value = inf_mem;
+		memberSet ();
+		interSearch ();
+
+		$('.moopen').hide()
+	}
+	function motionClick (dep,cnt) {
+		$("#OpenView"+dep+"_"+cnt).slideDown("fast");
+		$("#OpenView"+dep+"2_"+cnt).slideDown("fast");
+		$("DepartureBox"+dep+"_"+cnt).toggleClass("fast");
+		$('.item-in.item-innn').each(function(index) {
+			// Calculating height as (index + 1) * 100%
+			var heightValue = (index + 1) * 115 + '%';
+
+			// Generating dynamic CSS to apply
+			var dynamicCss = '<style>.item-in.item-innn:nth-of-type(' + (index + 1) + ')::before {height: ' + heightValue + ';}</style>';
+
+			// Appending the dynamic CSS to the head of the document
+			$('head').append(dynamicCss);
+		});
+	}
+
+    function goDetail(day,week){
+		
+		yy = day.substr(0,4);
+		mm = day.substr(4,2);
+		dd = day.substr(6);
+		tmp = yy+"-"+mm+"-"+dd;
+
+		$("#tmpData").val(tmp);
+		$("#tmpData2").val(week);
+
+		let week2 = ['2','3','4','5','6','0','1'];
+		set_inter_basic(yy,mm,dd,'departure_date','frmForm','CalendarLayer','',week,tmp,week2[week]);
+
+		interSearch();
+	}
+
+//-->
+</script>
+
+<div id="smallPopup"  style="display: none;">		
+    <div id="smallPopup_arti" >
+        <img src="/img/detail_img_closed_gray.png" id="closeBtn" class="wh20 hh20" onClick="smallPopHide ()">
+        <div ID="smallPopupData"></div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<form name="frmSearch" id="frmSearch"  method="post"  onsubmit="return formSearch(event,'1');">
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="interSearch">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+
+				</div>
+				<div class="search_action_right">
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					<input type="text" name="GU1" class="search_action_search_input wh100" value="" >
+					<span class="unit">검색날짜</span>
+					<input type="text" name="GU2" class="search_action_search_input wh100" value="" >
+					<span class="unit">주문서번호</span>
+					<input type="text" name="GU3" class="search_action_search_input wh100" value="" >
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr>
+                    <th>로그 시간</th>
+                    <th>주문서</th>
+                    <th>아이디</th>
+                    <th>내용</th>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="action_bar_split">
+
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">		
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+				엑셀 다운로드
+			</button>
+		</div>
+	</div>
+</main>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch ();
+	});
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/logData/gds_list');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`GDS 로그 (${json.totalCount})`);
+            frmSearch.titleData.value = `GDS 로그 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

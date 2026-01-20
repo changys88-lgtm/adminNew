@@ -1,0 +1,7 @@
+{
+    "files.watcherExclude": {
+      "**": false
+    },
+    "files.autoSave": "off",
+    "files.simpleDialog.enable": true
+  }

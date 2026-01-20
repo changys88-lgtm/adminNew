@@ -1,0 +1,463 @@
+const arrInterType = {
+    1: "편도",
+    2: "왕복",
+    3: "다구간",
+
+}
+
+const arrInterGubun = {
+    1: "발권대기",
+    2: "PNR생성중",
+    3: "발권중",
+    4: "발권완료",
+    A: "ATR발권",
+    5: "중복발권",
+    7: "발권후취소",
+    8: "취소요청",
+    9: "취소완료",
+    B: "환불전취소",
+    R: "환불",
+    N: "노쇼"
+}
+
+const arrCabinType = {
+    Y:              "일반석",
+    P:              "프리미엄이코노미",
+    C:              "비지니스",
+    F:              "퍼스트",
+    Economy:        "일반석",
+    PremiumEconomy: "프리미엄이코노미",
+    Business:       "비지니스",
+    First:          "퍼스트"
+}
+
+const arrGdsType = {
+    G:   "갈릴레오",
+    A:   "세이버(애바커스)",
+    S:   "셀커넥(아마데우스)",
+    GN:  "갈릴레오NDC",
+    E:   "이텀",
+    NCZ: "NDC CZ",
+    ATR: "ATR"
+};
+
+const arrDsrType = {
+    '':   "정상",
+    DS: "DSR입력",
+    PR: "PNR전달",
+    RF: "환불대장",
+    EM: "EMD주문서",
+    RI: "재발행"
+};
+
+const arrGender = {
+	M:  "남성",
+	F:  "여성",
+	MC: "소아남성",
+	FC: "소아여성",
+	MI: "유아남성",
+	FI: "유아여성"
+};
+
+const arrTitleChange  = {
+    M:  "MR",
+	F:  "MS",
+	MC: "MSTR",
+	FC: "MISS",
+	MI: "MSTR",
+	FI: "MISS"
+};
+
+const arrCardType = {
+    11: "비씨카드",
+    12: "신한비자",
+    14: "국민카드",
+    15: "LG카드",
+    16: "삼성카드",
+    17: "아멕스카드",
+    18: "농협카드",
+    19: "하나비자",
+    20: "한미비자",
+    21: "씨티비자",
+    22: "현대카드",
+    23: "우리카드",
+    24: "롯데카드"
+};
+
+const arrPaxRelation = {
+    1: "본인",
+    2: "법인",
+    3: "가족",
+    4: "일행"
+};
+
+
+const arrNewsGubun = {
+	1: "국제선",
+	2: "국내선",
+	3: "해외호텔",
+	4: "국내호텔",
+	5: "골프",
+	6: "액티비티",
+	7: "여행상품",
+	8: "리조트팩",
+	9: "국내여행"
+};
+
+const arrIssueGubun = {
+    "N" : "정상티켓",
+	"S" :  "환불원본",
+	"R" :  "환불티켓",
+	"V" :  "보이드",
+	"P" :  "패널티",
+	"E" :  "EMD",
+	"I" :  "리이슈티켓"
+};
+
+const arrBankCode = {
+    "039":"경남",
+    "034":"광주",
+    "004":"국민",
+    "003":"기업",
+    "031":"대구",
+    "045":"마을금고",
+    "032":"부산",
+    "002":"산업",
+    "050":"상호저축",
+    "007":"수협",
+    "088":"신한",
+    "048":"신협",
+    "053":"씨티",
+    "054":"홍콩",
+    "055":"도이치",
+    "056":"에이비엔암로",
+    "057":"UFJ",
+    "058":"미즈호코퍼레이트",
+    "059":"도쿄미쓰비시",
+    "060":"B.O.A",
+    "020":"우리",
+    "005":"외환",
+    "037":"전북",
+    "023":"제일",
+    "035":"제주",
+    "021":"조흥",
+    "081":"KEB하나",  
+    "027":"한미",
+    "012":"단위농협",
+    "011":"농협",
+    "071":"우체국",
+    "0A1":"현금입금",
+    "0A2":"카드입금",
+    "0A3":"정산용",
+    "0A4":"대체",
+    "0A5":"대체",
+    "0A6":"대체",
+    "0CC":"카드",
+    "0UC":"유안타증권",
+    "090":"카카오뱅크",
+    "089":"케이뱅크"
+};
+
+
+const arrVacationGubun = {
+    "11":"정기휴가",
+    "12":"연차",
+    "13":"반차",
+    "21":"출장",
+    "22":"예비군",
+    "23":"민방위",
+    "24":"동원훈련",
+    "25":"관혼상제",
+    "30":"무급휴가",
+    "26":"기타"
+};
+
+const arrGoodsGubun = {
+	"11":"호텔",
+	"12":"현지투어",
+	"13":"여행상품",
+	"21":"쇼핑",
+	"31":"여행동행",
+	"41":"전시회",
+	"99":"기타"
+};
+
+const arrProductStatus = {
+    I:"즉시확정",
+    P:"견적요청",
+    W:"예약하기",
+}
+
+const arrTourMeal = {
+    "INAIR"			: "기내식",
+    "HOTEL"			: "호텔식",
+    "LOCAL"			: "현지식",
+    "SPECIAL"		: "특별식",
+    "KOREAN"		: "한식",
+    "JAPANESE"		: "일식",
+    "CHINESE"		: "중식",
+    "BOX"			: "도시락",
+    "RESORT"		: "리조트식",
+    "SHIP"			: "선상식",
+    "TRAIN"			: "열차식",
+    "FREE"			: "자유식",
+    "BUFF"			: "뷔페식",
+    "KAISEKI"		: "카이세키",
+    "CAMP"			: "캠프식",
+    "CLUB"			: "클럽식",
+    "ETC"			: "미정/기타",
+    "NONE"			: "없음",
+    "CRUISE"		: "크루즈식"
+};
+
+const arrTourTransfer = {
+    "BUS"			: "버스",
+    "MINIBUS"		: "미니버스",
+    "VAN"			: "일반밴",
+    "PREMIUMVAN"	: "프리미엄밴",
+    "TAXI"			: "택시",
+    "TRAIN"			: "기차",
+    "AIR"			: "비행기",
+    "SHIP"			: "크루즈/요트/보트",
+    "COMPACT"		: "렌터카 - 소형차",
+    "MID"			: "렌터카 - 중형차",
+    "FULL"			: "렌터카 - 대형차",
+    "COMPACTSUV"	: "렌터카 - 소형 SUV",
+    "MIDSUV"		: "렌터카 - 중형 SUV",
+    "FULLSUV"		: "렌터카 - 대형 SUV",
+    "WALK"			: "도보이동",
+    "COMPACTCAR"	: "승용차",
+};
+
+const arrMealType = {
+	"RO" : "객실만",
+	"BB" : "조식포함",
+	"HB" : "하프보드",
+	"FB" : "풀보드",
+	"AI" : "올인클루시브"
+}
+
+const arrNotice = {
+    "11":"공지사항",
+	"12":"항공",
+	"13":"호텔",
+	"14":"펜션",
+	"15":"미디어"
+}
+
+const arrGdsData = {
+    "G"   :  "갈릴레오",
+    "A"   :  "세이버(애바커스)",
+    "S"   :  "셀커넥(아마데우스)",
+    "GN"  :  "갈릴레오NDC",
+    "E"   :  "이텀",
+    "NCZ" :  "NDC CZ",
+    "ATR" :  "ATR"
+};
+
+const arrInsureStatusCode = {
+	"1":"대기",
+	"2":"접수",
+	"3":"완료",
+	"8":"환불",
+	"9":"취소",
+	"E":"보험오류"
+};
+
+const arrCountryCode = [
+"KR/KOR/대한민국/Republic of Korea",
+"CN/CHN/중국/China",
+"GH/GHA/가나/Ghana",
+"GA/GAB/가봉/Gabon",
+"GY/GUY/가이아나/Guyana",
+"GM/GMB/감비아/Gambia",
+"GT/GUA/과테말라/Guatemala",
+"GR/GRC/그리스/Greece",
+"GL/GRL/그린란드/Greenland",
+"GN/GIN/기니/Guinee",
+"GW/GNB/기니비사우/Guinea Bissau",
+"NA/NAM/나미비아/Namibia",
+"NG/NGA/나이지리아/Nigeria",
+"ZA/ZAF/남아프리카공화국/South Africa",
+"NL/NED/네델란드/Netherlands",
+"NP/NPL/네팔/Nepal",
+"NO/NOR/노르웨이/Norway",
+"NZ/NZL/뉴질랜드/New Zealand",
+"TW/TWN/대만/Taiwan",
+"DK/DNK/덴마크/Denmark",
+"DO/DOM/도미니카공화국/Dominicana",
+"DE/GER/독일/Germany",
+"TP/TLS/동티모르/East Timor",
+"LA/LAO/라오스/LAOS",
+"LR/LBR/라이베리아/Liberia",
+"LV/LVA/라트비아/Latvia",
+"RU/RUS/러시아/Russia",
+"LB/LBN/레바논/Lebanon",
+"LS/LSO/레소토/Lesotho",
+"RO/ROU/루마니아/Romania",
+"LU/LUX/룩셈부르크/Luxemburg",
+"RW/RWA/르완다/Rwanda",
+"LY/LBY/리비아/Libya",
+"LT/LTU/리투아니아/Lithuania",
+"MG/MDG/마다가스카르/Madagascar",
+"MQ/MTQ/마르티니크/Martinique",
+"MY/MYS/말레이시아/Malaysia",
+"MW/MWI/말라위/Malawi",
+"ML/MLI/말리/Mali",
+"MX/MEX/멕시코/Mexico",
+"MC/MCO/모나코/Monaco",
+"MA/MAR/모로코/Morocco",
+"MU/MUS/모리셔스/Mauritius",
+"MZ/MOZ/모잠비크/Mozambique",
+"MR/MRT/모리타니/Mauritania",
+"ME/MNE/몬테네그로/montenegro",
+"MD/MDA/몰도바/Moldova",
+"MV/MDV/몰디브/Maldives",
+"MT/MLT/몰타/Malta",
+"MN/MNG/몽골/Mongolia",
+"US/USA/미국/United States",
+"MM/MMR/미얀마/Myanmar",
+"VU/VUT/바누아투/Vanuatu",
+"BH/BHR/바레인/Bahrain",
+"BS/BHS/바하마/Bahamas",
+"BD/BGD/방글라데시/Bangladesh",
+"VE/VEN/베네수엘라/Venezuela",
+"BJ/BEN/베넹/Bénin",
+"BE/BEL/벨기에/Belgium",
+"BY/BLR/벨라루스/Belarus",
+"BZ/BLZ/벨리즈/Belize",
+"VN/VNM/베트남/Vietnam",
+"BA/BIH/보스니아/Bosnia",
+"BW/BWA/보츠와나/Botswana",
+"BO/BOL/볼리비아/Bolivia",
+"BI/BDI/부룬디/Burundi",
+"BT/BTN/부탄/Bhutan",
+"MK/MKD/북마케도니아/North Macedonia",
+"BG/BGR/불가리아/Bulgaria",
+"BR/BRA/브라질/Brazil",
+"BN/BRN/브루나이/Brunei",
+"WS/WSM/사모아/Samoa",
+"SA/SAU/사우디아라비아/Saudi Arabia",
+"SN/SEN/세네갈/Senegal",
+"RS/SRB/세르비아/Serbia",
+"SC/SYC/세이셸/Seychelles",
+"LC/LCA/세인트루시아/Saint Lucia",
+"SD/SDN/수단/Sudan",
+"LK/LKA/스리랑카/Sri Lanka",
+"SE/SWE/스웨덴/Sweden",
+"CH/CHE/스위스/Switzerland",
+"ES/ESP/스페인/Spain",
+"SK/SVK/슬로바키아/Slovakia",
+"SI/SVN/슬로베니아/Slovenia",
+"SY/SYR/시리아/Syria",
+"SG/SIN/싱가포르/Singapore",
+"AE/ARE/아랍에미리트/United Arab Emirates",
+"AM/ARM/아르메니아/Armenia",
+"AR/ARG/아르헨티나/Argentina",
+"IS/ISL/아이슬란드/Ísland",
+"IL/IRL/아일랜드/Ireland",
+"AZ/AZE/아제르바이잔/Azerbaijan",
+"AF/AFG/아프가니스탄/Afghanistan",
+"AD/AND/안도라/Andorra",
+"AL/ALB/알바니아/Albania",
+"DZ/ALG/알제리/Algeria",
+"AO/AGO/앙골라/Angola",
+"EC/ECU/에콰도르/Ecuador",
+"SZ/SWZ/에스와티니/Eswatini",
+"EE/EST/에스토니아/Estonia",
+"ET/ETH/에티오피아/Ethiopia",
+"SV/SLV/엘살바도르/El Salvador",
+"GB/GBR/영국/United Kingdom",
+"YE/YEM/예멘/Yemen ",
+"OM/OMN/오만/Oman",
+"AT/AUT/오스트리아/Austria",
+"HN/HND/온두라스/Honduras",
+"JO/JOR/요르단/Jordan",
+"UG/UGA/우간다/Uganda",
+"UY/URY/우루과이/Uruguay",
+"UZ/UZB/우즈백/Uzbekistan",
+"UZ/UZB/우즈베키스탄/Uzbekistan",
+"UA/UKR/우크라이나/Ukraine",
+"IR/IRI/이란/Iran",
+"IQ/IRQ/이라크/Iraq",
+"IL/ISR/이스라엘/Israel",
+"EG/EGY/이집트/Egypt",
+"IT/ITA/이탈리아/Italy",
+"IO/IND/인도/India",
+"ID/IDN/인도네시아/Indonesia",
+"JP/JPN/일본/Japan",
+"JM/JAM/자메이카/Jamieka",
+"ZR/ZAR/자이르/Zaire",
+"ZM/ZMB/잠비아/Zambia",
+"GE/GEO/조지아/Georgia",
+"CF/CAF/중앙아프리카 공화국/Central African Republic",
+"ZW/ZWE/짐바브웨/Zimbabwe",
+"CZ/CZE/체코/Czechia",
+"CL/CHL/칠레/Chile",
+"CM/CMR/카메룬/Cameroon",
+"CV/CPV/카보베르데/Cabo Verde",
+"KZ/KAZ/카자흐스탄/Kazakhstan",
+"QA/QAT/카타르/Qatar",
+"KE/KEN/케냐/Kenya",
+"KH/KHM/캄보디아/Cambodia",
+"CA/CAN/캐나다/Canada",
+"CR/CRI/코스타리카/Costa Rica",
+"CI/CIV/코트디부아르/Côte d'Ivoire",
+"CO/COL/콜롬비아/Colombia",
+"CG/COG/콩고/Congo",
+"CU/CUB/쿠바/Cuba",
+"KW/KWT/쿠웨이트/Kuwait",
+"HR/HRV/크로아티아/Croatia",
+"KG/KGZ/키르기스스탄/Kyrgyzstan",
+"TZ/TZA/탄자니아/Tanzania",
+"TJ/TJK/타지키스탄/Tadjikistan",
+"TH/THA/태국/Thailand",
+"TR/TUR/터키/Turkey",
+"TG/TGO/토고/Togo",
+"TO/TON/통가/Tonga",
+"TM/TKM/투르크메니스탄/Turkmenistan",
+"TN/TUN/튀니지/Tunisia",
+"TT/TTO/트리니다으 토바고/Trinidad and Tobago",
+"PA/PAN/파나마/panama",
+"PY/PRY/파라과이/Paraguay",
+"PG/PNG/파푸아뉴기니/Papua New Guinea",
+"PK/PAK/파키스탄/Pakistan",
+"PW/PLW/팔라우/Palau",
+"PS/PSE/팔레스타인/Palestine",
+"PE/PER/페루/Peru",
+"PT/POR/포르투갈/Portugal",
+"PL/POL/폴란드/Poland",
+"PR/PRI/푸에르토리코/Puerto Rico",
+"FR/FRA/프랑스/France",
+"FJ/FJI/피지/Fiji",
+"FI/FIN/핀란드/Finland",
+"PH/PHL/필리핀/Philippines",
+"HU/HUN/헝가리/Hungary",
+"AU/AUS/호주/Australia",
+"HK/HKG/홍콩/Hong Kong"
+];
+
+module.exports = {
+    arrInterType,
+    arrInterGubun,
+    arrCabinType,
+    arrGdsType,
+    arrDsrType,
+    arrCountryCode,
+    arrGender,
+    arrTitleChange,
+    arrCardType,
+    arrBankCode,
+    arrPaxRelation,
+    arrVacationGubun,
+    arrGoodsGubun,
+    arrProductStatus,
+    arrTourMeal,
+    arrTourTransfer,
+    arrMealType,
+    arrNewsGubun,
+    arrNotice,
+    arrIssueGubun,
+    arrGdsData,
+    arrInsureStatusCode
+}

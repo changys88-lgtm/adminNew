@@ -1,0 +1,93 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	
+
+	<form name="frmSearch" id="frmSearch" enctype="multipart/form-data" method="post" onsubmit="return formSearch(event);" >
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="">
+	<div id="searchFrame">
+		<div class="search_action_bar">
+			
+			<div class="search_action_left">
+				<!--<span onClick="newReg('','input')"  class="search_action_btn_primary">+ 신규등록</span>-->
+			</div>
+				
+			<div class="search_action_right">
+				<select name="GU6" class="search_action_select" >
+					<option value="downdate"	>발권일</option>
+					<optio	n value="start_day"	>출발일</option>
+				</select>
+				<input name='start_date' id='start_date' type='text' value="<%= new Date().toISOString().slice(0,10) %>" autocomplete="off" class='search_action_search_input wh100'  onClick="return datePick('start_date')">
+				<input name='end_date' id='end_date' type='text' value="<%= new Date().toISOString().slice(0,10) %>" autocomplete="off" class='search_action_search_input wh100' onClick="return datePick('end_date')">
+				<div class="search_action_checkbox">
+					<label><input type="checkbox" value="G"   name="GDS[]" checked> Galileo</label>
+					<label><input type="checkbox" value="S"   name="GDS[]" checked> Amadeus</label>
+					<label><input type="checkbox" value="A"   name="GDS[]" checked> Sabre</label>
+					<label><input type="checkbox" value="E"   name="GDS[]" checked> Eterm</label>
+					<label><input type="checkbox" value="ATR" name="GDS[]" checked> ATR</label>
+				</div>	
+				<button class="search_action_icon_btn" type="submit" aria-label="검색" >
+					🔍
+				</button>
+					
+			</div>
+		</div>
+	</div>
+</form>
+
+
+	<div ID="listFrame" class="search-panel">
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				
+			</table>
+		</div>
+	</div>
+
+
+</div>
+<form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="air_line_code">
+	<input type="hidden" name="ticket_number">
+    <input type="hidden" name="ticket_type">
+
+</form>
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event,'1');
+	});
+
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/aviation/issue_list_print');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`발권데이터 출력 (${json.totalCount})`);
+            frmSearch.titleData.value = `발권데이터 출력 (${json.totalCount})`;
+			$("#totCount").html(`(${json.totalCount})`);
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+//-->
+</script>
+
+<%- include('../footer_log') %>

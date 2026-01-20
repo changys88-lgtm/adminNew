@@ -1,0 +1,155 @@
+<%- include('../header') %>
+
+<main class="content">
+
+	<form name="frmSearch" id="frmSearch" method="post" onsubmit="return formSearch(event);">
+	<input type="hidden" name="menuCol"   value="">
+    <input type="hidden" name="mode"      value="List">
+	<input type="hidden" name="page"      value="1">
+	<input type="hidden" name="titleData" value="휴가원 관리">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<span onClick="newReg('','input')"  class="search_action_btn_primary">
+                        + 신규등록
+                    </span>
+				</div>
+				<div class="search_action_right">
+					<input name="listCount" type="text" value="15" class="search_action_search_input wh40" placeholder="줄수" />
+					<span class="unit">줄수</span>
+					<select name="sFrom" class="search_action_select">
+						<option value="app_name"	>신청자
+                        <option value="term"	    >기간
+					</select>
+					<input name="sWord" type="text" value="" class="search_action_search_input" placeholder="검색어를 입력하세요" />
+					<button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<form name="frmForm" method="post" id="frmForm">
+	<input type="hidden" name="uid"  value="">
+	<input type="hidden" name="mode" value="">
+	<div ID="listFrame" >
+		<div ID="listFrameSub" class="search-panel">
+			<table class='search-table' id='dtBasic'>
+				<tr>
+                    <th>문서번호</td>
+                    <th>신청일</td>
+                    <th>신청자</td>
+                    <th>형태</td>
+                    <th>내용</td>
+                    <th>기간</td>					
+                    <th>출력</td>
+                    <th>결제</td>
+                    <th>삭제</td>
+				</tr>
+				
+			</table>
+		</div>
+	</div>
+	<div class="action_bar_split">
+		<div class="action_area_left">
+			&nbsp;
+		</div>
+		<div class="action_area_center" id="pagingHTML">
+		</div>
+		<div class="action_area_right">			
+			<button class="action_btn_download excel" onClick="return excelDown()" >
+				<span class="icon">📊</span>
+
+				엑셀 다운로드
+			</button>
+		</div>
+	</div>
+
+</main>
+
+<div id="basePopUp" style="display:none"></div>
+<script type="text/javascript">
+<!--
+
+	$(document).ready(function() {
+		//frmSearch.submit ();
+		formSearch (event);
+	});
+
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/member/vacationSave');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.listData;
+            const paging = json.pageData;
+            $("#listFrameSub").html(datas);
+            $("#pagingHTML").html(paging);
+			parent.$("#topTitleData").html(`휴가원 관리 (${json.totalCount})`);
+			frmSearch.titleData.value = `휴가원 관리 (${json.totalCount})`;
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
+
+    async function regDel(doc_number) {
+        var Rc = confirm("정말로 삭제 하시겠습니까?");
+        if (Rc) {
+            json = await dataGetSend('VacationDel',doc_number, 'member/vacationSave');
+            if (json.success === "ok") {
+                formSearch (event);
+            } else {
+                newAlert(json.errorMSg)
+            }
+        }
+        return false;		
+    }
+
+	async function newReg (doc_number) {
+		json = await dataGetSend('Vacation',doc_number, 'member/vacationSave');
+		title = json.title;
+		html  = json.html;
+		drawer.open(900, { title, html  });
+	}
+    async function InputCheck(){
+        Obj = document.frmForm;
+        if(Number.isInteger(Obj.used.value) && isInteger(Obj.used.value) ){
+            alert('오전오후반차를 선택해 주십시요');
+            Obj.used.focus();
+        }else if (trim(Obj.etc.value) == ""){
+            alert('연차내용을 입력하여 주십시요');
+            Obj.etc.focus();
+        }else if (!Obj.content.value){
+            alert('내용을 입력하여 주십시요');
+            Obj.content.focus();
+        }else{
+            json = await dataSaveSend ('frmForm','/member/vacationSave');
+			success = json.success;
+			if (success === "ok") {
+				formSearch (event);
+				$("#drawerClose").click();
+			} else {
+				newAlert(json.errorMsg);
+			}
+        }
+        return false;
+    }
+    function halfSelect(val){
+        if(isInteger(val) ) { // 실수
+            $("#haif").css("display","none");
+            $("#haifSelect").find("option:eq(0)").prop("selected", true);
+        }else{ // 정수
+            $("#haif").css("display","");
+        }
+
+    }
+    function isInteger(number)  {
+       return number % 1 === 0;
+    }
+//-->
+</script>
+
+<%- include('../footer_log') %>
