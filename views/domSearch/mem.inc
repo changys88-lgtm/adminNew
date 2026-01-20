@@ -1,4 +1,5 @@
-                    <div class="seat-layer" style="display:none;     position: absolute;	top: 40px;	left: 20px;height:455px;">
+                   <div style="position: relative;">
+				    <div class="seat-layer" style="display:none;     position: absolute;	top: 40px;	left: 20px;height:455px;">
 						<div class="counter-wrap">
 							<div class="counter-item">
 								<div class="label-con">
@@ -56,3 +57,4 @@
 						</div>
 						<img src="../images/close_img.png" id="seat-close">
 					</div>
+				</div>

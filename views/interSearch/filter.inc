@@ -1,5 +1,5 @@
 	<!--셀렉박스-->
-	<div class="select-item" id="FilterArea" style="display:none1;">
+	<div class="select-item" id="FilterArea" style="display:none;">
 		
 		<!--직항/경유-->
 		<div class="select-item-in">
@@ -216,12 +216,14 @@
 				<ul>
 					<li>
 						<div class="air-c-group custom-checkbox">
-							<input class="custom-control-input" type="radio" name="codeShareInclude"  checked  id="codeShareInclude1" value="" onClick="codeShareViewAction(this.value)"><label class="custom-control-label" for="codeShareInclude1">전체보기</label>
+							<input class="custom-control-input" type="radio" name="codeShareInclude"  checked  id="codeShareInclude1" value="" onClick="codeShareViewAction(this.value)">
+							<label class="custom-control-label" for="codeShareInclude1">전체보기</label>
 						</div>
 					</li>
 					<li>
 						<div class="air-c-group custom-checkbox">
-							<input class="custom-control-input" type="radio" name="codeShareInclude"    id="codeShareInclude2" value="N" onClick="codeShareViewAction(this.value)"><label class="custom-control-label" for="codeShareInclude2">제외</label>
+							<input class="custom-control-input" type="radio" name="codeShareInclude"    id="codeShareInclude2" value="N" onClick="codeShareViewAction(this.value)">
+							<label class="custom-control-label" for="codeShareInclude2">제외</label>
 						</div>
 					</li>
 				</ul>

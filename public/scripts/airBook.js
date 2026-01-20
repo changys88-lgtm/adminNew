@@ -224,20 +224,33 @@
 					$(".국내").show();
 				}
 			}
-			// 위치는 CSS에서 center로 설정되므로 JavaScript에서 설정 제거
+			$("#CityLayer").css("top", "167px");
+			$("#CityLayer").css("left", "14px");
+			$("#CityLayer").css("display", "block");
 			$(".city-layer").addClass("is-open");
 			$("#CityLayer").addClass("is-open");
-			// inline style로도 display 설정 (CSS 우선순위 문제 해결)
-			$("#CityLayer").css("display", "flex");
 			$(".calendar-layer").removeClass("is-open");
+			$(".calendar-layer").css("display", "none");
 			$(".seat-layer").removeClass("is-open");
+			$(".seat-layer").css("display", "none");
+			
+			// 달력 레이어가 닫혔으므로 전체 페이지 스크롤 비활성화
+			$("main.international").removeClass("has-calendar-open");
 		};
 		checkForm();
 	}
 	function seatView() {
+		$(".seat-layer").css("top", "167px");
+		$(".seat-layer").css("right", "25px");
+		$(".seat-layer").css("display", "block");
 		$(".seat-layer").addClass("is-open");
 		$(".city-layer").removeClass("is-open");
+		$(".city-layer").css("display", "none");
 		$(".calendar-layer").removeClass("is-open");
+		$(".calendar-layer").css("display", "none");
+		
+		// 달력 레이어가 닫혔으므로 전체 페이지 스크롤 비활성화
+		$("main.international").removeClass("has-calendar-open");
 	}
 	function seatClose() {
 		$(".seat-layer").removeClass("is-open");

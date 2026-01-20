@@ -19,6 +19,7 @@ module.exports = async (req, res) => {
     AviaLoginName = req.cookies?.AviaLoginName || '';
     b2bLoginId    = req.cookies?.b2bLoginId    || '';
     const pool = await getPool();
+    let   msg = '';
     if (mode == "CITY") {
         const page        = req.body.page || '1';
         const listCount   = '10';
@@ -152,20 +153,23 @@ module.exports = async (req, res) => {
             const newsQuery2 = `select contents from airline_news_detail where uid_minor = '${uid}' `;
             const result2    = await pool.request().query(newsQuery2);
             const newsRow2   = result2.recordset[0];
-            let   html = ` 제목 : ${newsRow.subject} <br><br>${newsRow2.contents} `;
-            html = html.replace(/\/upload\//g, 'http://www.galileo.co.kr/upload/');
-            html = html.replace(/<a href/gi, "<a target='_blank' href");
-            html = html.replace(/\\"/g, '"');
+            const titleData  = `<i class="fas fa-edit search-title-text"> 제목 : ${newsRow.subject} <br><br>${newsRow2.contents} </span></i>`;
+            let   htmlData = ` 제목 : ${newsRow.subject} <br><br>${newsRow2.contents} `;
+            htmlData = newsRow2.contents || '';
+            htmlData = htmlData.replace(/\/upload\//g, 'http://www.galileo.co.kr/upload/');
+            htmlData = htmlData.replace(/<a href/gi, "<a target='_blank' href");
+            htmlData = htmlData.replace(/\\"/g, '"');
 
             if (newsRow.file_name && newsRow.file_name !== '') {
-                html += `<br>첨부화일 : <a href="//www.galileo.co.kr/${newsRow.file_link}" target="_blank">첨부파일</a>`;
+                htmlData += `<br>첨부화일 : <a href="//www.galileo.co.kr/${newsRow.file_link}" target="_blank">첨부파일</a>`;
             }
         
-            html += "<br><BR><center><트래블 포트 코리아 제공></center>";
+            htmlData += "<br><BR><center><트래블 포트 코리아 제공></center>";
+            res.json({ success: 'ok', errorMsg: msg , title: titleData , html: htmlData });
             
-            res.json({ detail: html });
             //console.log(html);
         } catch (err) {
+            msg = err;
             console.error(err);
             res.status(500).send('Database error');
         }

@@ -101,12 +101,17 @@
             </div>
         </div>
     </div>
-    <div class='calendar-layer' style='display:none; position: absolute;'  ID='CalendarLayer'>
-        <div id='' style='position: sticky ; float: right' onClick="calClose ('CalendarLayer')" ><img src='/images/close_img.png'></div>
-        <div class='calendar-layer-data'  ID='CalendarLayerData'>
+    
+    <div class='calendar-layer' ID='CalendarLayer'>
+        <div class='layer-box'>
+            <div class='layer-head'>
+                <strong>날짜 선택</strong>
+                <button class='close' onClick="calClose ('CalendarLayer')">×</button>
+            </div>
+            <div class='calendar-layer-data'  ID='CalendarLayerData'>
+            </div>
         </div>
     </div>
-    
 
     <div class='city_search_box' style="display:none;width: 500px;" ID="CitySearchBox">
         <div class='pop_section'>
@@ -347,10 +352,78 @@
 
         const json  = await res.json();
         if (mode == "CITY") {
-            $("#cityData").html(json.city);
+            // 도시 데이터를 파싱해서 region-list와 city-list로 변환
+            // 임시 컨테이너에 HTML을 넣어서 파싱
+            const $temp = $('<div>').html(json.city);
+            const regionList = [];
+            const cityDataByRegion = {};
+            
+            // 각 지역별로 데이터 수집
+            $temp.find('.list-0').each(function() {
+                const $item = $(this);
+                const region = $item.find('.city-tit').text().trim();
+                if (!region) return;
+                
+                regionList.push(region);
+                const cities = [];
+                
+                $item.find('ul li a').each(function() {
+                    const $link = $(this);
+                    const onClick = $link.attr('onClick') || $link.attr('onclick');
+                    if (onClick) {
+                        const match = onClick.match(/cityChoice\('([^']+)','([^']+)','([^']+)'\)/);
+                        if (match) {
+                            cities.push({
+                                code: match[1],
+                                name: match[2],
+                                name_en: match[3]
+                            });
+                        }
+                    }
+                });
+                
+                cityDataByRegion[region] = cities;
+            });
+            
+            // 왼쪽 region-list 생성
+            let regionHtml = '';
+            regionList.forEach((region, index) => {
+                const activeClass = index === 0 ? 'active' : '';
+                regionHtml += `<li class="${activeClass}" data-region="${region}">${region}</li>`;
+            });
+            $('.region-list').html(regionHtml);
+            
+            // 오른쪽 city-list 생성 (첫 번째 지역의 도시들)
+            const firstRegion = regionList[0];
+            if (firstRegion && cityDataByRegion[firstRegion]) {
+                let cityHtml = '';
+                cityDataByRegion[firstRegion].forEach(city => {
+                    cityHtml += `<button type="button" onClick="cityChoice('${city.code}','${city.name}','${city.name_en}')">${city.name}</button>`;
+                });
+                $('#cityData').html(cityHtml);
+            }
+            
+            // 지역 클릭 이벤트
+            $(document).off('click', '.region-list li').on('click', '.region-list li', function() {
+                $('.region-list li').removeClass('active');
+                $(this).addClass('active');
+                const region = $(this).data('region');
+                if (cityDataByRegion[region]) {
+                    let cityHtml = '';
+                    cityDataByRegion[region].forEach(city => {
+                        cityHtml += `<button type="button" onClick="cityChoice('${city.code}','${city.name}','${city.name_en}')">${city.name}</button>`;
+                    });
+                    $('#cityData').html(cityHtml);
+                }
+            });
+            
             $("#listFrameSub").html(json.news);
             gData = json.cityData;
-            //console.log(json);
+            
+            // 디버깅용 콘솔 로그
+            console.log('Region List:', regionList);
+            console.log('City Data By Region:', cityDataByRegion);
+            console.log('First Region Cities:', cityDataByRegion[firstRegion]);
         } else if (mode == "NEWS") {
             $("#info_data").html(json.detail);
         } else if (mode == "airCheck") {

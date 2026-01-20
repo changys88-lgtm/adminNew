@@ -130,65 +130,59 @@
 				</div>
 			</div>
 
-			<div class="page_item_content2" style="width: calc(100% - 250px);">	
+			<div class="page_item_content2">	
 				<!--여행지역 선택-->
-				<div class="travel-area">
+				<div class="search-bar">
 	
-					<div class="item-1">
-	
-						<div class="tr-item city-toggle">
-							<p class="t1">출발도시</p>
-							<span class="input-con">
-								<input type="text" class="city-input" name="depName" id="depName" onClick="startOpen()" readonly value="김포" placeholder="">
-							</span>
-							<div class="area-layer" id="start_area" style="display:none;left:0px;top:81px;">
-								<div class="area-layer_b">
-									<ul ID="depArea">
-										
-									</ul>
-								</div>
+					<div class="search-item city-select" data-type="from">
+						<span class="label">출발도시</span>
+						<strong>
+							<input type="text" class="city-input" name="depName" id="depName" onClick="startOpen()" readonly value="김포" placeholder="">
+						</strong>
+						<div class="area-layer" id="start_area" style="display:none;left:0px;top:81px;">
+							<div class="area-layer_b">
+								<ul ID="depArea">
+									
+								</ul>
 							</div>
 						</div>
-						<div class="tr-swap">
-							<a href="#"><img src="/images/ico_swap-w.png"></a>
-						</div>
-						<div class="tr-item city-toggle">
-							<p class="t1">도착도시</p>
-							<span class="input-con">
-								<input type="text" class="city-input" name="arrName" id="arrName" onClick="endOpen()" readonly  placeholder="">
-							</span>
-							<div class="area-layer" id="end_area" style="display:none;left:350px !important; top :81px;">
-								<div class="area-layer_b">
-									<ul ID="arrArea">
-										
-									</ul>
-								</div>
+					</div>
+
+					<div class="swap">⇄</div>
+
+					<div class="search-item city-select" data-type="to">
+						<span class="label">도착도시</span>
+						<strong>
+							<input type="text" class="city-input" name="arrName" id="arrName" onClick="endOpen()" readonly  placeholder="">
+						</strong>
+						<div class="area-layer" id="end_area" style="display:none;left:350px !important; top :81px;">
+							<div class="area-layer_b">
+								<ul ID="arrArea">
+									
+								</ul>
 							</div>
 						</div>
-	
 					</div>
-	
-					<!--가는날/오는날-->
-					<div class="item-2">
-						<div class="tr-item ">
-							<p class="t1">가는날</p>
-							<span class="date-span" id="dep_date_name"  
-							onClick="return generateDomCalendars('dep_date','CalendarLayer')"
-							>
-							<!--onClick="return CalendarDomeBasic('dep_date','frmForm','CalendarLayer','','','','')" -->
-							선택하세요
-							</span>
-						</div>
-						<div class="tr-swap">
-						</div>
-						<div class="tr-item " id="arrDateArea">
-							<p class="t1">오는날</p>
-							<span class="date-span" id="arr_date_name"  onClick="return CalendarDomeBasic('arr_date','frmForm','CalendarLayer','','','','')">
-								선택하세요
-							</span>
+
+					<div class="search-item date-select" id="openCalendar">
+						<span class="label">가는날</span>
+						<strong class="date-span" id="dep_date_name" onClick="return generateDomCalendars('dep_date','CalendarLayer')">선택하세요</strong>
+					</div>
+
+					<div class="search-item date-select" id="openCalendarReturn">
+						<span class="label">오는날</span>
+						<strong class="date-span" id="arr_date_name" onClick="return CalendarDomeBasic('arr_date','frmForm','CalendarLayer','','','','')">선택하세요</strong>
+					</div>
+
+					<div class="search-item pax-select" onClick="seatView()">
+						<span class="label">인원</span>
+						<strong id="seat-box">성인 1, 일반석</strong>
+						<div style="position :relative;">
+							<%- include ('mem.inc') %>
 						</div>
 					</div>
-					<!--//가는날/오는날-->
+					
+					<button class="search-btn" onClick="return searchAction()">🔍 검색</button>
 	
 					<!--//검색-->
 					<div class='city_search_box' style="display:none" ID="CitySearchBox">
@@ -201,18 +195,16 @@
 					</div>
 				</div>
 				<!--//여행지역 선택-->
-				<div class="multi-travel-area2" style="float:right;">
-					<div class="item-3">
-						<input type="text" readonly="readonly" class="seat-in" value="성인 1, 일반석"  id="seat-box" onClick="seatView()">
-					</div>
-					<div class="travel-search" onClick="return searchAction()">
-						검색
-					</div>
-					
-					<%- include ('mem.inc') %>
-				</div>
 			</div>
 			<div class='calendar-layer' style='display:none;top:145px;left:25px;' ID='CalendarLayer'>
+				<div class='layer-box'>
+					<div class='layer-head'>
+						<strong>날짜 선택</strong>
+						<button class='close' onClick="calClose('CalendarLayer')">×</button>
+					</div>
+					<div class='calendar-layer-data' ID='CalendarLayerData'>
+					</div>
+				</div>
 			</div>
 	
 			<input type="hidden" name="depCode"     value="GMP">
@@ -273,7 +265,7 @@
 		
 			<input type="hidden" name="ticket_type" value="2">
 	
-			<div class="Search-Area" style="width: calc(100% - 250px);">	
+			<div class="Search-Area">	
 				<div class="search-wrap">
 					<table class="form">
 						<tbody>				
@@ -293,7 +285,7 @@
 			</div>
 		</div>
 
-		<div style="display:flex;margin-top:10px; width: calc(100% - 250px);">
+		<div style="display:flex;margin-top:10px;">
 			<!--page_item_content-->
 				<div class="page_item_content page_item_content2" id="SearchMain" style="display:none">	
 	

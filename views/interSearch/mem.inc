@@ -1,4 +1,4 @@
-			<div class="seat-layer" style="display:none; left: -50px; top:14px;">
+			<div class="seat-layer" style="display:none;">
 				<div class="layer-head">
 					<strong>인원 선택</strong>
 					<button class="layer-close"  id="seat-close" onClick="$('.seat-layer').removeClass('is-open')">×</button>

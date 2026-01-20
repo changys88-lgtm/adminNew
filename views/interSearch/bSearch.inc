@@ -8,12 +8,14 @@
                              </div>
                              <div>
                                  <div  class="opt-group">
-                                      <div class="opt-title">검색코드기준</div>
-                                     <div  class="opt-radio">
-                                         <input type="radio" name="SearchPortData" id="SearchPortData_1" checked value="" ><label for="SearchPortData_1">도시및 공항코드 동시 검색</label>
-                                     </div>
-                                     <div  class="opt-radio">
-                                         <input type="radio" name="SearchPortData" id="SearchPortData_2" value="P" ><label for="SearchPortData_2">공항코드만 검색</label>
+                                      <div class="opt-inline">
+                                          <div class="opt-title">검색코드기준</div>
+                                         <div  class="opt-radio">
+                                             <input type="radio" name="SearchPortData" id="SearchPortData_1" checked value="" ><label for="SearchPortData_1">도시및 공항코드 동시 검색</label>
+                                         </div>
+                                         <div  class="opt-radio">
+                                             <input type="radio" name="SearchPortData" id="SearchPortData_2" value="P" ><label for="SearchPortData_2">공항코드만 검색</label>
+                                         </div>
                                      </div>
                                  </div>
                              </div>
