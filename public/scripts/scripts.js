@@ -1230,7 +1230,12 @@ function LoadingStart (gubun) {
 	if (gubun != "self" && parent.document.getElementById("HiddenSwf")) Obj = parent.document.getElementById("HiddenSwf");
 	else Obj = document.getElementById("HiddenSwf");
 	Obj.style.display = "";
-	Obj.innerHTML = "<img src='../swf/loading.gif'>";
+	Obj.innerHTML = "\
+		<div class='avn-loading-wrap'>\
+			<div class='avn-loading-spinner'></div>\
+			<p class='avn-loading-text'>로딩중</p>\
+		</div>\
+	";
 }
 
 function LoadingStop (gubun) {

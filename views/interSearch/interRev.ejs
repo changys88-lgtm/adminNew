@@ -17,7 +17,7 @@
 		  </div>
 		
 		  <div id="searchFrame_1" class="main_frame">
-			<iframe class="search_frame" src="/interSearch/Search?searchFrameNumber=1"></iframe>
+			<iframe class="search_frame" src="/interSearch/Search?searchFrameNumber=1" scrolling="no"></iframe>
 		  </div>
 		</div>
 	</div>
@@ -43,7 +43,7 @@
 				<span class='tab-text' id='searchTop_${searchCnt}' onclick="return sShow('${searchCnt}')">검색</span>
 				<span class='tab-close' onclick="event.cancelBubble=true;return sClose('${searchCnt}')" >x</span>
 			</button>`);
-			$("#searchFrame").append(`<div id='searchFrame_${searchCnt}' style='height: ${docHeight}px;' class='main_frame' ><iframe class='search_frame' style='height: ${docHeight}px;'  src='/interSearch/Search?searchFrameNumber=${searchCnt}${url}'></iframe></div>`);
+			$("#searchFrame").append(`<div id='searchFrame_${searchCnt}' style='height: ${docHeight}px;' class='main_frame' ><iframe class='search_frame' style='height: ${docHeight}px;' scrolling='no' src='/interSearch/Search?searchFrameNumber=${searchCnt}${url}'></iframe></div>`);
 			sShow(searchCnt);
 		}
 	}
@@ -72,6 +72,7 @@
 		$(".main_frame").css("height",docHeight );
 		$(".search_frame").css("height",docHeight );
 		parent.$("#topTitleData").html(`국제선예약`);
+		
 	});
 
 //-->

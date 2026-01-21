@@ -12,12 +12,12 @@ app.use(cookieParser());
 
 module.exports = async (req, res) => {
     const mode = req.body.mode;
-    const airlineWord = req.body?.airlineWord || '';
-    const airlineData = req.body?.airlineData || '';
+    const sWord = req.body?.sWord || '';
+    const sAir = req.body?.sAir || '';
     //console.log(mode);
-    aviaLoginId   = req.cookies?.AviaLoginId   || '';
-    AviaLoginName = req.cookies?.AviaLoginName || '';
-    b2bLoginId    = req.cookies?.b2bLoginId    || '';
+    const aviaLoginId   = req.cookies?.AviaLoginId   || '';
+    const AviaLoginName = req.cookies?.AviaLoginName || '';
+    const b2bLoginId    = req.cookies?.b2bLoginId    || '';
     const pool = await getPool();
     let   msg = '';
     if (mode == "CITY") {
@@ -53,8 +53,8 @@ module.exports = async (req, res) => {
             };
             
             let newsQry   = ` where 1=1 `;
-            if (airlineWord != "") newsQry += ` and subject like '%${airlineWord}%' `; 
-            if (airlineData != "") newsQry += ` and airline = '${airlineData}' `;
+            if (sWord != "") newsQry += ` and subject like '%${sWord}%' `; 
+            if (sAir != "") newsQry += ` and airline = '${sAir}' `;
             let totQuery = `select count(*) as total from airline_news as a ${newsQry}`;
             
             const result2 = await pool.request().query(totQuery);
@@ -123,9 +123,7 @@ module.exports = async (req, res) => {
                     </thead>
                     ${newsData}
                 </table>
-                <div>
-                    ${pageHTML}
-                </div>
+               
             `;
 
             const citySql = `select * from airPort_code where usage is null or usage = ''`;
@@ -141,7 +139,86 @@ module.exports = async (req, res) => {
             console.error(err);
             res.status(500).send('Database error');
         }
-    } else if (mode === "NEWSDETAIL") {
+    } else if (mode === "NEWSLIST") {
+        let newsQry   = ` where 1=1 `;
+        if (sWord != "") newsQry += ` and subject like '%${sWord}%' `; 
+        if (sAir != "") newsQry += ` and airline = '${sAir}' `;
+        let totQuery = `select count(*) as total from airline_news as a ${newsQry}`;
+        const page = req.body.page || 1;
+        const listCount = '10';
+        const result2 = await pool.request().query(totQuery);
+        const totalRowCount = result2.recordset[0].total;
+        const { startRow, endRow, pageHTML } = getPagination({
+            tot_row: totalRowCount,
+            page: page ,
+            listCount: listCount
+        });
+        //console.log(page,totalRowCount,startRow,endRow,pageHTML);
+        const joinQry = ` left outer join airline_news as a WITH (nolock) on main.uid = a.uid `;
+        const newsQuery = `
+        select 
+            a.*
+            from (
+            select * from
+                (select a.uid , ROW_NUMBER() OVER (order by a.uid desc ) as RowNum
+                    from 
+                    airline_news (nolock) as a 
+                    
+                    ${newsQry}
+                    
+                ) as db1
+            where RowNum BETWEEN ${startRow} AND ${endRow}
+            ) as main
+            ${joinQry}
+            order by RowNum asc
+        `;
+        //console.log(newsQuery);
+        const resultNews = await pool.request().query(newsQuery);
+        
+        let   newsData = ``;
+        resultNews.recordset.forEach(row => {
+            const trimmedRow = {};
+            for (const [key, val] of Object.entries(row)) {
+                trimmedRow[key] = val === null ? '' : (typeof val === 'string' ? val.trim()  : val);
+            }
+            const { uid , airline , subject , up_date , file_name , file_link  } = trimmedRow;
+            let img = "";
+            let ext = '';
+            if (file_name) {
+                ext = file_name.split('.').pop().toLowerCase();
+                if (ext.length > 4) ext = file_link.split('.').pop().toLowerCase();
+                if (ext.length > 4) ext = "unknown";
+                img = `<img src='/images/icons/${ext}.gif'>`;
+            }
+            newsData += `
+                <tr>
+                    <td>${uid}</td>
+                    <td>${airline}</td>
+                    <td class='al'><a href='javascript://' onClick="newsDetail('${uid}')">${subject}</a></td>
+                    <td>${img}</td>
+                    <td>${cutDate(up_date)}</td>
+                </tr>
+            `;
+        });
+        if (newsData == "") newsData = `<tr><td colspan='5' class='ac hh50'>검색결과가 없습니다.</td></tr>`;
+        const cityhtml = `
+            <table class='result-table'  id='dtBasic'>
+                <thead class='thead-std' style=''>
+                <tr style='background-color:#eee;'>
+                    <th class='wh100'>넘버</th>
+                    <th class='wh100'>항공사</th>
+                    <th >제목</th>
+                    <th class='wh60'>첨부</th>
+                    <th class='wh120'>등록일</th>
+                </tr>
+                </thead>
+                <tbody>
+                    ${newsData}
+                </tbody>
+            </table>
+            
+        `;
+        res.json({ success: 'ok', errorMsg: msg , news: cityhtml , pageHTML : pageHTML });
     } else if (mode == "NEWS") {
 
         const uid = req.body.uid;
@@ -153,7 +230,7 @@ module.exports = async (req, res) => {
             const newsQuery2 = `select contents from airline_news_detail where uid_minor = '${uid}' `;
             const result2    = await pool.request().query(newsQuery2);
             const newsRow2   = result2.recordset[0];
-            const titleData  = `<i class="fas fa-edit search-title-text"> 제목 : ${newsRow.subject} <br><br>${newsRow2.contents} </span></i>`;
+            const titleData  = `<i class="fas fa-edit search-title-text"> 제목 : ${newsRow.subject} </span></i>`;
             let   htmlData = ` 제목 : ${newsRow.subject} <br><br>${newsRow2.contents} `;
             htmlData = newsRow2.contents || '';
             htmlData = htmlData.replace(/\/upload\//g, 'http://www.galileo.co.kr/upload/');

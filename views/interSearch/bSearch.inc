@@ -1,5 +1,4 @@
-                    <div style="position: relative;">
-                        <div style="display:none; position: absolute; left: -700px;" ID="detail_option" class="detail-option">
+                        <div style="display:none; position: absolute; left: -700px;" ID="beforeSearch" class="detail-option">
                              <div style="padding:0 10px 5px;" class="opt-row">
                                  <div class="opt-check">
                                      <input type="checkbox" name="CacheIgnore" id="CacheIgnore" value="Y" >
@@ -22,7 +21,7 @@
                              <div style="margin-top:10px;">
                                  <div class="opt-group">
                                      <div class="opt-title">선호항공사</div>
-                                     <div class="opt-check">
+                                     <div class="opt-check" style="padding-left:13px;">
                                          <input type="checkbox" name="SearchAirLikeData"  checked id="SearchAirLikeData_ALL" value="" onClick="return searchAirLikeChange(this.value)"><label for="SearchAirLikeData_ALL">전체항공사</label>
                                      </div>
                                  </div>
@@ -41,7 +40,7 @@
                                         <div>
                                             <input class="opt-radio" type="radio" name="SearchMaxJourneyTimeData"  checked id="SearchMaxJourneyTimeData_ALL" value="" ><label for="SearchMaxJourneyTimeData_ALL">전체시간</label>
                                         </div>
-                                        <div >
+                                        <div>
                                             <input class="opt-radio" type="radio" name="SearchMaxJourneyTimeData" id="SearchMaxJourneyTimeData_06" value="06" ><label for="SearchMaxJourneyTimeData_06">6시간</label>
                                         </div>
                                         <div>
@@ -95,7 +94,7 @@
                                  </div>
                              </div>
                             <div  class="opt-footer">
-                                <button type="button" onclick="filterShow('detail_option')">닫기</button>
+                                <button type="button" onclick="$('#beforeSearch').hide();">닫기</button>
                            </div>
                         </div>
-                    </div>
+                    

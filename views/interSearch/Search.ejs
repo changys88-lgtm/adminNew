@@ -24,29 +24,29 @@
             </div>
             <div class="search_action_right">
                 <div class="search-actions tool-buttons">
-                    <button class="btn teal" onClick="filterShow('detail_option')">최적화 검색 설정 ▾</button>
-                    <button class="btn navy secondary" onClick="ageCheck()">나이계산</button>
+                    <button class="btn teal" onClick="beforeSearchShow()">최적화 검색 설정 ▾</button>
+                    <button class="btn navy secondary" onClick="ageCheckShow()">나이계산</button>
                     <button class="btn orange secondary" onClick="monthSearch()">오월별도검색</button>
                     <button class="btn dark secondary" onClick="recentSearch()">최근검색</button>
                 </div>
-                <%- include("bSearch.inc") %>
-                <%- include("age.inc") %>
                 <div style="position: relative;">
-                    <div id="revPopup" style="display:none; position: absolute; left: -550px; top: 40px; z-index: 9999;"></div>
+                    <%- include("bSearch.inc") %>
+                    <%- include("age.inc") %>
+                    <div id="revPopup" style="display:none; position: absolute; left: -638px; top: 0px; z-index: 9999;"></div>
                 </div>
             </div>
         </div>
     </div>
 
       <!-- 검색바 -->
-      <div class="search-bar">
+    <div class="search-bar">
 
         <div class="search-item city-select" data-type="from">
-          <span class="label">출발도시</span>
-          <!-- <strong id="fromText">인천</strong> -->
-          <strong id="departure_name_text">
-          <input type="text" class="city-input" name="departure_name" id="departure_name" onClick="cityView('1','0')" onkeyup="autoComplete(this,'1','0')" autocomplete="off" value="인천" placeholder="출발도시">
-          </strong>
+            <span class="label">출발도시</span>
+            <!-- <strong id="fromText">인천</strong> -->
+            <strong id="departure_name_text">
+            <input type="text" class="city-input" name="departure_name" id="departure_name" onClick="cityView('1','0')" onkeyup="autoComplete(this,'1','0')" autocomplete="off" value="인천" placeholder="출발도시">
+            </strong>
 
         </div>
 
@@ -56,7 +56,7 @@
             <span class="label">도착도시</span>
             <!-- <strong id="toText" class="is-placeholder">도착도시</strong> -->
             <strong id="arrive_name_text">
-            <input type="text" class="city-input" name="arrive_name" id="arrive_name" onClick="cityView('2','0')" onkeyup="autoComplete(this,'2','0')" autocomplete="off" value="도착도시" placeholder="도착도시">
+            <input type="text" class="city-input" name="arrive_name" id="arrive_name" onClick="cityView('2','0')" onkeyup="autoComplete(this,'2','0')" autocomplete="off" value="" placeholder="도착도시">
             </strong>
         </div>
 
@@ -75,28 +75,26 @@
         <div class="search-item pax-select" onClick="seatView()">
             <span class="label">인원</span>
             <strong id="seat-box">성인 1</strong>
-            <div style="position :relative;">
-                <%- include("mem.inc") %>
-            </div>
         </div>
         
-        <button class="search-btn">🔍 검색</button>
-      </div>
-    </main>
-  </div>
-</div>
-     
-<div class="city-layer" id="CityLayer">
-    <div class="layer-box city-modal">
-        <div class="city-head">
-            <strong>도시 선택</strong>
-            <button class="close" onClick="$('.city-layer').removeClass('is-open')">×</button>        
+        <button class="search-btn cursor" onClick="return interSearch()">🔍 검색</button>
+        <div style="position :relative;">
+            <%- include("mem.inc") %>
         </div>
-        <div class="city-body city-body-split">
-            <ul class="region-list"></ul>
+    </div>
+     
+    <div class="city-layer" id="CityLayer">
+        <div class="layer-box city-modal">
+            <div class="city-head">
+                <strong>도시 선택</strong>
+                <button class="close" onClick="$('.city-layer').removeClass('is-open')">×</button>        
+            </div>
+            <div class="city-body city-body-split">
+                <ul class="region-list"></ul>
 
-            <div class="city-list-area">
-                <div class="city-list" id="cityData"></div>
+                <div class="city-list-area">
+                    <div class="city-list" id="cityData"></div>
+                    <div class='city-list' ID="CitySearchBoxData" style="max-height:260px;overflow-y: auto;"></div>
                 </div>   
             </div>
         </div>
@@ -108,8 +106,7 @@
                 <strong>날짜 선택</strong>
                 <button class='close' onClick="calClose ('CalendarLayer')">×</button>
             </div>
-            <div class='calendar-layer-data'  ID='CalendarLayerData'>
-            </div>
+            <div class='calendar-layer-data'  ID='CalendarLayerData'></div>
         </div>
     </div>
 
@@ -118,16 +115,14 @@
             <div class='pa815 title_bold'>도시정보</div>
             <img class='cal_close_img' src='/images/close_img.png'>
         </div>
-        <div class='pa15 f13' ID="CitySearchBoxData" style="max-height:260px;overflow-y: auto;">
-        </div>
+        
     </div>
          <!--//여행지역 선택-->
-     </div>
-     <%- include("filter.inc") %>
-     <%- include("form.inc") %> 
-     </form>
+    <%- include("filter.inc") %>
+    <%- include("form.inc") %> 
+    </form>
     
-     <div  class="result-panel">
+    <div  class="result-panel">
          <!--page_item_content-->
          <div  class="page_item_content page_item_content2">	
              <!--list-wrap-->
@@ -172,45 +167,53 @@
              <div id="MonthData" class="monthArea mat10" style="display:none">
  
              </div>
- 
- 
- 
+             <div id="SearchNotice">
+                <form name='frmSearch' id="frmSearch" onsubmit="return formSearch(event)">
+                <input type="hidden" name="mode" value="NEWSLIST">
+                <input type="hidden" name="page" value="1">
+                    <div id="searchFrame">
+                        <div class="search_action_bar">
+                            <div class="search_action_left">
+                                <span>항공사 뉴스</span>
+                            </div>
+                            <div class="search_action_right">
+                                
+                                <span class="unit">항공사</span>                                
+                                <input type='text' name='sAir' class='wh100'>
+                                <span class="unit">제목</span>    
+                                <input type='text' name='sWord' class='wh100'>
+                                <button type="submit" class="search_action_icon_btn" aria-label="검색">🔍</button>
+                            </div>
+                        </div>
+                            
+                        
+        
+                        
+                        <div ID="listFrameSub" class="" >
+                            
+                        </div>
+                        <div class="action_bar_split">
+                            <div class="action_area_left">
+                                &nbsp;
+                                
+                            </div>
+                            <div id="pageHTML" class="action_area_center">
+                            
+                            </div>
+                            <div class="action_area_right">
+                                &nbsp;
+                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
          </div>
          <!--//page_item_content-->
          
-     </div>
-     <div>
-     <form name='frmAir' onsubmit="return airCheck()">
-        <div id="searchFrame">
-			<div class="search_action_bar">
-                <div class="search_action_left"></div>
-                <div class="search_action_right">
-                    <span>항공사 뉴스</span>
-                    <span>항공사</span>
-                    <select name="air" class="search-select">
-                            <option value=''>전체</option>
-                            
-                        </select>
-                        
-                        <input type='text' name='word' class='form-smooth wh140'>
-                        <span type="submit" class="btn_basic btn_gy" onClick="airCheck ()">검색</span>
-                    </div>
-                </div>
-                
-            
- 
-                
-                <div ID="listFrameSub" class="result-panel" >
-                    
-                </div>
-                <div id="pageHTML">
-                  
-                </div>
-            </div>
-        </div>
-        </form>
-        </div>
- 
+    </div>
+    
+     
      <!--//air-page-quickbar-->
  
 <!--예약상세팝업-->
@@ -232,7 +235,11 @@
          <div id="basePopUp2" style="display:none"></div>
     
  </div>
+ <form name="frmModify" id="frmModify" method="post" >
+	<input type="hidden" name="mode"		value="">
+	<input type="hidden" name="uid">
 
+</form>
 <div id="basePopUp" style="display:none"></div>
 <script type="text/javascript">
 <!--
@@ -264,9 +271,19 @@
     }
 
 
-	function newsDetail (uid) {
-		$("#info_popup").toggle();
-        searchDatas ('NEWS',uid);
+	async function newsDetail (uid) {
+		//$("#info_popup").toggle();
+        //searchDatas ('NEWS',uid);
+        frmModify.uid.value      = uid;
+        frmModify.mode.value     = 'NEWS';
+        LoadingStart ();
+        json = await dataSaveSend ('frmModify','/SearchGet');
+		const title   = json.title;
+		const html    = json.html;
+		drawer.open(1000, { title, html  });
+        LoadingStop();
+        
+	
 	}
 
     function airLikeCheck (code) {
@@ -274,10 +291,11 @@
 	}
 
 	function ageCheck () {
-        calClose();
+        interSearchClose();
         searchDatas ('ageCheck');
 	}
     function recentSearch(){
+        interSearchClose();
 		searchDatas ('recentCheck');
 	}
 	function calculateAge () {
@@ -337,6 +355,24 @@
             }
         }, 200);
 	});
+
+    async function formSearch (e,page=1) {
+        if (e) e.preventDefault();
+        frmSearch.page.value = page;
+		LoadingStart ();
+        json = await dataSaveSend ('frmSearch','/SearchGet');
+		success = json.success;
+		if (success === "ok") {
+            const datas  = json.news;
+            const paging = json.pageHTML;
+            $("#listFrameSub").html(datas);
+            $("#pageHTML").html(paging);
+		} else {
+            newAlert('목록호출중 오류 발생');
+		}
+		LoadingStop();
+        return false;
+	};
 
     async function searchDatas (mode,uid='') {
         //if (mode == "CITY") {
@@ -407,6 +443,8 @@
             $(document).off('click', '.region-list li').on('click', '.region-list li', function() {
                 $('.region-list li').removeClass('active');
                 $(this).addClass('active');
+                $("#CitySearchBoxData").hide();
+			    $("#cityData").show();
                 const region = $(this).data('region');
                 if (cityDataByRegion[region]) {
                     let cityHtml = '';
@@ -418,12 +456,13 @@
             });
             
             $("#listFrameSub").html(json.news);
+            $("#pageHTML").html(json.pageHTML);
             gData = json.cityData;
             
             // 디버깅용 콘솔 로그
-            console.log('Region List:', regionList);
-            console.log('City Data By Region:', cityDataByRegion);
-            console.log('First Region Cities:', cityDataByRegion[firstRegion]);
+            //console.log('Region List:', regionList);
+            //console.log('City Data By Region:', cityDataByRegion);
+            //console.log('First Region Cities:', cityDataByRegion[firstRegion]);
         } else if (mode == "NEWS") {
             $("#info_data").html(json.detail);
         } else if (mode == "airCheck") {
@@ -433,6 +472,9 @@
             smallPopHide ();
             $("#revPopup").show();
             $("#revPopup").html(json.ageData);
+            // iframe 스크롤바 제거
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden";
         } else if (mode == "recentCheck") {
             $('.moopen').show();
             $("#SearchHistoryArea").html(json.recentData);
@@ -598,3 +640,4 @@
         <div ID="smallPopupData"></div>
     </div>
 </div>
+<%- include('../footer_log') %>

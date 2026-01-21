@@ -18,6 +18,9 @@ html, body {
   font-family: "Noto Sans KR", system-ui, sans-serif;
   background: #f5f7fa;
   color: #222;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
 }
 
 :root {
@@ -585,7 +588,55 @@ table.regis-hotel #ir1 {
   padding: 12px;
 }
 
+/* ===== 로딩 스피너 (파란색 둥근 바) ===== */
+.avn-loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  pointer-events: none;
+}
 
+/* 파란색 둥근 원 스피너 */
+.avn-loading-spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 4px solid rgba(37, 99, 235, 0.15);
+  border-top-color: #2563eb;
+  animation: avn-spin 0.9s linear infinite;
+}
+
+@keyframes avn-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 로딩 텍스트 */
+.avn-loading-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  letter-spacing: -0.2px;
+}
+
+/* 팝업 박스 내부 로딩 위치 조정 */
+#smallPopupData,
+#smallPopupWhiteData {
+  position: relative;
+  min-height: 200px;
+}
 
 
 

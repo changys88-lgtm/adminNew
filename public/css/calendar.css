@@ -72,12 +72,12 @@
 }
 
 .other-month {
-  background: #f1f5f9;
+  background: #fff;
   color: #94a3b8;
 }
 
 .day.other-month {
-  background: #f3f6f9;
+  background: #fff;
   color: #aaa;
 }
 

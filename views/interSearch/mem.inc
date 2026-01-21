@@ -1,7 +1,7 @@
 			<div class="seat-layer" style="display:none;">
 				<div class="layer-head">
 					<strong>인원 선택</strong>
-					<button class="layer-close"  id="seat-close" onClick="$('.seat-layer').removeClass('is-open')">×</button>
+					<button class="layer-close"  id="seat-close" onClick="seatClose()">×</button>
 					</div>
 				<div class="counter-wrap">
 					<div class="counter-item">

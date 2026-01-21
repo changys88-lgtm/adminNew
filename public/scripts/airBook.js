@@ -224,15 +224,15 @@
 					$(".국내").show();
 				}
 			}
+			interSearchClose();
 			$("#CityLayer").css("top", "167px");
 			$("#CityLayer").css("left", "14px");
-			$("#CityLayer").css("display", "block");
+			//$("#CityLayer").css("display", "block");
 			$(".city-layer").addClass("is-open");
-			$("#CityLayer").addClass("is-open");
-			$(".calendar-layer").removeClass("is-open");
-			$(".calendar-layer").css("display", "none");
-			$(".seat-layer").removeClass("is-open");
-			$(".seat-layer").css("display", "none");
+			//$(".calendar-layer").removeClass("is-open");
+			//$(".calendar-layer").css("display", "none");
+			//$(".seat-layer").removeClass("is-open");
+			//$(".seat-layer").css("display", "none");
 			
 			// 달력 레이어가 닫혔으므로 전체 페이지 스크롤 비활성화
 			$("main.international").removeClass("has-calendar-open");
@@ -240,25 +240,25 @@
 		checkForm();
 	}
 	function seatView() {
+		interSearchClose();
 		$(".seat-layer").css("top", "167px");
 		$(".seat-layer").css("right", "25px");
-		$(".seat-layer").css("display", "block");
-		$(".seat-layer").addClass("is-open");
-		$(".city-layer").removeClass("is-open");
-		$(".city-layer").css("display", "none");
-		$(".calendar-layer").removeClass("is-open");
-		$(".calendar-layer").css("display", "none");
+		$(".seat-layer").show();
+		//$(".seat-layer").addClass("is-open");
+		//$(".city-layer").removeClass("is-open");
+		//$(".calendar-layer").removeClass("is-open");
+		//$(".calendar-layer").css("display", "none");
 		
 		// 달력 레이어가 닫혔으므로 전체 페이지 스크롤 비활성화
 		$("main.international").removeClass("has-calendar-open");
 	}
 	function seatClose() {
-		$(".seat-layer").removeClass("is-open");
+		$(".seat-layer").hide();
 	}
-	function cityChoice (code,name) {
+	function cityChoice (code,name,name_en) {
 		Obj = document.frmForm;
-		RouteCount  = Obj.RouteCount.value;
-		ticket_type = Obj.ticket_type.value;
+		let RouteCount  = Obj.RouteCount.value;
+		let ticket_type = Obj.ticket_type.value;
 		if (currentSub > 0) {
 			if (currentCity == "1") idname = "dep"; else idname = "arr";
 			idname += "_city"+currentSub;
@@ -280,7 +280,7 @@
 			//frames["HIDE_ACTION"].location.href = sFile;
 			airLikeCheck (code);
 		}
-		$("#CitySearchBox").fadeOut();
+		//$("#CitySearchBox").fadeOut();
 		$(".city-layer").removeClass("is-open");
 		topStatus = false;
 		// 도시를 연속으로 체크할수 있게 변경 2021-11-15
@@ -469,18 +469,19 @@
 			$("#reSearchButton").hide ();
 			$("#revButton").hide ();
 			$("#ruleButton").hide ();
-			$(".calendar-layer").removeClass("is-open");
-			$(".city-layer").removeClass("is-open");
-			$(".seat-layer").removeClass("is-open");
-			$("#SearchShare").hide();
-			$("#SearchAir").hide();
-			$("#SearchDepartureTime").hide();
-			$("#SearchArriveTime").hide();
-			$("#SearchShareTime").hide();
-			$("#SearchPriceGubun").hide();
-			$("#SearchPrice").hide();
-			$("#MonthData").hide();
-			$("#detail_option").hide();
+			interSearchClose();
+			//$(".calendar-layer").removeClass("is-open");
+			//$(".city-layer").removeClass("is-open");
+			//$(".seat-layer").removeClass("is-open");
+			//$("#SearchShare").hide();
+			//$("#SearchAir").hide();
+			//$("#SearchDepartureTime").hide();
+			//$("#SearchArriveTime").hide();
+			//$("#SearchShareTime").hide();
+			//$("#SearchPriceGubun").hide();
+			//$("#SearchPrice").hide();
+			//$("#MonthData").hide();
+			//$("#detail_option").hide();
 			$("#FilterArea").show();
 
 			//$("#ReserveArea").hide();
@@ -533,6 +534,29 @@
 			}
 		}
 		return false;
+	}
+	function beforeSearchShow () {
+		interSearchClose();
+		$("#beforeSearch").show();
+	}
+	function ageCheckShow () {
+		interSearchClose();
+		$("#ageCheckPopup").show();
+	}
+	function interSearchClose () {
+		$(".calendar-layer").removeClass("is-open");
+		$(".city-layer").removeClass("is-open");
+		$(".seat-layer").hide();
+		$("#SearchShare").hide();
+		$("#SearchAir").hide();
+		$("#SearchDepartureTime").hide();
+		$("#SearchArriveTime").hide();
+		$("#SearchShareTime").hide();
+		$("#SearchPriceGubun").hide();
+		$("#SearchPrice").hide();
+		$("#MonthData").hide();
+		$("#beforeSearch").hide();
+		$("#ageCheckPopup").hide();
 	}
 
 	async function interPostSend(file='') {
@@ -1587,7 +1611,8 @@
 				id ++;
 				if (top.oyeManagerLanguage == "en") aTmp[2] = aTmp[4];
 				//new_data += "<li ID='T"+id+"' class='tap_data' >"+tmp+"</li>";
-				new_data += "<p ID='T"+id+"'class='bm10 hh20 cursor tap_data' style='overflow:hidden;' onClick=\"cityChoice('"+aTmp[0]+"','"+aTmp[2]+"')\"><span class='title_bold'>"+aTmp[0]+", </span>"+aTmp[1]+", "+aTmp[2]+"("+aTmp[4]+"), "+aTmp[3]+"</p>";
+				//new_data += "<p ID='T"+id+"'class='bm10 hh20 cursor tap_data' style='overflow:hidden;' onClick=\"cityChoice('"+aTmp[0]+"','"+aTmp[2]+"')\"><span class='title_bold'>"+aTmp[0]+", </span>"+aTmp[1]+", "+aTmp[2]+"("+aTmp[4]+"), "+aTmp[3]+"</p>";
+				new_data += `<button type='button' onClick='cityChoice("${aTmp[0]}","${aTmp[2]}","${aTmp[3]}")'>${aTmp[2]}, ${aTmp[0]}</button>`;
 			}
 		}
 		if (new_data != "") {
@@ -1595,17 +1620,13 @@
 		} else {
 			document.getElementById("CitySearchBoxData").innerHTML = "<p class='bm10 hh20 ac' style='overflow:hidden;'>데이타 없음</p>";
 		}
-
+		$(".city-layer").addClass("is-open");
 		if (val == "" ) { // && topStatus == true
-			$("#CitySearchBox").fadeOut();
-			topStatus = false;
-			$(".city-layer").addClass("is-open");
+			$("#CitySearchBoxData").hide();
+			$("#cityData").show();
 		} else { // if (topStatus == false)
-			if (s == "2") $("#CitySearchBox").addClass("lm250");
-			else $("#CitySearchBox").removeClass("lm250");
-			$("#CitySearchBox").fadeIn();
-			topStatus = true;
-			$(".city-layer").removeClass("is-open");
+			$("#CitySearchBoxData").show();
+			$("#cityData").hide();
 		}
 		maxValue = id;
 		nextField();
@@ -1787,7 +1808,8 @@
 	}
 
 	function filterShow (s) {
-		$("#"+s).toggle();
+		interSearchClose();
+		$("#"+s).show();
 		menuOn = true;
 	}
 

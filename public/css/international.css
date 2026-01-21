@@ -117,7 +117,7 @@ box-sizing: border-box;
 
 .search-bar .search-item.date-select .label,
 .search-bar .search-item.pax-select .label {
-margin-top: 5px !important;
+margin-top: 5px ;
 display: block;
 }
 
@@ -218,17 +218,19 @@ margin-top: 10px;
 main.international > form ~ div > .result-panel,
 main.international > form ~ .result-panel,
 #content .result-panel {
+  /*
   margin-left: 25px;
   margin-right: 25px;
   width: calc(100% - 50px);
+  */
   box-sizing: border-box;
 }
 
 /* ===== 국내선 블루 검색바 스타일 ===== */
 #content .search-bar,
 main.international .search-bar {
-  margin: 0 25px;
-  width: calc(100% - 50px);
+  /*margin: 0 25px;
+  width: calc(100% - 50px);*/
   box-sizing: border-box;
 }
 
@@ -253,9 +255,9 @@ main.international .search-bar {
 }
 
 #content div[style*="display:flex"] {
-  margin-left: 25px !important;
-  margin-right: 25px !important;
-  width: calc(100% - 50px) !important;
+  margin-left: 25px ;
+  margin-right: 25px ;
+  width: calc(100% - 50px) ;
   box-sizing: border-box;
 }
 
@@ -313,7 +315,7 @@ main.international .search-bar {
 }
 
 #content .travel-area .tr-item.date-select .t1 {
-  margin-top: 5px !important;
+  margin-top: 5px ;
 }
 
 #content .travel-area .tr-item .city-input {
@@ -355,7 +357,7 @@ main.international .search-bar {
 /* 국내선 인원 선택 및 검색 버튼을 블루 검색바에 포함 */
 #content .multi-travel-area2 {
   display: contents;
-  float: none !important;
+  float: none ;
 }
 
 #content .travel-area .item-3 {
@@ -523,10 +525,10 @@ font-size: 14px;
  City 도시검색
 ================================ */
 .city-layer {
-position: fixed !important;
-background: transparent !important;
-display: none !important;
-z-index: 9999 !important;
+position: fixed ;
+background: transparent ;
+display: none ;
+z-index: 9999 ;
 }
 
 .city-layer .city-head {
@@ -548,23 +550,25 @@ z-index: 9999 !important;
   
   /* close button style only */
   
-  .city-layer .layer-close {
-	width: 26px;
-	height: 26px;
+  .city-layer .layer-close,
+  .city-layer .city-head .close {
+	width: 28px;
+	height: 28px;
 	border-radius: 50%;
-	border: 1px solid #d1d5db;
-	background: #ffffff;
+	border: 1px solid #cbd5e1;
+	background: #fff;
 	color: #475569;
+	font-size: 16px;
+	line-height: 1;
 	cursor: pointer;
-	font-size: 14px;
-	line-height: 24px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
   }
   
-  .city-layer .layer-close:hover {
-	background: #f3f4f6;
+  .city-layer .layer-close:hover,
+  .city-layer .city-head .close:hover {
+	background: #f1f5f9;
 	color: #0f172a;
   }
 
@@ -572,26 +576,26 @@ z-index: 9999 !important;
 div.city-layer.is-open,
 #CityLayer.is-open,
 div#CityLayer.is-open {
-display: block !important;
-position: fixed !important;
-z-index: 9999 !important;
-background: transparent !important;
+display: block ;
+position: fixed ;
+z-index: 9999 ;
+background: transparent ;
 }
 
 /* CalendarLayer는 city-layer 내부에 있지만 독립적으로 표시되어야 함 */
 #CalendarLayer,
 .calendar-layer#CalendarLayer {
-position: fixed !important;
-z-index: 10000 !important;
-background: transparent !important;
+position: fixed ;
+z-index: 10000 ;
+background: transparent ;
 }
 
 #CalendarLayer.is-open,
 .calendar-layer#CalendarLayer.is-open {
-display: block !important;
-position: fixed !important;
-z-index: 10000 !important;
-background: transparent !important;
+display: block ;
+position: fixed ;
+z-index: 10000 ;
+background: transparent ;
 }
 
 .city-box {
@@ -653,9 +657,9 @@ background: #e5f6f7;
 }
 
 .region-list li.active {
-background: #1f3a5f !important;
-color: #fff !important;
-font-weight: 600 !important;
+background: #1f3a5f ;
+color: #fff ;
+font-weight: 600 ;
 }
 
 .city-list {
@@ -668,7 +672,7 @@ gap: 8px;
 .city-list button {
 padding: 10px 8px;
 border: 1px solid #d1d5db;
-border-radius: 10px !important;
+border-radius: 10px ;
 background: #fff;
 font-size: 14px;
 cursor: pointer;
@@ -684,10 +688,10 @@ color: #0f766e;
 .date-layer,
 .pax-layer,
 .calendar-layer {
-position: fixed !important;
-display: none !important;
-z-index: 9999 !important;
-background: transparent !important;
+position: fixed ;
+display: none ;
+z-index: 9999 ;
+background: transparent ;
 }
 
 .date-layer.is-open,
@@ -695,10 +699,10 @@ background: transparent !important;
 .calendar-layer.is-open,
 #CalendarLayer.is-open,
 div#CalendarLayer.is-open {
-display: block !important;
-position: fixed !important;
-z-index: 9999 !important;
-background: transparent !important;
+display: block ;
+position: fixed ;
+z-index: 9999 ;
+background: transparent ;
 }
 
 .layer-box {
@@ -815,8 +819,10 @@ background: #fff;
 border-radius: 16px;
 border: 1px solid #24486a;
 overflow: hidden;
-width: 700px;
-padding: 20px;
+width: 900px;
+height: 521px;
+padding: 10px;
+box-sizing: border-box;
 }
 
 .date-layer .layer-head {
@@ -1340,7 +1346,7 @@ margin-left: auto;
 }
 
 .international {
-  gap: 24px;   /* 기존 16px → 24px */
+  gap: 0px;   /* 기존 16px → 24px */
 }
 
 .tool-buttons .btn {
@@ -1379,11 +1385,11 @@ margin-left: auto;
 
 /* 검색바 우측 버튼 */
 .search-bar .search-actions button {
-height: 32px !important;
-padding: 0 10px !important;
-font-size: 12px !important;
-border-radius: 6px !important;
-min-width: auto !important;
+height: 32px ;
+padding: 0 10px ;
+font-size: 12px ;
+border-radius: 6px ;
+min-width: auto ;
 margin-top: 8px;
 margin-bottom: 24px;
 }
@@ -1394,7 +1400,7 @@ margin-bottom: 24px;
 
 /* 전체 달력 카드 */
 .flatpickr-calendar {
-width: 640px !important;
+width: 640px ;
 border-radius: 14px;
 box-shadow: 0 20px 40px rgba(0,0,0,.18);
 font-family: "Noto Sans KR", system-ui, sans-serif;
@@ -1565,49 +1571,49 @@ cursor: pointer;
 
 /* City Layer 추가 스타일 */
 .city-layer .city-body {
-	grid-template-columns: 140px 1fr !important;  /* 왼쪽 region-list width와 일치 */
-  column-gap: 10px !important;      /* 칸 사이 여백 줄이기 */
-	padding: 10px 12px !important;   /* 전체 안쪽 여백 줄이기 */
-	min-height: 470px !important;  /* 전체 height값 30px 줄임 */
+	grid-template-columns: 140px 1fr ;  /* 왼쪽 region-list width와 일치 */
+  column-gap: 10px ;      /* 칸 사이 여백 줄이기 */
+	padding: 10px 12px ;   /* 전체 안쪽 여백 줄이기 */
+	min-height: 470px ;  /* 전체 height값 30px 줄임 */
 }
 
 .city-layer .city-list-area {
-	padding: 8px 10px 0 10px !important;  /* 위 padding 대폭 축소, 아래 여백 제거 */
+	padding: 8px 10px 0 10px ;  /* 위 padding 대폭 축소, 아래 여백 제거 */
   }
 
 .city-layer .region-list,
 #CityLayer .region-list {
-width: 140px !important;
-border-right: 1px solid #e5e7eb !important;
-list-style: none !important;
-padding: 0 !important;
-margin: 0 !important;
-background: #f9fafb !important;
+width: 140px ;
+border-right: 1px solid #e5e7eb ;
+list-style: none ;
+padding: 0 ;
+margin: 0 ;
+background: #f9fafb ;
 }
 
 .city-layer .region-list li {
-	padding: 8px 10px !important;   /* 기존 12~14px → 8px */
-	font-size: 13px !important;
-	margin-bottom: 2px !important;  /* 항목 사이 여백 줄이기 */
-	cursor: pointer !important;
+	padding: 8px 10px ;   /* 기존 12~14px → 8px */
+	font-size: 13px ;
+	margin-bottom: 2px ;  /* 항목 사이 여백 줄이기 */
+	cursor: pointer ;
 }
 
 .city-layer .region-list li.active:hover {
-  background: #1f3a5f !important;
-  color: #ffffff !important;
+  background: #1f3a5f ;
+  color: #ffffff ;
 }
 .city-layer .region-list li.active,
 #CityLayer .region-list li.active,
 .city-layer .region-list li.active:hover,
 #CityLayer .region-list li.active:hover,
 .region-list li.active {
-  background: #1f3a5f !important;   /* 네이비 블루바 */
-  color: #ffffff !important;
-  font-weight: 600 !important;
+  background: #1f3a5f ;   /* 네이비 블루바 */
+  color: #ffffff ;
+  font-weight: 600 ;
 }
 
 .city-layer .region-list li:hover {
-background: #eef3f8 !important;
+background: #eef3f8 ;
 }
 
 .city-layer .city-list,
@@ -1616,12 +1622,12 @@ background: #eef3f8 !important;
 .city-layer #cityData,
 .city-list-area .city-list,
 .city-list-area #cityData {
-	grid-template-columns: repeat(4, minmax(120px, 1fr)) !important; /* 칸도 살짝 좁힘 */
-	gap: 10px !important;   /* 세로 + 가로 간격 */
-	padding-bottom: 0 !important;
-	margin-bottom: 0 !important;
-	padding: 16px !important;
-	display: grid !important;
+	grid-template-columns: repeat(4, minmax(120px, 1fr)) ; /* 칸도 살짝 좁힘 */
+	gap: 10px ;   /* 세로 + 가로 간격 */
+	padding-bottom: 0 ;
+	margin-bottom: 0 ;
+	padding: 16px ;
+	display: grid ;
 }
 
 .city-layer .city-list button,
@@ -1630,31 +1636,31 @@ background: #eef3f8 !important;
 .city-layer #cityData button,
 .city-list-area button,
 .city-list button {
-	height: 50px !important;          /* 기존 150px → 90px */
-	padding: 4px 0 !important;        /* 위아래 여백 줄임 */
-	font-size: 13px !important;       /* 글자도 살짝 축소 */
-	border-radius: 10px !important;   /* 둥근 네모박스 */
-	border: 1px solid #d1d5db !important;
-	background: #fff !important;
-	cursor: pointer !important;
-	color: #111827 !important;
-	text-align: center !important;
-	transition: all 0.2s ease !important;
-	box-sizing: border-box !important;
-	width: 100% !important;
+	height: 50px ;          /* 기존 150px → 90px */
+	padding: 4px 0 ;        /* 위아래 여백 줄임 */
+	font-size: 13px ;       /* 글자도 살짝 축소 */
+	border-radius: 10px ;   /* 둥근 네모박스 */
+	border: 1px solid #d1d5db ;
+	background: #fff ;
+	cursor: pointer ;
+	color: #111827 ;
+	text-align: center ;
+	transition: all 0.2s ease ;
+	box-sizing: border-box ;
+	width: 100% ;
   }
 
 .city-layer .city-list button:hover {
-border-color: #2bbec3 !important;
-background: #e9f8f9 !important;
-color: #0f766e !important;
+border-color: #2bbec3 ;
+background: #e9f8f9 ;
+color: #0f766e ;
 }
 
 .city-layer .city-list button.active {
-  border-color: #2bbec3 !important;
-  background: #e6f8f8 !important;
-  color: #0f766e !important;
-  font-weight: 600 !important;
+  border-color: #2bbec3 ;
+  background: #e6f8f8 ;
+  color: #0f766e ;
+  font-weight: 600 ;
 }
 
 @media (min-width: 1000px) {
@@ -1666,85 +1672,101 @@ color: #0f766e !important;
 .main_frame {
   padding: 2px 0 0 0;
   width: 100%;
+  overflow: hidden;
 }
 .search_frame {
   width: 100%;
   border: 0px;
+  overflow: hidden;
+  display: block;
+}
+
+/* iframe 스크롤바 완전 제거 */
+iframe.search_frame {
+  overflow: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+iframe.search_frame::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 
 
 #searchFrame .top-tabs .tab {
-	/*all: unset !important;*/
-	box-sizing: border-box !important;
-	display: inline-flex !important;
-	align-items: center !important;
-	gap: 6px !important;
-	padding: 6px 10px 6px 12px !important;
-	border-radius: 6px !important;
-	background: #f1f5f9 !important;
-	border: 1px solid #e5e7eb !important;
-	font-size: 13px !important;
-	font-weight: 600 !important;
-	color: #1f2937 !important;
-	cursor: pointer !important;
+	/*all: unset ;*/
+	box-sizing: border-box ;
+	display: inline-flex ;
+	align-items: center ;
+	gap: 6px ;
+	padding: 6px 10px 6px 12px ;
+	border-radius: 6px ;
+	background: #f1f5f9 ;
+	border: 1px solid #e5e7eb ;
+	font-size: 13px ;
+	font-weight: 600 ;
+	color: #1f2937 ;
+	cursor: pointer ;
     min-width: 60px;
   }
   
   /* active 탭 */
   #searchFrame .top-tabs .tab.active {
-	background: #e0ecff !important;
-	border-color: #93c5fd !important;
-	color: #1d4ed8 !important;
+	background: #e0ecff ;
+	border-color: #93c5fd ;
+	color: #1d4ed8 ;
   }
   
   /* 텍스트 */
   #searchFrame .top-tabs .tab .tab-text {
-	all: unset !important;
-	cursor: pointer !important;
-	line-height: 1 !important;
+	all: unset ;
+	cursor: pointer ;
+	line-height: 1 ;
   }
   
   /* X 버튼 */
   #searchFrame .top-tabs .tab .tab-close {
-	all: unset !important;
-	width: 14px !important;
-	height: 14px !important;
-	border-radius: 50% !important;
-	background: #d1d5db !important;
-	color: #374151 !important;
-	font-size: 11px !important;
-	font-weight: 700 !important;
-	line-height: 14px !important;
-	text-align: center !important;
-	cursor: pointer !important;
-	display: inline-flex !important;
-	align-items: center !important;
-	justify-content: center !important;
-	margin-left: 4px !important;
-	transition: all .2s !important;
+	all: unset ;
+	width: 14px ;
+	height: 14px ;
+	border-radius: 50% ;
+	background: #d1d5db ;
+	color: #374151 ;
+	font-size: 11px ;
+	font-weight: 700 ;
+	line-height: 14px ;
+	text-align: center ;
+	cursor: pointer ;
+	display: inline-flex ;
+	align-items: center ;
+	justify-content: center ;
+	margin-left: 4px ;
+	transition: all .2s ;
   }
   
   #searchFrame .top-tabs .tab .tab-close:hover {
-	background: #ef4444 !important;
-	color: #fff !important;
+	background: #ef4444 ;
+	color: #fff ;
   }
   
   /* + 버튼 */
   #searchFrame .top-tabs .tab.plus {
-	all: unset !important;
-	width: 32px !important;
-	height: 32px !important;
-	display: inline-flex !important;
-	align-items: center !important;
-	justify-content: center !important;
-	border-radius: 6px !important;
-	background: #f8fafc !important;
-	border: 1px dashed #cbd5e1 !important;
-	color: #2563eb !important;
-	font-size: 18px !important;
-	font-weight: 700 !important;
-	cursor: pointer !important;
+	all: unset ;
+	width: 32px ;
+	height: 32px ;
+	display: inline-flex ;
+	align-items: center ;
+	justify-content: center ;
+	border-radius: 6px ;
+	background: #f8fafc ;
+	border: 1px dashed #cbd5e1 ;
+	color: #2563eb ;
+	font-size: 18px ;
+	font-weight: 700 ;
+	cursor: pointer ;
   }
 
 /* 인원선택 레이어 */
@@ -1765,7 +1787,7 @@ color: #0f766e !important;
   }
 
 .seat-layer.is-open {
-	display: block !important;
+	display: block ;
 }
   
   /* ================= Header ================= */
@@ -1947,14 +1969,14 @@ color: #0f766e !important;
   /* 성인, 학생 버튼 크기 줄이기 */
   #Seat_Y.whp20,
   #Seat_STU.whp20 {
-	flex: 0 0 16% !important;
-	max-width: 16% !important;
+	flex: 0 0 16% ;
+	max-width: 16% ;
   }
   
   /* 외국인근로자 버튼 크기 키우기 */
   #Seat_LBR.whp33 {
-	flex: 0 0 38% !important;
-	max-width: 38% !important;
+	flex: 0 0 38% ;
+	max-width: 38% ;
   }
   
   .seat-layer .seat-block:hover {
@@ -2033,21 +2055,22 @@ color: #0f766e !important;
 #CalendarLayer .layer-box,
 .calendar-layer .layer-box,
 .calendar-layer#CalendarLayer .layer-box {
-	width: 920px !important;
-	max-width: 92vw !important;
-	border-radius: 14px !important;
-	background: #ffffff !important;
-	border: 1px solid #24486a !important;
-	overflow: hidden !important;
+	width: 920px ;
+	max-width: 92vw ;
+	height: 521px ;
+	border-radius: 14px ;
+	background: #ffffff ;
+	border: 1px solid #24486a ;
+	overflow: hidden ;
   }
   
   .calendar-layer.date-layer .layer-box {
-	background: #ffffff !important;
+	background: #ffffff ;
   }
   
   .calendar-layer.date-layer,
   .date-layer.calendar-layer {
-	background: transparent !important;
+	background: transparent ;
   }
   
   /* ===============================
@@ -2055,8 +2078,8 @@ color: #0f766e !important;
   ================================ */
   
   #CalendarLayer .layer-head {
-	background: #ffffff !important;
-	border-bottom: none;
+	background: #ffffff ;
+	
 	padding: 18px 20px 10px;
 	display: flex;
 	align-items: center;
@@ -2065,42 +2088,55 @@ color: #0f766e !important;
   }
   
   .calendar-layer.date-layer .layer-head {
-	background: #ffffff !important;
+	background: #ffffff ;
   }
   
   .calendar-layer.date-layer .layer-box,
   .calendar-layer.date-layer .layer-head,
   .calendar-layer.date-layer .layer-body {
-	background: #ffffff !important;
+	background: #ffffff ;
   }
   
   #CalendarLayer.calendar-layer.date-layer .layer-box,
   #CalendarLayer.calendar-layer.date-layer .layer-head,
   #CalendarLayer.calendar-layer.date-layer .layer-body {
-	background: #ffffff !important;
+	background: #ffffff ;
   }
   
   #CalendarLayer .layer-body {
-	background: #ffffff !important;
-	padding: 0 !important;
+	background: #fff ;
+	padding: 0 ;
+
   }
   
   #CalendarLayer .calendar-layer-data,
   .calendar-layer-data {
-	background: #ffffff !important;
+	background: #ffffff;
 	width: 100%;
+	max-height: 521px;
+	overflow-y: auto;
+	overflow-x: hidden;
   }
   
   #CalendarLayer .calendar-body {
-	background: #ffffff !important;
+	background: #ffffff;
+	max-height: 521px;
+	overflow-y: auto;
+	overflow-x: hidden;
   }
+  
   
   #CalendarLayer .layer-box,
   #CalendarLayer .layer-head,
   #CalendarLayer .layer-body,
   #CalendarLayer .calendar-layer-data,
   #CalendarLayer .calendar-body {
-	background: #ffffff !important;
+	background: #ffffff ;
+  }
+  
+  #CalendarLayer .layer-box {
+	width: 1200px ;
+	box-sizing: border-box ;
   }
   
   #CalendarLayer .layer-head strong {
@@ -2123,25 +2159,25 @@ color: #0f766e !important;
   
   /* 달력 바디 스크롤 - 3개월씩 한 줄, 1년치 스크롤 */
   .calendar-body {
-	max-height: 440px !important;
-	overflow-y: auto !important;
-	overflow-x: hidden !important;
-	padding: 10px 20px 20px !important;
-	background: #ffffff !important;
-	width: 100% !important;
-	box-sizing: border-box !important;
-	scrollbar-width: thin;
-	scrollbar-color: #cbd5e1 transparent;
+	max-height: 521px ;
+	overflow-y: auto ;
+	overflow-x: hidden ;
+	padding: 10px 20px 20px ;
+	background: #ffffff ;
+	width: 100% ;
+	box-sizing: border-box ;
+	scrollbar-width: thin; /* 항상 표시 */
+	scrollbar-color: #c5c5c5 transparent;	
   }
   
   /* 달력 스크롤바 스타일 */
   .calendar-body::-webkit-scrollbar {
-	width: 6px;
+	width: 4px;
   }
   
   .calendar-body::-webkit-scrollbar-thumb {
-	background: #cbd5e1;
-	border-radius: 6px;
+	background-color: #c5c5c5;
+	border-radius: 4px;
   }
   
   .calendar-body::-webkit-scrollbar-track {
@@ -2150,52 +2186,64 @@ color: #0f766e !important;
   
   /* 국제선 예약 페이지 전체 스크롤 - 항상 활성화 (국내선과 동일) */
   main.international {
-	overflow-y: scroll !important;
-	overflow-x: hidden !important;
-	height: 100vh;
+	overflow: hidden;
+/*	height: 100vh;*/
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	scrollbar-width: thin;
-	scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.03);
+	scrollbar-gutter: stable;
   }
   
-  /* 전체 페이지 스크롤바 스타일 (국내선과 동일) */
+  /* 전체 페이지 스크롤바 숨김 */
   main.international::-webkit-scrollbar {
-	width: 8px;
+	display: none;
   }
   
   main.international::-webkit-scrollbar-thumb {
-	background: #cbd5e1;
-	border-radius: 6px;
+	display: none;
   }
   
   main.international::-webkit-scrollbar-thumb:hover {
-	background: #94a3b8;
+	display: none;
   }
   
   main.international::-webkit-scrollbar-track {
-	background: transparent;
+	display: none;
   }
   
-  /* 달력 3개월씩 한 줄 표시 */
-  .calendar-wrap {
-	display: flex !important;
-	flex-direction: row !important;
-	flex-wrap: wrap !important;
-	gap: 20px !important;
-	width: 100% !important;
+  #CalendarLayer .calendar-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 28px; 
   }
   
-  .month-box {
-	flex: 0 0 calc((100% - 40px) / 3) !important;
-	width: calc((100% - 40px) / 3) !important;
-	box-sizing: border-box !important;
-	margin: 0 !important;
-	padding: 0 !important;
-	float: none !important;
+  #CalendarLayer .month-box {
+	display: block;
+	flex: 0 0 calc((100% - 30px) / 3);
+	max-width: calc((100% - 30px) / 3);
+	box-sizing: border-box;
+	float: left;
+	background: #f8fafc;
+	border-radius: 12px;
+	padding: 12px 10px;
+	margin-left:10px;
+	min-height: 260px;      /* 🔥 포인트 */
+	padding-bottom: 28px;   /* 하단 여백 */
+	position: relative;
+	
   }
-  
+
+  #CalendarLayer .month-box::after {
+	content: "";
+	position: absolute;
+	left: 16px;
+	right: 16px;
+	bottom: 12px;
+	height: 1px;
+	background: #eef2f7;
+	display: none;
+  }
+
   /* 월 타이틀 표시 */
   .month-box .month-t {
 	display: block;
@@ -2205,6 +2253,13 @@ color: #0f766e !important;
 	color: #1e3a8a;
 	margin-bottom: 12px;
 	padding: 0;
+	margin-bottom: 14px;
+	font-size: 15px;
+	font-weight: 700;
+	color: #1e3a8a;
+	letter-spacing: -0.2px;
+	border-bottom: 1px solid #eef2f7;
+  margin-bottom: 14px;
   }
   
   /* ===============================
@@ -2227,6 +2282,7 @@ color: #0f766e !important;
 	width: 100%;
 	border-collapse: collapse;
 	table-layout: fixed;
+	border-spacing: 0;
   }
   
   /* ===============================
@@ -2251,15 +2307,17 @@ color: #0f766e !important;
   ================================ */
   
   .month-box td {
-	height: 42px;
+	height: 36px;
 	text-align: center;
 	vertical-align: middle;
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: 500;
 	color: #285171;
 	border: none;
 	background: transparent;
 	cursor: pointer;
+	padding: 2px;
+	line-height: 1.2;
   }
   
   /* hover */
@@ -2278,26 +2336,32 @@ color: #0f766e !important;
   /* 선택일 - 파란색 둥근 원 */
   .month-box td.start,
   .month-box td.end {
-	background: #2979ff !important;
-	color: #fff !important;
-	border-radius: 50% !important;
-	font-weight: 700 !important;
-	width: 42px !important;
-	height: 42px !important;
-	min-width: 42px !important;
-	min-height: 42px !important;
-	max-width: 42px !important;
-	max-height: 42px !important;
-	display: flex !important;
-	align-items: center !important;
-	justify-content: center !important;
-	margin: 0 auto !important;
-	box-sizing: border-box !important;
+	background: #2979ff ;
+	color: #fff ;
+	border-radius: 50% ;
+	font-weight: 700 ;
+	width: 32px ;
+	height: 32px ;
+	min-width: 32px ;
+	min-height: 32px ;
+	max-width: 32px ;
+	max-height: 32px ;
+	display: flex ;
+	align-items: center ;
+	justify-content: center ;
+	margin: 0 auto ;
+	box-sizing: border-box ;
   }
   
   /* 선택된 토요일 - 흰색 텍스트 */
   .month-box td.sat.start,
   .month-box td.sat.end {
+	color: #fff;
+  }
+  
+  /* 선택된 일요일 - 흰색 텍스트 */
+  .month-box td.sun.start,
+  .month-box td.sun.end {
 	color: #fff;
   }
   
@@ -2503,8 +2567,8 @@ color: #0f766e !important;
 
   main.domestic .city-layer .layer-box,
 main.international.domestic .city-layer .layer-box {
-  width: 520px !important;
-  max-width: 520px !important;
+  width: 520px ;
+  max-width: 520px ;
 }
 
 
@@ -2515,7 +2579,7 @@ main.international.domestic #CityLayerData {
   grid-template-columns: repeat(2, 1fr);
   column-gap: 40px;
   row-gap: 6px;
-  padding: 16px 20px 18px !important;
+  padding: 16px 20px 18px ;
 }
 
 
@@ -2565,6 +2629,8 @@ main.domestic #CityLayerData label {
   /* 최적화 검색 설정 레이어 */
   .detail-option {
 	width: 450px;
+	max-height: 600px;
+	overflow-y: auto;
 	background: #ffffff;
 	border-radius: 12px;
 	border: 1px solid #285070;
@@ -2593,6 +2659,8 @@ main.domestic #CityLayerData label {
 	font-weight: 600;
 	color: #1f2937;
 	margin-bottom: 10px;
+	float: left;
+	margin-right: 24px;
   }
   
   /* 인라인 (한 줄에 나열) */
@@ -2650,7 +2718,7 @@ main.domestic #CityLayerData label {
 	padding-top: 16px;
 	border-top: 1px solid #e5e7eb;
 	margin-top: 16px;
-	text-align: right;
+	text-align: center;
   }
   
   .opt-footer button {
@@ -2678,14 +2746,97 @@ main.domestic #CityLayerData label {
   /* 나이계산 팝업 스타일 (최적화 검색 설정과 동일한 레이어 스타일) */
   #revPopup {
 	width: 450px;
+	max-height: 600px;
+	overflow-y: auto;
 	background: #ffffff;
 	border-radius: 12px;
-	border: 1px solid #e5e8ef;
+	border: 1px solid #285070;
 	box-shadow: 0 20px 40px rgba(0,0,0,.15);
 	padding: 18px 20px 20px;
 	font-family: "Noto Sans KR", system-ui, sans-serif;
 	font-size: 13px;
 	color: #1f2937;
+  }
+  
+  /* 나이계산 레이어 내부 스타일 - 최적화검색설정과 동일 */
+  #revPopup .detail-top {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #e5e7eb;
+	margin-bottom: 14px;
+  }
+  
+  #revPopup .detail-top .tit {
+	font-size: 14px;
+	font-weight: 600;
+	color: #1f2937;
+	margin: 0;
+	list-style: none;
+  }
+  
+  #revPopup .detail-top li {
+	list-style: none;
+  }
+  
+  /* 상단 닫기 버튼 숨김 */
+  #revPopup #datail-close {
+	display: none !important;
+  }
+  
+  #revPopup .detail-content {
+	margin-bottom: 16px;
+  }
+  
+  #revPopup .detail-content:last-child {
+	margin-bottom: 0;
+  }
+  
+  /* 하단 닫기 버튼 영역 - 최적화검색설정과 동일 */
+  #revPopup .detail-content.ac {
+	text-align: center;
+	padding-top: 16px;
+	border-top: 1px solid #e5e7eb;
+	margin-top: 16px;
+  }
+  
+  /* 하단 닫기 버튼 - 최적화검색설정 .opt-footer button과 동일 */
+  #revPopup .detail-content.ac .btn_basic.btn_gray {
+	padding: 8px 16px;
+	background: #3b82f6;
+	color: #fff;
+	border: none;
+	border-radius: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	display: inline-block;
+  }
+  
+  #revPopup .detail-content.ac .btn_basic.btn_gray:hover {
+	background: #2563eb;
+  }
+  
+  #revPopup table {
+	margin-bottom: 16px;
+  }
+  
+  #revPopup ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+  }
+  
+  #revPopup ul li {
+	margin-bottom: 8px;
+	font-size: 13px;
+	color: #374151;
+	line-height: 1.6;
+  }
+  
+  #revPopup ul li:last-child {
+	margin-bottom: 0;
   }
   
   /* 국내선 도시 선택 레이어 */
@@ -2705,8 +2856,16 @@ main.domestic #CityLayerData label {
 	overflow-y: auto;
   }
   
+  
   .area-layer_b ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
   }
+
+
+
+
+  
+
+  

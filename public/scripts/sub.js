@@ -12,14 +12,15 @@ function generateCalendars(names = "", layer = "") {
 		const NOWS = `${y}${m}${dd}`;
 		
 		// 레이어 위치 설정 및 표시
+		interSearchClose();
 		$("#" + layer).css("top", "167px");
 		$("#" + layer).css("left", "14px");
-		$("#" + layer).css("display", "block");
+		//$("#" + layer).css("display", "block");
 		$("#" + layer).addClass("is-open");
-		$(".city-layer").removeClass("is-open");
-		$(".city-layer").css("display", "none");
-		$(".seat-layer").removeClass("is-open");
-		$(".seat-layer").css("display", "none");
+		//$(".city-layer").removeClass("is-open");
+		//$(".city-layer").css("display", "none");
+		//$(".seat-layer").removeClass("is-open");
+		//$(".seat-layer").css("display", "none");
 		
 		// 전체 페이지 스크롤 활성화
 		$("main.international").addClass("has-calendar-open");
@@ -38,7 +39,7 @@ function generateCalendars(names = "", layer = "") {
 		let month = new Date().getMonth() + 1; // JS는 0부터 시작
 
 		// 먼저 컨테이너 초기화 - 3개월씩 한 줄, 1년치 스크롤바로 보기
-		container.innerHTML = '<div class="calendar-body" style="max-height: 440px !important; overflow-y: auto !important; overflow-x: hidden !important; padding: 10px 20px 20px !important; width: 100% !important; box-sizing: border-box !important;"><div class="calendar-wrap" style="display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 20px !important; justify-content: flex-start !important; align-items: flex-start !important; width: 100% !important; box-sizing: border-box !important;">';
+		container.innerHTML = '<div class="calendar-body" style="max-height: 440px !important; overflow-y: auto !important; overflow-x: hidden !important; padding: 10px 20px 20px !important; width: 100% !important; box-sizing: border-box !important;"><div class="calendar-wrap" style="display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; gap: 15px !important; justify-content: flex-start !important; align-items: flex-start !important; width: 100% !important; box-sizing: border-box !important; position: relative !important;">';
 
 		for (let dCnt = 0; dCnt < 12; dCnt++) {
 			if (dCnt > 0) month++;
@@ -89,7 +90,7 @@ function generateCalendars(names = "", layer = "") {
 			});
 
 			container.innerHTML += `
-				<div class="month-box" style="flex: 0 0 calc((100% - 40px) / 3); width: calc((100% - 40px) / 3); min-width: 0; max-width: calc((100% - 40px) / 3); box-sizing: border-box; margin: 0; padding: 0; float: none; clear: none;">
+				<div class="month-box" >					
 					<p class="month-t">${year}년 ${month}월</p>
 					<table>
 						<tr>
@@ -105,6 +106,7 @@ function generateCalendars(names = "", layer = "") {
 		container.innerHTML += '</div></div>';
 		
 		// 스타일 강제 적용 - 3개월씩 한 줄 표시
+		/*
 		setTimeout(function() {
 			const calendarBody = container.querySelector('.calendar-body');
 			const calendarWrap = container.querySelector('.calendar-wrap');
@@ -119,22 +121,26 @@ function generateCalendars(names = "", layer = "") {
 			if (calendarWrap) {
 				calendarWrap.style.setProperty('display', 'flex', 'important');
 				calendarWrap.style.setProperty('flex-direction', 'row', 'important');
-				calendarWrap.style.setProperty('flex-wrap', 'wrap', 'important');
-				calendarWrap.style.setProperty('gap', '20px', 'important');
+				calendarWrap.style.setProperty('flex-wrap', 'nowrap', 'important');
+				calendarWrap.style.setProperty('gap', '15px', 'important');
 				calendarWrap.style.setProperty('width', '100%', 'important');
 				calendarWrap.style.setProperty('align-items', 'flex-start', 'important');
 			}
 			
 			monthBoxes.forEach(function(box) {
-				box.style.setProperty('flex', '0 0 calc((100% - 40px) / 3)', 'important');
-				box.style.setProperty('width', 'calc((100% - 40px) / 3)', 'important');
-				box.style.setProperty('min-width', '0', 'important');
-				box.style.setProperty('max-width', 'calc((100% - 40px) / 3)', 'important');
+				box.style.setProperty('flex', '0 0 calc(33.3333% - 10px)', 'important');
+				box.style.setProperty('width', 'calc(33.3333% - 10px)', 'important');
+				box.style.setProperty('min-width', '0px', 'important');
+				box.style.setProperty('max-width', 'calc(33.3333% - 10px)', 'important');
 				box.style.setProperty('float', 'none', 'important');
 				box.style.setProperty('clear', 'none', 'important');
-				box.style.setProperty('margin', '0', 'important');
+				box.style.setProperty('margin', '0px', 'important');
+				box.style.setProperty('display', 'flex', 'important');
+				box.style.setProperty('flex-direction', 'column', 'important');
+				box.style.setProperty('flex-shrink', '0', 'important');
 			});
 		}, 100);
+		*/
 	}
 }
 
@@ -193,14 +199,15 @@ function generateDomCalendars(names = "", layer = "") {
 		dep_date      = document.frmForm && document.frmForm.dep_date ? document.frmForm.dep_date.value : "";
 		arr_date      = document.frmForm && document.frmForm.arr_date ? document.frmForm.arr_date.value : "";
 		//console.log(dep_date);
+		interSearchClose();
 		$("#CalendarLayer").css("top", "187px");
 		$("#CalendarLayer").css("left", "14px");
-		$("#" + layer).css("display", "block");
+		//$("#" + layer).css("display", "block");
 		$("#" + layer).addClass("is-open");
-		$(".city-layer").removeClass("is-open");
-		$(".city-layer").css("display", "none");
-		$(".seat-layer").removeClass("is-open");
-		$(".seat-layer").css("display", "none");
+		//$(".city-layer").removeClass("is-open");
+		//$(".city-layer").css("display", "none");
+		//$(".seat-layer").removeClass("is-open");
+		//$(".seat-layer").css("display", "none");
 	
 		let year = new Date().getFullYear();
 		let month = new Date().getMonth() + 1; // JS는 0부터 시작
@@ -257,15 +264,24 @@ function generateDomCalendars(names = "", layer = "") {
 			});
 
 			calendarData.innerHTML += `
-				<div class="month-box" style="flex: 0 0 calc((100% - 40px) / 3); width: calc((100% - 40px) / 3); min-width: 0; max-width: calc((100% - 40px) / 3); box-sizing: border-box; margin: 0; padding: 0; float: none; clear: none;">
+				<div class="month-box" >
 					<p class="month-t">${year}년 ${month}월</p>
-					<table>
-						<tr>
-							<th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class="sat">토</th>
-						</tr>
-						${calendarHTML}
-					</table>
+					<div class="calendar-table">
+						<div class="calendar-table-row">
+							<span class="sun">일</span>
+							<span class="mon">월</span>
+							<span class="tue">화</span>
+							<span class="wed">수</span>
+							<span class="thu">목</span>
+							<span class="fri">금</span>
+							<span class="sat">토</span>
+						</div>
+						<div class="calendar-table-row">
+							${calendarHTML}
+						</div>
+					</div>
 				</div>
+				
 			`;
 		}
 		
@@ -327,7 +343,7 @@ function setDomCal (year,month,day,name,layer,week) {
 
 function calClose (layer='CalendarLayer') {
 	$("#" + layer).removeClass("is-open");
-	$("#" + layer).css("display", "none");
+	//$("#" + layer).css("display", "none");
 	$("#" + layer + "Data").empty();
 	
 	// 전체 페이지 스크롤 비활성화

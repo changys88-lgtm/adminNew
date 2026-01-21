@@ -636,22 +636,18 @@
 
 	function loadStart (str) {
 		rs = "\
-			<div class='loading_form_circle_main' >\
-				<div class='loading_form_circle'>\
-					<img src='../swf/loading.gif' alt='' class='airplane_load' style='display:block;margin:0 auto;'>\
-				</div>\
-				<p class='ac font13 mat10'>"+str+"</p>\
+			<div class='avn-loading-wrap'>\
+				<div class='avn-loading-spinner'></div>\
+				<p class='avn-loading-text'>"+str+"</p>\
 			</div>\
 		";
 		return rs;
 	}
 	function loadStartCircle (str) {
 		rs = "\
-			<div class='loading_form_circle_main' >\
-				<div class='loading_form_circle'>\
-					<img src='../swf/loading.gif' alt='' class='airplane_load' style='display:block;margin:0 auto;'>\
-				</div>\
-				<p class='ac font13 mat10'>"+str+"</p>\
+			<div class='avn-loading-wrap'>\
+				<div class='avn-loading-spinner'></div>\
+				<p class='avn-loading-text'>"+str+"</p>\
 			</div>\
 		";
 		return rs;
