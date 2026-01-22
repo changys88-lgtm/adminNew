@@ -557,6 +557,7 @@
 		$("#MonthData").hide();
 		$("#beforeSearch").hide();
 		$("#ageCheckPopup").hide();
+		$("#SearchHistory").hide();
 	}
 
 	async function interPostSend(file='') {

@@ -18,9 +18,7 @@ html, body {
   font-family: "Noto Sans KR", system-ui, sans-serif;
   background: #f5f7fa;
   color: #222;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scrollbar-gutter: stable;
+  overflow: hidden;
 }
 
 :root {
@@ -89,9 +87,11 @@ html, body {
 .content {
   flex: 1;
   padding: 24px;
-  overflow-y: scroll;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.03);
+  scrollbar-color:#d6d6d6 transparent;
 }
 
 .page-head h2 {
@@ -211,9 +211,7 @@ html, body {
   background: #fff;
 }
 
-/* .city-layer 스타일은 international.css로 이동됨 */
-.date-layer,
-.pax-layer {
+.city-layer, .date-layer, .pax-layer {
   display: none;
   position: fixed;
   inset: 0;
@@ -222,8 +220,7 @@ html, body {
   justify-content: center;
   z-index: 9999;
 }
-.date-layer.is-open,
-.pax-layer.is-open {
+.city-layer.is-open, .date-layer.is-open, .pax-layer.is-open {
   display: flex;
 }
 
@@ -588,55 +585,7 @@ table.regis-hotel #ir1 {
   padding: 12px;
 }
 
-/* ===== 로딩 스피너 (파란색 둥근 바) ===== */
-.avn-loading-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  pointer-events: none;
-}
 
-/* 파란색 둥근 원 스피너 */
-.avn-loading-spinner {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 4px solid rgba(37, 99, 235, 0.15);
-  border-top-color: #2563eb;
-  animation: avn-spin 0.9s linear infinite;
-}
-
-@keyframes avn-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* 로딩 텍스트 */
-.avn-loading-text {
-  font-size: 13px;
-  font-weight: 500;
-  color: #475569;
-  letter-spacing: -0.2px;
-}
-
-/* 팝업 박스 내부 로딩 위치 조정 */
-#smallPopupData,
-#smallPopupWhiteData {
-  position: relative;
-  min-height: 200px;
-}
 
 
 

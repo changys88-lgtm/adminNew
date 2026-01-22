@@ -90,7 +90,8 @@ function generateCalendars(names = "", layer = "") {
 			});
 
 			container.innerHTML += `
-				<div class="month-box" >					
+				<div class="month-box" style="background: #f9f9f9; margin-left: 10px; overflow: hidden; overflow-y: auto;  height: 360px;  scrollbar-width: thin;                      /* auto | thin */
+  scrollbar-color: #cbd5e1 transparent;   ">					
 					<p class="month-t">${year}년 ${month}월</p>
 					<table>
 						<tr>
@@ -264,7 +265,7 @@ function generateDomCalendars(names = "", layer = "") {
 			});
 
 			calendarData.innerHTML += `
-				<div class="month-box" >
+				<div class="month-box" sytle="background: #dfdfdf; margin-left: 10px; ">
 					<p class="month-t">${year}년 ${month}월</p>
 					<div class="calendar-table">
 						<div class="calendar-table-row">

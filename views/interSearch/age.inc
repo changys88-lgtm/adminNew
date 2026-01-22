@@ -1,7 +1,7 @@
-        <div style="display:none; position: absolute; right: 0px;" id="ageCheckPopup" class="detail-option">
+        <div style="display:none; position: absolute; right: 0px; top:20px; width: 550px" id="ageCheckPopup" class="detail-option">
             <div class="detail-top">
                 <li class="tit">나이 계산기</li>
-                <li id="datail-close" onclick="$('#ageCheckPopup').hide()"><img src="/images/close.png" width="50"></li>
+                <li id="datail-close" onclick="$('#ageCheckPopup').hide()"></li>
             </div>
 
             <div class="detail-content"></div>
@@ -17,10 +17,10 @@
 
                     <tr class="ac">
                         <td class="ac">
-                            <input type="text" class="d-inline form-control form-control-sm wh120 ac" name="start_date" onfocus="this.select()" id="start_date" onkeyup="return DateAutoCheck(this)" onblur="return dCheck3(this)" value="2026-01-21">
+                            <input type="text" class=" wh120 ac" name="startDate" onfocus="this.select()" id="startDate" onClick="datePick('startDate')" value="<%= new Date().toISOString().slice(0, 10) %>">
                         </td>
                         <td class="ac">
-                            <input type="text" class="d-inline form-control form-control-sm wh120 ac" name="birthday" onfocus="this.select()" id="birthday" onkeyup="return DateAutoCheck(this)" onblur="return dCheck3(this)" value="2026-01-21">
+                            <input type="text" class=" wh120 ac" name="birthDay" onfocus="this.select()" id="birthDay" onClick="datePick('birthDay')" value="<%= new Date().toISOString().slice(0, 10) %>">
                         </td>
                         <td>
                             <span class="btn_basic btn_blue" onclick="calculateAge ()">계산하기</span>

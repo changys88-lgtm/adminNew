@@ -191,6 +191,11 @@ border: 1px solid var(--line-soft);
 border-radius: 12px;
 overflow: hidden;
 margin-top: 10px;
+height: calc(100vh - 170px);
+overflow: hidden;
+overflow-y: auto;
+scrollbar-width: thin;
+scrollbar-color:#e7e8ea transparent;
 }
 
 /* ===== page_item_content2 스타일 (국제선/국내선 공통) ===== */
@@ -606,6 +611,7 @@ overflow: hidden;
 box-shadow: 0 20px 40px rgba(0,0,0,0.25);
 }
 
+
 .city-head {
 display: flex;
 justify-content: space-between;
@@ -669,20 +675,20 @@ grid-template-columns: repeat(3, 1fr);
 gap: 8px;
 }
 
-.city-list button {
-padding: 10px 8px;
-border: 1px solid #d1d5db;
-border-radius: 10px ;
-background: #fff;
-font-size: 14px;
-cursor: pointer;
-}
-
+/* hover */
 .city-list button:hover {
-border-color: #2ec4c7;
-background: #e6f8f8;
-color: #0f766e;
-}
+	background: #e6f8f8;
+	border-color: #2ec4c7;
+	color: #0f766e;
+  }
+  
+  /* 선택 */
+  .city-list button.active {
+	background: #0f766e;
+	border-color: #0f766e;
+	color: #ffffff;
+	font-weight: 600;
+  }
 
 /* 날짜 인원선택 레이어 */
 .date-layer,
@@ -748,7 +754,7 @@ color: #0f172a;
 }
 
 .layer-body {
-padding: 16px;
+	background: #fff;
 }
 
 .layer-body input[type="date"] {
@@ -1630,25 +1636,20 @@ background: #eef3f8 ;
 	display: grid ;
 }
 
-.city-layer .city-list button,
-#CityLayer .city-list button,
-#cityData button,
-.city-layer #cityData button,
-.city-list-area button,
-.city-list button {
-	height: 50px ;          /* 기존 150px → 90px */
-	padding: 4px 0 ;        /* 위아래 여백 줄임 */
-	font-size: 13px ;       /* 글자도 살짝 축소 */
-	border-radius: 10px ;   /* 둥근 네모박스 */
-	border: 1px solid #d1d5db ;
-	background: #fff ;
-	cursor: pointer ;
-	color: #111827 ;
-	text-align: center ;
-	transition: all 0.2s ease ;
-	box-sizing: border-box ;
-	width: 100% ;
-  }
+.city-layer .city-list button {
+height: 50px ;          /* 기존 150px → 90px */
+padding: 4px 0 ;        /* 위아래 여백 줄임 */
+font-size: 13px ;       /* 글자도 살짝 축소 */
+border-radius: 10px ;   /* 둥근 네모박스 */
+border: 1px solid #d1d5db ;
+background: #fff ;
+cursor: pointer ;
+color: #111827 ;
+text-align: center ;
+transition: all 0.2s ease ;
+box-sizing: border-box ;
+width: 100% ;
+}
 
 .city-layer .city-list button:hover {
 border-color: #2bbec3 ;
@@ -1672,8 +1673,12 @@ color: #0f766e ;
 .main_frame {
   padding: 2px 0 0 0;
   width: 100%;
-  overflow: hidden;
+  overflow: hidden;/* ✅ 유일한 스크롤 */
+  overflow-x: hidden;
+  flex: 1;
 }
+
+
 .search_frame {
   width: 100%;
   border: 0px;
@@ -1683,15 +1688,15 @@ color: #0f766e ;
 
 /* iframe 스크롤바 완전 제거 */
 iframe.search_frame {
-  overflow: hidden !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+	width: 100%;
+	height: auto;  
+	border: 0;
+	display: block;
 }
 
-iframe.search_frame::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
+/* iframe 내부 페이지 스크롤바 제거 */
+iframe.search_frame {
+  overflow: hidden !important;
 }
 
 
@@ -2057,11 +2062,10 @@ iframe.search_frame::-webkit-scrollbar {
 .calendar-layer#CalendarLayer .layer-box {
 	width: 920px ;
 	max-width: 92vw ;
-	height: 521px ;
+	height: 360px ;
 	border-radius: 14px ;
 	background: #ffffff ;
 	border: 1px solid #24486a ;
-	overflow: hidden ;
   }
   
   .calendar-layer.date-layer .layer-box {
@@ -2078,13 +2082,11 @@ iframe.search_frame::-webkit-scrollbar {
   ================================ */
   
   #CalendarLayer .layer-head {
-	background: #ffffff ;
-	
-	padding: 18px 20px 10px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	border-radius: 14px 14px 0 0;
+	height: 60px;
+	padding: 14px 16px;
+	box-sizing: border-box;
+	border-bottom: 1px solid #e5e7eb;
+	background: #ffffff;
   }
   
   .calendar-layer.date-layer .layer-head {
@@ -2104,27 +2106,44 @@ iframe.search_frame::-webkit-scrollbar {
   }
   
   #CalendarLayer .layer-body {
-	background: #fff ;
-	padding: 0 ;
-
+	height: calc(360px - 60px);
+	padding: 0;
+	overflow: hidden;   /* calendar-body에만 스크롤바 생기도록 */
   }
   
-  #CalendarLayer .calendar-layer-data,
-  .calendar-layer-data {
+  
+  #CalendarLayer .calendar-layer-data {
 	background: #ffffff;
 	width: 100%;
-	max-height: 521px;
-	overflow-y: auto;
-	overflow-x: hidden;
+	max-height: none;
+	overflow: hidden;   /* calendar-body에만 스크롤바 생기도록 */
   }
   
   #CalendarLayer .calendar-body {
-	background: #ffffff;
-	max-height: 521px;
+	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
+  
+	box-sizing: border-box;
+  
+	/* Firefox */
+	scrollbar-width: thin;
+	scrollbar-color: rgba(231,232,234,.6) transparent;
+  }
+
+  /* Chrome / Edge */
+#CalendarLayer .calendar-body::-webkit-scrollbar {
+	width: 4px;
   }
   
+  #CalendarLayer .calendar-body::-webkit-scrollbar-thumb {
+	background: rgba(231,232,234,.35);
+	border-radius: 4px;
+  }
+  
+  #CalendarLayer .calendar-body:hover::-webkit-scrollbar-thumb {
+	background: rgba(191,195,201,.9);
+  }
   
   #CalendarLayer .layer-box,
   #CalendarLayer .layer-head,
@@ -2135,8 +2154,12 @@ iframe.search_frame::-webkit-scrollbar {
   }
   
   #CalendarLayer .layer-box {
-	width: 1200px ;
-	box-sizing: border-box ;
+	width: 1200px;
+	height: 360px;
+	border-radius: 14px;
+	background: #ffffff;
+	border: 1px solid #24486a;
+	overflow: hidden;   /* 🔥 중요 */
   }
   
   #CalendarLayer .layer-head strong {
@@ -2159,62 +2182,29 @@ iframe.search_frame::-webkit-scrollbar {
   
   /* 달력 바디 스크롤 - 3개월씩 한 줄, 1년치 스크롤 */
   .calendar-body {
-	max-height: 521px ;
-	overflow-y: auto ;
-	overflow-x: hidden ;
-	padding: 10px 20px 20px ;
-	background: #ffffff ;
-	width: 100% ;
-	box-sizing: border-box ;
-	scrollbar-width: thin; /* 항상 표시 */
-	scrollbar-color: #c5c5c5 transparent;	
-  }
+	background: #ffffff;
+	width: 100%;
+	box-sizing: border-box;
+	padding-top: 0;
   
-  /* 달력 스크롤바 스타일 */
-  .calendar-body::-webkit-scrollbar {
-	width: 4px;
   }
-  
-  .calendar-body::-webkit-scrollbar-thumb {
-	background-color: #c5c5c5;
-	border-radius: 4px;
-  }
-  
-  .calendar-body::-webkit-scrollbar-track {
-	background: transparent;
-  }
-  
+
   /* 국제선 예약 페이지 전체 스크롤 - 항상 활성화 (국내선과 동일) */
   main.international {
-	overflow: hidden;
-/*	height: 100vh;*/
+	height: 100%;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	scrollbar-gutter: stable;
+	overflow: hidden
   }
   
-  /* 전체 페이지 스크롤바 숨김 */
-  main.international::-webkit-scrollbar {
-	display: none;
-  }
-  
-  main.international::-webkit-scrollbar-thumb {
-	display: none;
-  }
-  
-  main.international::-webkit-scrollbar-thumb:hover {
-	display: none;
-  }
-  
-  main.international::-webkit-scrollbar-track {
-	display: none;
-  }
   
   #CalendarLayer .calendar-wrap {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 28px; 
+	margin-top: 0;
+	
   }
   
   #CalendarLayer .month-box {
@@ -2225,12 +2215,9 @@ iframe.search_frame::-webkit-scrollbar {
 	float: left;
 	background: #f8fafc;
 	border-radius: 12px;
-	padding: 12px 10px;
-	margin-left:10px;
-	min-height: 260px;      /* 🔥 포인트 */
-	padding-bottom: 28px;   /* 하단 여백 */
+	min-height: 360px;      /* 하단 여백 */
 	position: relative;
-	
+	margin-top: 0;
   }
 
   #CalendarLayer .month-box::after {
@@ -2290,7 +2277,7 @@ iframe.search_frame::-webkit-scrollbar {
   ================================ */
   
   .month-box th {
-	padding: 8px 0 12px;
+	padding: 0 0 0 0;
 	font-size: 13px;
 	font-weight: 600;
 	color: #444;
@@ -2307,6 +2294,11 @@ iframe.search_frame::-webkit-scrollbar {
   ================================ */
   
   .month-box td {
+	height: 30px;          /* 🔥 36 → 30 */
+	font-size: 12.5px;     /* 살짝 축소 */
+	padding: 0;            /* 🔥 중요 */
+	line-height: 30px;
+	
 	height: 36px;
 	text-align: center;
 	vertical-align: middle;
@@ -2328,9 +2320,21 @@ iframe.search_frame::-webkit-scrollbar {
   
   /* 오늘 */
   .month-box td.today {
-	background: #f2f2f2;
+	background: #bcbcbc;
 	border-radius: 50%;
 	font-weight: 700;
+	color: #fff;
+	width: 32px ;
+	height: 32px ;
+	min-width: 32px ;
+	min-height: 32px ;
+	max-width: 32px ;
+	max-height: 32px ;
+	display: flex ;
+	align-items: center ;
+	justify-content: center ;
+	margin: 0 auto ;
+	box-sizing: border-box ;
   }
   
   /* 선택일 - 파란색 둥근 원 */
@@ -2630,7 +2634,6 @@ main.domestic #CityLayerData label {
   .detail-option {
 	width: 450px;
 	max-height: 600px;
-	overflow-y: auto;
 	background: #ffffff;
 	border-radius: 12px;
 	border: 1px solid #285070;
@@ -2747,7 +2750,6 @@ main.domestic #CityLayerData label {
   #revPopup {
 	width: 450px;
 	max-height: 600px;
-	overflow-y: auto;
 	background: #ffffff;
 	border-radius: 12px;
 	border: 1px solid #285070;
@@ -2853,7 +2855,6 @@ main.domestic #CityLayerData label {
   .area-layer_b {
 	padding: 16px;
 	max-height: 400px;
-	overflow-y: auto;
   }
   
   

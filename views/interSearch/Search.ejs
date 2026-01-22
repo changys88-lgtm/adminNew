@@ -26,12 +26,16 @@
                 <div class="search-actions tool-buttons">
                     <button class="btn teal" onClick="beforeSearchShow()">최적화 검색 설정 ▾</button>
                     <button class="btn navy secondary" onClick="ageCheckShow()">나이계산</button>
-                    <button class="btn orange secondary" onClick="monthSearch()">오월별도검색</button>
+                    <button class="btn orange secondary" onClick="monthSearch()">월별편도검색</button>
                     <button class="btn dark secondary" onClick="recentSearch()">최근검색</button>
                 </div>
                 <div style="position: relative;">
                     <%- include("bSearch.inc") %>
                     <%- include("age.inc") %>
+                    <div id='SearchHistory' class="SearchHistory-layer" style="display: none;z-index:999 ">
+                        <div class="close" onclick="$('#SearchHistory').hide()"></div>
+                        <div class="scroll_tabl" id="SearchHistoryArea"></div>
+                    </div>
                     <div id="revPopup" style="display:none; position: absolute; left: -638px; top: 0px; z-index: 9999;"></div>
                 </div>
             </div>
@@ -189,7 +193,7 @@
                         
         
                         
-                        <div ID="listFrameSub" class="" >
+                        <div ID="listFrameSub" class="search-panel">
                             
                         </div>
                         <div class="action_bar_split">
@@ -476,7 +480,7 @@
             document.body.style.overflow = "hidden";
             document.documentElement.style.overflow = "hidden";
         } else if (mode == "recentCheck") {
-            $('.moopen').show();
+            $('#SearchHistory').show();
             $("#SearchHistoryArea").html(json.recentData);
         }
 	};
@@ -597,7 +601,7 @@
 		memberSet ();
 		interSearch ();
 
-		$('.moopen').hide()
+		$('#SearchHistory').hide();
 	}
 	function motionClick (dep,cnt) {
 		$("#OpenView"+dep+"_"+cnt).slideDown("fast");

@@ -1,5 +1,5 @@
 <%- include('../header') %>
-<script type="text/javascript" src="/SmartEditor/js/HuskyEZCreator.js" ></script>
+
 <main class="content">
 	
 	<form name="frmSearch" id="frmSearch" enctype="multipart/form-data" method="post" onsubmit="return formSearch(event);" >
@@ -7,8 +7,8 @@
     <input type="hidden" name="mode"      value="">
 	<input type="hidden" name="page"      value="1">
 	<input type="hidden" name="titleData" value="">
-		<div class="search_action_bar">
-			<div class="row">
+		<div id="searchFrame">
+			<div class="search_action_bar">
 				<div class="search_action_left">
 					<span class="search_action_btn_primary" onClick="newReg('','input')">
 						+ 신규등록

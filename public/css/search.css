@@ -23,7 +23,7 @@
   border-radius: 12px;
   padding: 10px;
   border: 1px solid #e5e7eb;
-  overflow: hidden;
+  height: 100%;
 }
 
 .search-table {
@@ -716,7 +716,7 @@ span.search_action_btn_primary:hover {
 
 /* 라벨 */
 .search-view-table th {
-  width: 140px;
+  /* width: 140px; */
   padding: 14px 16px;
   background: #f8fafc;
   color: #333;

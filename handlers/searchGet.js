@@ -372,21 +372,21 @@ module.exports = async (req, res) => {
         });
         let listHTML = Object.values(aHTML).join('');
         listHTML = `
-            <table  class='search-table>
-                <thead class='thead-std' style=''>
-                <tr style='background-color:#eee;'>
-                    <th class='border-bottom-0'>검색일</th>
-                    <th class='border-bottom-0'>직항</th>
-                    <th class='border-bottom-0'>캐빈</th>
-                    <th class='border-bottom-0'>출발일</th>
-                    <th class='border-bottom-0'>도착일</th>
-                    <th class='border-bottom-0'>출발지</th>
-                    <th class='border-bottom-0'>도착지</th>
-                    <th class='border-bottom-0'>인원</th>
-                    <th class='border-bottom-0'>검색</th>
-                </tr>
+            <table  class='search-view-table'>
+                <thead class='search-view-table-head'>
+                    <tr>
+                        <th>검색일</th>
+                        <th>직항</th>
+                        <th>캐빈</th>
+                        <th>출발일</th>
+                        <th>도착일</th>
+                        <th>출발지</th>
+                        <th>도착지</th>
+                        <th>인원</th>
+                        <th>검색</th>
+                    </tr>
                 </thead>
-                <tbody>
+                <tbody class='search-view-table-body'  >
                     ${listHTML}
                 </tbody>
             </table>
