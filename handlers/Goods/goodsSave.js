@@ -239,9 +239,9 @@ module.exports = async (req, res) => {
                                 
                                 <th scope="row" class="avn-form-th">판매담당</th>
                                 <td class="avn-form-td">
-                                    <select name="operator">
-                                        <option value=""> 선택하세요
-                                        ${memData}
+                                    <select name="operator" class="avn-select">
+                                    <option value="">선택하세요</option>
+                                    ${memData}
                                     </select>
                                 </td>
                             </tr>
@@ -254,7 +254,7 @@ module.exports = async (req, res) => {
                                 </td>
                                 <th scope="row" class="avn-form-th">도시코드</th>
                                 <td class="avn-form-td">
-                                    <input name="city_code" class="avn-input" type="text" maxlength="3" value="${row.city_code || ''}">  필요시 입력 (도착도시) BKK
+                                    <input name="city_code" style="width:80px;" class="avn-input" type="text" maxlength="3" value="${row.city_code || ''}">  필요시 입력 (도착도시) BKK
                                 </td>
                             </tr>
                             <tr class="avn-form-row">
@@ -299,9 +299,9 @@ module.exports = async (req, res) => {
                             </tr>
                             <tr class="avn-form-row">
                                 <th scope="row"  class="avn-form-th">주소1</th>
-                                <td colspan="" ><input name="address" class="avn-input" type="text" value="${row.address || ''}"></td>
+                                <td colspan="" ><input name="address" style="width:600px;" class="avn-input" type="text" value="${row.address || ''}"></td>
                                 <th scope="row"  class="avn-form-th">주소2</th>
-                                <td colspan=""><input name="address2" class="avn-input" type="text"  value="${row.address2 || ''}"></td>
+                                <td colspan=""><input name="address2" style="width:200px;" class="avn-input" type="text"  value="${row.address2 || ''}"></td>
                             </tr>
                             <tr class="avn-form-row">
                                 <th scope="row"  class="avn-form-th">좌표 등록</th>
@@ -368,7 +368,7 @@ module.exports = async (req, res) => {
                                     </td>
                             </tr>
                             <tr class="avn-form-row">
-                                <th  colspan="4" class="avn-form-th"><h5 class="avn-form-title">- 포함 불포함</h5></th>
+                                <th  colspan="4" class="avn-form-th" style="font-size: 24px;"><h5 class="avn-form-title">- 포함 불포함</h5></th>
                             </tr>   
                             <tr class="avn-form-row">
                                 <th scope="row" class="avn-form-th">포함사항 ${mendatory}	</th>
@@ -379,7 +379,7 @@ module.exports = async (req, res) => {
                                 <td colspan="3" class="avn-form-td"><textarea name="uncontain" class="avn-textarea" id="uncontain" type="text"  onfocus="lineCheck(this)" onkeyup="lineCheck(this)">${row.uncontain || ''}</textarea></td>
                             </tr>
                             <tr class="avn-form-row">
-                                <th colspan="1" class="avn-form-th"><h5 class="avn-form-title">- 유의사항</h5></th>
+                                <th colspan="1" class="avn-form-th" style="font-size: 24px;"><h5 class="avn-form-title">- 유의사항</h5></th>
                                 <td colspan="3" class="avn-form-td">	
                                     <input name="noticeUse" class="avn-radio" type="radio" value="Y" ${((row.noticeUse || '').trim() === "Y")? 'checked' : ''} > 계약서 노출
                                     <input name="noticeUse" class="avn-radio" type="radio" value="N" ${((row.noticeUse || '').trim() === "N")? 'checked' : ''} > 계약서 미노출
@@ -391,7 +391,7 @@ module.exports = async (req, res) => {
                                 <td colspan="3" class="avn-form-td"><textarea name="notice" class="avn-textarea" id="notice" type="text"  onfocus="lineCheck(this)" onkeyup="lineCheck(this)">${row.notice || ''}</textarea></td>
                             </tr>
                             <tr class="avn-form-row">
-                                <th  colspan="4" class="avn-form-th"><h5 class="avn-form-title">- 취소환불</h5></th>
+                                <th  colspan="4" class="avn-form-th" style="font-size: 24px;"><h5 class="avn-form-title">- 취소환불</h5></th>
                             </tr>
                             <tr class="avn-form-row">
                                 <th scope="row" class="avn-form-th">취소환불 ${mendatory}
@@ -399,14 +399,14 @@ module.exports = async (req, res) => {
                                 <td colspan="3" class="avn-form-td"><textarea name="cancelRefund" class="avn-textarea" id="cancelRefund" type="text"  onfocus="lineCheck(this)" onkeyup="lineCheck(this)">${row.cancelRefund || ''}</textarea></td>
                             </tr>
                             <tr class="avn-form-row">
-                                <th  colspan="4" class="avn-form-th"><h5 class="avn-form-title">- 쇼핑 & 선택관광</h5></th>
+                                <th  colspan="4" class="avn-form-th" style="font-size: 24px;"><h5 class="avn-form-title">- 쇼핑 & 선택관광</h5></th>
                             </tr>
                             <tr class="avn-form-row">
                                 <th scope="row" class="avn-form-th">쇼핑및옵션	</th>
                                 <td colspan="3" class="avn-form-td"><textarea name="shoppingNoption" class="avn-textarea" id="shoppingNoption" type="text"  onfocus="lineCheck(this)" onkeyup="lineCheck(this)">${row.shoppingNoption || ''}</textarea></td>
                             </tr>
                             <tr class="avn-form-row">
-                                <th  colspan="4" class="avn-form-th"><h5 class="avn-form-title">- 모객정보</h5></th>
+                                <th  colspan="4" class="avn-form-th" style="font-size: 24px;"><h5 class="avn-form-title">- 모객정보</h5></th>
                             </tr>
 
                             <tr class="avn-form-row">
@@ -417,19 +417,25 @@ module.exports = async (req, res) => {
                             <tr class="avn-form-row">
                                 <th scope="row" class="avn-form-th">나이제한</th>
                                 <td class="avn-form-td">
-                                    <div class="avn-form-group">
-                                    유아
-                                    <select name="inf_limit" class="avn-select" style="width:90px;" >
-                                        ${infData}
-                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    소아
-                                    <select name="chd_limit" class="avn-select" style="width:90px;" >
-                                        ${chdData}
-                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    성인
-                                    <select name="adt_limit" class="avn-select" style="width:90px;" >
-                                        ${adtData}
-                                    </select>
+                                    <div class="avn-age-inline">
+                                    <div class="avn-age-item">
+                                        <span class="avn-age-label">유아</span>
+                                        <select name="inf_limit" class="avn-select avn-select-sm">
+                                            ${infData}
+                                        </select>
+                                        </div>
+                                        <div class="avn-age-item">
+                                        <span class="avn-age-label">소아</span>
+                                        <select name="chd_limit" class="avn-select avn-select-sm">
+                                            ${chdData}
+                                        </select>
+                                        </div>
+                                        <div class="avn-age-item">
+                                        <span class="avn-age-label">성인</span>
+                                        <select name="adt_limit" class="avn-select avn-select-sm">
+                                            ${adtData}
+                                        </select>
+                                        </div>
                                     </div>
                                 </td>
                                 <th scope="row" class="avn-form-th">예약가능일</th>
@@ -442,24 +448,29 @@ module.exports = async (req, res) => {
                             <tr class='${(!bmsUse) ? 'avn-form-row-none' : 'avn-form-row'}'>
                                 <th scope="row"  class="avn-form-th">알림톡설정</th>
                                 <td colspan="3" class="avn-form-td">
-                                    <div class="avn-form-group">
-                                        <div class="avn-form-item">
-                                            <i ></i> 구매알림 <input name="buy_alram"  type="text" class="form-control form-control-sm" style="width:90px;" value="${row.buy_alram || ''}"> 다이렉트샌드 설정 번호
-                                        </div>
-                                        <div class="avn-form-item">
-                                            <i ></i> 확정알림 <input name="confirm_alram" class="avn-input" type="text" style="width:90px;" value="${row.confirm_alram || ''}"> 다이렉트샌드 설정 번호
-                                        </div>
+                                    <div class="avn-alram-inline">
+                                    <div class="avn-alram-item">
+                                        <span class="avn-alram-label">구매알림</span>
+                                        <input name="buy_alram" type="text" class="avn-input avn-input-sm" value="${row.buy_alram || ''}">
+                                        <span class="avn-help-text">다이렉트샌드 설정 번호</span>
                                     </div>
-                                    <div class="avn-form-group">
-                                        <div class="avn-form-item">
-                                        <div class="avn-form-item">
-                                            <textarea name="buy_alram_content" class="avn-textarea" type="text"  onfocus="lineCheck(this)" onkeyup="lineCheck(this)">${row.buy_alram_content || ''}</textarea>
-                                        </div>
-                                        <div class="avn-form-item">
-                                            <textarea name="confirm_alram_content" class="avn-textarea" type="text"  onfocus="lineCheck(this)" onkeyup="lineCheck(this)">${row.confirm_alram_content || ''}</textarea>
-                                        </div>
+                                    <div class="avn-alram-item">
+                                        <span class="avn-alram-label">확정알림</span>
+                                        <input name="confirm_alram" type="text" class="avn-input avn-input-sm" value="${row.confirm_alram || ''}">
+                                        <span class="avn-help-text">다이렉트샌드 설정 번호</span>
+                                    </div>
+                                    </div>
+                                    <div class="avn-alram-inline">
+                                    <div class="avn-alram-item">
+                                        <textarea name="buy_alram_content" class="avn-textarea avn-textarea-sm" onfocus="lineCheck(this)" onkeyup="lineCheck(this)">${row.buy_alram_content || ''}</textarea>
+                                    </div>
+                                    <div class="avn-alram-item">
+                                        <textarea name="confirm_alram_content" class="avn-textarea avn-textarea-sm" onfocus="lineCheck(this)" onkeyup="lineCheck(this)">${row.confirm_alram_content || ''}</textarea>
+                                    </div>
                                     </div>
                                 </td>
+
+
                             </tr>
                         </table>
                         </div>
@@ -493,7 +504,7 @@ module.exports = async (req, res) => {
                 if (fileurl) {
                     if (!arrImg[gubun]) arrImg[gubun] = '';
                     arrImg[gubun]  += `
-                        <div class="avn-form-img-item" style='border:2px solid #fff;position:relative;'>
+                        <div class="avn-form-img-item" style='border:2px solid #fff;position:relative;flex-shrink:0;'>
                             <div class="avn-form-img-item-inner" style='position:;z-index:1;'>
                                 <img class="avn-form-img-item-img" src='${deps.bbsImgName}/TRIP/${tourNumber}/${tmp[0]}_M.${tmp[1]}' width=200 height=200 > 
                                 <div class="avn-form-img-item-close" style='position:absolute;z-index:999;top:10px;left:170px'>
@@ -529,7 +540,7 @@ module.exports = async (req, res) => {
 								<th scope="row" class="avn-form-th">대표이미지<?=$requiredInputHTML?><br>사이즈(800x800)
 								  <a href="javascript:img_sort('','${tourNumber}','','AA');" class="btn btn-outline-gray btn-sm ">sort</a></th>
 								<td colspan="3" class="avn-form-td">
-									<div ID="ImagesArea1" class="avn-form-img-area" style='position:relative'>${arrImg['AA'] || ''}</div>
+									<div ID="ImagesArea1" class="avn-form-img-area" style='position:relative;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:flex-start;gap:8px;overflow-x:auto;'>${arrImg['AA'] || ''}</div>
 									<div id="fine-uploader-gallery" class="avn-form-img-uploader" style="clear:both;"></div>
 								</td>
 							</tr>
@@ -543,7 +554,7 @@ module.exports = async (req, res) => {
 								  <a href="javascript:img_sort('','${tourNumber}','','AB');" class="btn btn-outline-gray btn-sm ">sort</a> </th>
 								<td colspan="3" class="avn-form-td">
 									<span> * 이미지는 자동으로 리사이징 됩니다</span><small> * 이미지는 독립적으로 실행이 됩니다. </small>
-									<div ID="ImagesArea2" class="avn-form-img-area" style='position:relative'>${arrImg['AB'] || ''}</div>
+									<div ID="ImagesArea2" class="avn-form-img-area" style='position:relative;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:flex-start;gap:8px;overflow-x:auto;'>${arrImg['AB'] || ''}</div>
 									<div id="fine-uploader-gallery2" class="avn-form-img-uploader" style="clear:both;"></div>
 									
 								</td>

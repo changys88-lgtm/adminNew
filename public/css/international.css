@@ -2096,6 +2096,24 @@ iframe.search_frame {
     overflow-y: auto;
     overflow-x: hidden;
 	scrollbar-width: thin;
+	scrollbar-color:#e7e8ea transparent;
+  }
+  
+  #CalendarLayer .calendar-layer-data::-webkit-scrollbar {
+	width: 6px;
+  }
+  
+  #CalendarLayer .calendar-layer-data::-webkit-scrollbar-track {
+	background: transparent;
+  }
+  
+  #CalendarLayer .calendar-layer-data::-webkit-scrollbar-thumb {
+	background: #e7e8ea;
+	border-radius: 3px;
+  }
+  
+  #CalendarLayer .calendar-layer-data::-webkit-scrollbar-thumb:hover {
+	background: #d1d5db;
   }
   
   #CalendarLayer .calendar-body {
@@ -2108,22 +2126,26 @@ iframe.search_frame {
   
 	/* Firefox */
 	scrollbar-width: thin;
-	scrollbar-color: #fff transparent;
+	scrollbar-color:#e7e8ea transparent;
   }
 
 
   /* Chrome / Edge */
 #CalendarLayer .calendar-body::-webkit-scrollbar {
-	width: 4px;
+	width: 6px;
+  }
+  
+  #CalendarLayer .calendar-body::-webkit-scrollbar-track {
+	background: transparent;
   }
   
   #CalendarLayer .calendar-body::-webkit-scrollbar-thumb {
-	background: rgba(0, 0, 0, 0.12);  
-	border-radius: 4px;
+	background: #e7e8ea;
+	border-radius: 3px;
   }
   
-  #CalendarLayer .calendar-body:hover::-webkit-scrollbar-thumb {
-	background: rgba(255, 255, 255, 0.9);
+  #CalendarLayer .calendar-body::-webkit-scrollbar-thumb:hover {
+	background: #d1d5db;
   }
   
 
@@ -2672,6 +2694,29 @@ main.domestic #CityLayerData label {
 	box-shadow: 0 20px 40px rgba(0,0,0,.15);
   }
   
+/* 항공사뉴스 타이틀 아이콘 */
+  .section-title {
+	position: relative;
+	padding-left: 10px;
+	font-size: 15px;
+	font-weight: 700;
+	color: #0f172a;
+	margin-bottom: 13px;
+  }
+  
+  
+  /* 타이틀 앞 아이콘 */
+  .section-title::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 4px;
+	height: 14px;
+	background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+	border-radius: 2px;
+	transform: translateY(-50%);
+  }
   /* 한 줄 */
   .opt-row {
 	padding-bottom: 12px;
@@ -2681,7 +2726,7 @@ main.domestic #CityLayerData label {
   
   /* 그룹 */
   .opt-group {
-	margin-bottom: 16px;
+	margin-bottom: 3px;
   }
   
   /* 타이틀 */
@@ -2689,7 +2734,6 @@ main.domestic #CityLayerData label {
 	font-size: 14px;
 	font-weight: 600;
 	color: #1f2937;
-	margin-bottom: 10px;
 	float: left;
 	margin-right: 24px;
   }
@@ -2748,8 +2792,6 @@ main.domestic #CityLayerData label {
   /* 푸터 */
   .opt-footer {
 	padding-top: 16px;
-	border-top: 1px solid #e5e7eb;
-	margin-top: 16px;
 	text-align: center;
   }
   
@@ -2799,13 +2841,26 @@ main.domestic #CityLayerData label {
 	margin-bottom: 14px;
   }
   
-  #revPopup .detail-top .tit {
+  .detail-top .tit {
+	position: relative;
+	padding-left: 14px;
 	font-size: 14px;
 	font-weight: 600;
 	color: #1f2937;
-	margin: 0;
-	list-style: none;
+	line-height: 1.4;
   }
+
+  #ageCheckPopup .detail-top .tit::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background: #2563eb;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
   
   #revPopup .detail-top li {
 	list-style: none;
@@ -3079,43 +3134,42 @@ main.domestic #CityLayerData label {
 	border-bottom: none;
   }
   
-  #beforeSearch .opt-inline input:checked + label {
+#beforeSearch .opt-inline input:checked + label {
 	background: #eff6ff;
 	color: #2563eb;
 	font-weight: 600;
 	border-radius: 8px;
-  }
-  /* 최근검색 레이어 */
-  #SearchHistory.SearchHistory-layer.detail-option {
+}
+/* 최근검색 레이어 */
+#SearchHistory.SearchHistory-layer.detail-option {
 	background: #ffffff;
 	border: 1px solid #e5e7eb;
 	border-radius: 12px;
 	box-shadow: 0 20px 50px rgba(0,0,0,0.18);
 	font-family: "Noto Sans KR", system-ui, sans-serif;
 	overflow: hidden;;
-  }
+}
   
-  /* 체크/라디오 공통 */
-  #beforeSearch input[type="checkbox"],
-  #beforeSearch input[type="radio"] {
+/* 체크/라디오 공통 */
+#beforeSearch input[type="checkbox"],
+#beforeSearch input[type="radio"] {
 	accent-color: #4aa3df;
 	cursor: pointer;
-  }
+}
   
   /* 옵션 행 */
-  #beforeSearch .opt-row {
+#beforeSearch .opt-row {
 	border-bottom: 1px solid #e5e7eb;
-  }
+}
   
   /* 옵션 그룹 */
-  #beforeSearch .opt-group {
-	padding: 10px 14px 6px;
-	margin-bottom: 18px;
-  }
+#beforeSearch .opt-group {
+	margin-bottom: 10px;
+}
   
   
-  /* 옵션 타이틀 */
-  #beforeSearch .opt-title {
+/* 옵션 타이틀 */
+#beforeSearch .opt-title {
 	font-size: 14px;
 	font-weight: 700;
 	color: #0f172a;
@@ -3123,72 +3177,72 @@ main.domestic #CityLayerData label {
 	display: flex;
 	align-items: center;
 	gap: 8px;
-  }
+}
 
-  #beforeSearch .opt-title::before {
+#beforeSearch .opt-title::before {
 	content: '';
 	width: 3px;
 	height: 14px;
 	background: #2563eb;
 	border-radius: 2px;
-  }
+}
   
-  #beforeSearch .opt-sub {
+#beforeSearch .opt-sub {
 	font-size: 11px;
 	font-weight: 400;
 	color: #64748b;
 	margin-left: 6px;
-  }
+}
   
-  /* 인라인 정렬 */
-  #beforeSearch .opt-inline {
+/* 인라인 정렬 */
+#beforeSearch .opt-inline {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px 18px;
 	padding-left: 12px;
-  }
+}
   
-  /* 체크박스 / 라디오 라인 */
-  #beforeSearch .opt-check,
-  #beforeSearch .opt-radio {
+/* 체크박스 / 라디오 라인 */
+#beforeSearch .opt-check,
+#beforeSearch .opt-radio {
 	display: flex;
 	align-items: center;
 	gap: 6px;
 	font-size: 13px;
 	color: #334155;
-  }
+}
   
   /* 라벨 */
-  #beforeSearch label {
+#beforeSearch label {
 	cursor: pointer;
-  }
+}
   
   /* 지역/항공사 선택 영역 */
-  #beforeSearch #SearchAirLike,
-  #beforeSearch #SearchCityLike {
+#beforeSearch #SearchAirLike,
+#beforeSearch #SearchCityLike {
 	padding: 6px 14px 10px;
-  }
+}
   
   /* 그리드 */
-  #beforeSearch .opt-grid {
+#beforeSearch .opt-grid {
 	display: grid;
 	gap: 8px 10px;
-  }
+}
   
-  #beforeSearch .opt-grid-6 {
+#beforeSearch .opt-grid-6 {
 	grid-template-columns: repeat(6, 1fr);
-  }
+}
   
   /* 개별 아이템 */
-  #beforeSearch .opt-item,
-  #beforeSearch #SearchAirLike > div {
+#beforeSearch .opt-item,
+#beforeSearch #SearchAirLike > div {
 	display: flex;
 	align-items: center;
 	gap: 6px;
-  }
+}
   
-  /* 직접입력 input */
-  #beforeSearch input[type="text"] {
+/* 직접입력 input */
+#beforeSearch input[type="text"] {
 	height: 32px;
 	padding: 0 10px;
 	font-size: 12px;
@@ -3196,33 +3250,35 @@ main.domestic #CityLayerData label {
 	border-radius: 6px;
 	background: #f8fafc;
 	color: #1e293b;
-  }
+}
   
-  #beforeSearch input[type="text"]:focus {
+#beforeSearch input[type="text"]:focus {
 	outline: none;
 	border-color: #4aa3df;
 	background: #ffffff;
 	box-shadow: 0 0 0 2px rgba(74,163,223,0.15);
-  }
+}
 
-  #beforeSearch input[type="checkbox"],
+#beforeSearch input[type="checkbox"],
 #beforeSearch input[type="radio"] {
   accent-color: #2563eb;  /* 포인트만 파랑 */
   transform: scale(0.9); /* 살짝 작게 */
 }
 
-#beforeSearch input[type="checkbox"],
-#beforeSearch input[type="radio"] {
-  accent-color: #2563eb;
-  transform: scale(0.9);
-}
 
 #beforeSearch input[type="text"] {
   border-color: #e2e8f0;
 }
 
 
-
+#beforeSearch .opt-radio-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;              /* 라디오 ↔ 텍스트 간격 */
+	cursor: pointer;
+	font-size: 13px;
+	color: #334155;
+}
 
 .avn-airline-select {
 	display: flex;
@@ -3230,7 +3286,7 @@ main.domestic #CityLayerData label {
 	gap: 10px;
 	padding-left: 13px;
 	margin-top: 6px;
-  }
+}
   
   /* 항공사 하나 */
   .avn-airline-item {
@@ -3319,4 +3375,508 @@ main.domestic #CityLayerData label {
   #beforeSearch .avn-airline-item {
 	padding: 4px 8px;
 	font-size: 11px;
+  }
+
+
+  /* ==================================================
+   필터 상단 영역 공통
+================================================== */
+.select-item-in {
+	position: relative;
+	display: inline-block;
+	margin-right: 6px;
+  }
+  
+  /* ==================================================
+	 필터 버튼 (pill)
+  ================================================== */
+  .select-form {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 90px;
+	height: 36px;
+	padding: 0 14px;
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 999px;
+	cursor: pointer;
+	transition: all .15s ease;
+  }
+  
+  .select-form p {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1f2937;
+  }
+  
+  /* hover */
+  .select-form:hover {
+	background: #f8fafc;
+	border-color: #93c5fd;
+  }
+  
+  /* ==================================================
+	 드롭다운 레이어
+  ================================================== */
+  .select-form-view {
+	position: absolute;
+	top: 42px;
+	left: 0;
+	min-width: 220px;
+	padding: 12px 14px;
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	box-shadow: 0 18px 40px rgba(0,0,0,.14);
+	z-index: 300;
+	white-space: nowrap;
+  }
+  
+  .select-form-view ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+  }
+  
+  .select-form-view li + li {
+	margin-top: 6px;
+  }
+  
+  /* ==================================================
+	 체크박스 / 라디오 공통
+  ================================================== */
+  .air-c-group {
+	display: flex;
+	align-items: center;
+  }
+  
+  /* input 숨김 */
+  .custom-control-input {
+	display: none;
+  }
+  
+  /* label */
+  .custom-control-label {
+	position: relative;
+	padding-left: 26px;
+	font-size: 13px;
+	color: #334155;
+	line-height: 20px;
+	cursor: pointer;
+  }
+  
+  /* 기본 박스 */
+  .custom-control-label::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 2px;
+	width: 16px;
+	height: 16px;
+	background: #ffffff;
+	border: 1px solid #cbd5e1;
+	box-sizing: border-box;
+  }
+  
+  /* ==================================================
+	 체크박스 스타일
+  ================================================== */
+  .custom-control-input[type="checkbox"] + .custom-control-label::before {
+	border-radius: 4px;
+  }
+  
+  .custom-control-input[type="checkbox"]:checked
+  + .custom-control-label::before {
+	background: #2563eb;
+	border-color: #2563eb;
+  }
+  
+  .custom-control-input[type="checkbox"]:checked
+  + .custom-control-label::after {
+	content: "";
+	position: absolute;
+	left: 4px;
+	top: 6px;
+	width: 8px;
+	height: 4px;
+	border-left: 2px solid #ffffff;
+	border-bottom: 2px solid #ffffff;
+	transform: rotate(-45deg);
+  }
+  
+  /* ==================================================
+	 라디오 스타일 (코드쉐어)
+  ================================================== */
+  .custom-control-input[type="radio"] + .custom-control-label::before {
+	border-radius: 50%;
+  }
+  
+  .custom-control-input[type="radio"]:checked
+  + .custom-control-label::before {
+	background: #2563eb;
+	border-color: #2563eb;
+  }
+  
+  .custom-control-input[type="radio"]:checked
+  + .custom-control-label::after {
+	content: "";
+	position: absolute;
+	left: 5px;
+	top: 7px;
+	width: 6px;
+	height: 6px;
+	background: #ffffff;
+	border-radius: 50%;
+  }
+  
+  /* ==================================================
+	 hover / focus
+  ================================================== */
+  .custom-control-label:hover {
+	color: #1d4ed8;
+  }
+  
+  /* ==================================================
+	 드롭다운 안 긴 텍스트 정리
+  ================================================== */
+  .select-form-view label {
+	white-space: nowrap;
+  }
+  
+  /* ==================================================
+	 모바일 대응
+  ================================================== */
+  @media (max-width: 768px) {
+	.select-form {
+	  height: 34px;
+	  padding: 0 12px;
+	}
+  
+	.select-form p {
+	  font-size: 12.5px;
+	}
+  
+	.select-form-view {
+	  min-width: 200px;
+	  padding: 10px 12px;
+	}
+  }
+
+  .select-item-in.is-open .select-form {
+	background: #eff6ff;
+	border-color: #2563eb;
+  }
+  
+  .select-item-in.is-open .select-form p {
+	color: #2563eb;
+	font-weight: 700;
+  }
+
+  .select-form-view {
+	top: 38px; /* 42px → 38px */
+  }
+
+
+
+  /* ===== Form Table ===== */
+.avn-form-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0 6px; /* 행 간 여백 */
+	font-size: 13px;
+  }
+  
+  /* ===== TH ===== */
+  .avn-form-th {
+	width: 120px;
+	padding: 10px 12px;
+	text-align: left;
+	vertical-align: middle;
+	font-weight: 600;
+	color: #0f172a;
+	white-space: nowrap;
+  }
+  
+  /* 필수 표시 */
+  .avn-form-th[required]::after {
+	content: "*";
+	color: #ef4444;
+	margin-left: 4px;
+	font-size: 12px;
+  }
+  
+  /* ===== TD ===== */
+  .avn-form-td {
+	padding: 10px 12px;
+	vertical-align: middle;
+	color: #334155;
+  }
+
+  .avn-form-table .avn-select {
+	height: 32px;
+	padding: 0 10px;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	font-size: 13px;
+	color: #0f172a;
+  }
+  
+  /* colspan td 정리 */
+  .avn-form-td[colspan] {
+	padding-right: 16px;
+  }
+  
+  /* ===== Input / Select (테이블 전용 보정) ===== */
+  .avn-form-table .avn-input,
+  .avn-form-table .avn-select {
+	height: 32px;
+	padding: 0 10px;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	font-size: 13px;
+	color: #0f172a;
+  }
+  
+  .avn-form-table .avn-input:focus,
+  .avn-form-table .avn-select:focus {
+	outline: none;
+	border-color: #2563eb;
+	box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+  }
+  
+  /* ===== 체크박스 / 라디오 ===== */
+  .avn-form-table input[type="checkbox"],
+  .avn-form-table input[type="radio"] {
+	accent-color: #2563eb;
+	margin-right: 4px;
+	vertical-align: middle;
+  }
+  
+  /* 라디오 줄 간격 */
+  .avn-form-table input[type="radio"] {
+	margin-left: 4px;
+	margin-right: 4px;
+  }
+  
+  /* ===== 안내 문구 ===== */
+  .avn-guide-text {
+	display: inline-block;
+	margin-left: 10px;
+	font-size: 12px;
+	color: #64748b;
+  }
+  
+  /* ===== 리스트 (지역 / 출발지역) ===== */
+  .avn-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+  }
+  
+  .avn-list li {
+	padding: 4px 10px;
+	background: #f1f5f9;
+	border: 1px solid #e5e7eb;
+	border-radius: 999px;
+	font-size: 12px;
+	color: #334155;
+  }
+  
+  /* ===== 버튼 (테이블 내부) ===== */
+  .avn-form-table .avn-btn {
+	height: 30px;
+	padding: 0 12px;
+	font-size: 12px;
+	border-radius: 6px;
+  }
+  
+  /* ===== 기간 설정 영역 ===== */
+  .avn-form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+  }
+  
+  .avn-form-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+	color: #334155;
+  }
+  
+  /* ===== 아이콘 정렬 ===== */
+  .avn-form-item i,
+  .avn-form-td i {
+	margin-right: 4px;
+	color: #64748b;
+  }
+  
+  /* ===== 좌표 입력 ===== */
+  .avn-form-td input[type="text"][name="latitude"],
+  .avn-form-td input[type="text"][name="longitude"] {
+	width: 120px;
+  }
+  
+  .avn-form-table tr {
+	background: #ffffff;
+	border-radius: 10px;
+  }
+  
+  .avn-form-table tr:hover {
+	background: #f8fafc;
+  }
+  
+  /* textarea 들어간 td */
+.avn-form-td-textarea {
+	padding: 10px 12px;
+	height: 100px;          
+  }
+  
+  /* textarea 자체 */
+  .avn-textarea {
+	width: 100%;
+	height: 100px;
+	min-height: 100px;     
+	resize: vertical;  
+  
+	border: 1px solid #d1d5db;
+	border-radius: 8px;
+	font-size: 13px;
+	line-height: 1.6;
+	color: #334155;
+	background: #fff;
+  
+	box-sizing: border-box;
+  }
+  
+  .avn-textarea:focus {
+	outline: none;
+	border-color: #2563eb;
+	box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+  }
+
+  .avn-form-inline {
+	display: flex;
+	align-items: center;
+	gap: 16px;           /* 항목 간 간격 */
+	white-space: nowrap;
+  }
+  
+  /* select 크기 통일 */
+  .avn-select-sm {
+	width: 90px;
+  }
+
+  .avn-age-inline {
+	display: flex;
+	align-items: center;
+	gap: 28px;              /* 유아/소아/성인 간격 */
+	white-space: nowrap;
+  }
+  
+  /* 각 항목 */
+  .avn-age-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;               /* 라벨-셀렉트 간격 */
+  }
+  
+  /* 라벨 */
+  .avn-age-label {
+	font-size: 13px;
+	color: #334155;
+	font-weight: 500;
+  }
+  
+  /* select 크기 */
+  .avn-select-sm {
+	width: 90px;
+  }
+
+  .avn-alram-row {
+	display: flex;
+	gap: 24px;
+	margin-bottom: 12px;
+  }
+  
+  /* 좌/우 컬럼 */
+  .avn-alram-col {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+  }
+  
+  /* textarea 영역에서는 세로 정렬 */
+  .avn-alram-col textarea {
+	width: 100%;
+  }
+  
+  /* 작은 input */
+  .avn-input-sm {
+	width: 90px;
+  }
+  
+  /* textarea 높이 */
+  .avn-textarea-sm {
+	height: 100px;
+	resize: vertical;
+  }
+  
+  /* 설명 텍스트 */
+  .avn-help-text {
+	font-size: 12px;
+	color: #64748b;
+	white-space: nowrap;
+  }
+
+  /* 한 줄 (2컬럼) */
+.avn-alram-inline {
+	display: flex;
+	gap: 24px;
+	margin-bottom: 12px;
+  }
+  
+  /* 각 컬럼 */
+  .avn-alram-item {
+	flex: 1;                 /* ⭐ 좌/우 정확히 반반 */
+	display: flex;
+	align-items: center;
+	gap: 8px;
+  }
+  
+  /* textarea 줄에서는 세로 정렬 */
+  .avn-alram-item textarea {
+	width: 100%;
+  }
+  
+  /* textarea 있는 줄만 세로 스택 */
+  .avn-alram-inline + .avn-alram-inline .avn-alram-item {
+	flex-direction: column;
+	align-items: stretch;
+  }
+  
+  /* label */
+  .avn-alram-label {
+	font-size: 13px;
+	color: #334155;
+	white-space: nowrap;
+	margin-bottom: 4px;
+  }
+  
+  /* input 크기 */
+  .avn-input-sm {
+	width: 90px;
+  }
+  
+  /* textarea 높이 */
+  .avn-textarea-sm {
+	height: 100px;
+	resize: vertical;
   }

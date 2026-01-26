@@ -19,6 +19,8 @@ module.exports = async (req, res) => {
     const AviaLoginName = req.cookies?.AviaLoginName || '';
     const b2bLoginId    = req.cookies?.b2bLoginId    || '';
     const pool = await getPool();
+    let   sqlText = '';
+    let   sqlResult = '';
     let   msg = '';
     if (mode == "CITY") {
         const page        = req.body.page || '1';
@@ -192,7 +194,7 @@ module.exports = async (req, res) => {
             }
             newsData += `
                 <tr>
-                    <td style="text-align: center;">${uid}</td>
+                    <td>${uid}</td>
                     <td>${airline}</td>
                     <td class='al'><a href='javascript://' onClick="newsDetail('${uid}')">${subject}</a></td>
                     <td>${img}</td>
@@ -202,14 +204,14 @@ module.exports = async (req, res) => {
         });
         if (newsData == "") newsData = `<tr><td colspan='5' class='ac hh50'>검색결과가 없습니다.</td></tr>`;
         const cityhtml = `
-            <table  id='dtBasic'>
-                <thead>
-                <tr>
-                    <th>넘버</th>
-                    <th>항공사</th>
-                    <th>제목</th>
-                    <th>첨부</th>
-                    <th>등록일</th>
+            <table class='result-table'  id='dtBasic'>
+                <thead class='thead-std' style=''>
+                <tr style='background-color:#eee;'>
+                    <th class='wh100'>넘버</th>
+                    <th class='wh100'>항공사</th>
+                    <th >제목</th>
+                    <th class='wh60'>첨부</th>
+                    <th class='wh120'>등록일</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -266,20 +268,30 @@ module.exports = async (req, res) => {
                 result2.recordset.forEach(row => {
                     code = row.code_2.trim();
                     name = row.name.trim();
+                    // airhtml += `
+                    //     <div class='air-c-group custom-checkbox'>
+                    //         <input class='custom-control-input' type='checkbox' title='${name}' name='SearchAirLikeData[]' id='SearchAirLikeData_${code}' value='${code}' onClick='return searchAirLikeChange(this.value)'>
+                    //         <label class='custom-control-label' for='SearchAirLikeData_${code}'><img src='${bbsImgName}/Airline/Search/${code}.png' class='air-icon'>${code}</label>
+                    //     </div>
+                    // `; onClick="return searchAirLikeChange('${code}')"
                     airhtml += `
-                        <div class='air-c-group custom-checkbox'>
-                            <input class='custom-control-input' type='checkbox' title='${name}' name='SearchAirLikeData[]' id='SearchAirLikeData_${code}' value='${code}' onClick='return searchAirLikeChange(this.value)'>
-                            <label class='custom-control-label' for='SearchAirLikeData_${code}'><img src='${bbsImgName}/Airline/Search/${code}.png' class='air-icon'>${code}</label>
+                        <div class="avn-airline-item" onClick="return searchAirLikeChange('${code}')">
+                            <input type="checkbox" name="SearchAirLikeData[]"  id='SearchAirLikeData_${code}' value="${code}" >
+                            <span class="avn-airline-icon ${code}"><img src='${bbsImgName}/Airline/Search/${code}.png' width='14' height='14'></span>
+                            <span class="avn-airline-code">${code}</span>
                         </div>
                     `;
                 });
             }
+            /*
             airhtml += `
                 <div class='air-c-group custom-checkbox'>
-                    <input class='custom-control-input' type='checkbox' name='SearchAirLikeData[]' id='SearchAirLikeData_ETC' value='' onClick='return searchAirLikeChange(this.value)'><label class='custom-control-label' for='SearchAirLikeData_ETC'><input type='text' name='' class='form-smooth wh80' maxlength='2' placeholder='항공사 입력' onChange="$('#SearchAirLikeData_ETC').val(this.value)"></label>
+                    <input class='custom-control-input' type='checkbox' name='SearchAirLikeData[]' id='SearchAirLikeData_ETC' 
+                    value='' onClick='return searchAirLikeChange(this.value)'><label class='custom-control-label' for='SearchAirLikeData_ETC'>
+                    <input type='text' name='' class='form-smooth wh80' maxlength='2' placeholder='항공사 입력' onChange="$('#SearchAirLikeData_ETC').val(this.value)"></label>
                 </div>
             `;
-
+            */
             if (cityLike) {
                 const cityList    = cityLike.replace(/\//g, "','");
                 const airQuery3 = `select portCode,cityName from airPort_code (nolock) where code_2 in ('${cityList}')`;
@@ -361,7 +373,7 @@ module.exports = async (req, res) => {
                         <td >${font}${grade}</td>
                         <td >${font}${cutDate(dep_date)}</td>
                         <td >${font}${cutDate(arr_date)}</td>
-                        <td title='${src_name}'>${font}${src}</td>
+                    <td title='${src_name}'>${font}${src}</td>
                         <td title='${dest_name}'>${font}${dest}</td>
                         <td >${font}${adt_mem}/${chd_mem}/${inf_mem}</td>
                         <td >${font}<span class='btn_slim btn_blue nowrap' onClick="searchHistory('${ticket_type}','${dep_date}','${arr_date}','${src}','${src_name}','${dest}','${dest_name}','${adt_mem}','${chd_mem}','${inf_mem}','${week1}','${week2}','${stopover}','${addCode}','${addDate}','${addWeek}','${grade}')">검색</span></td>
@@ -372,9 +384,8 @@ module.exports = async (req, res) => {
         });
         let listHTML = Object.values(aHTML).join('');
         listHTML = `
-            <div class="avn-history-wrap">
-                <table class="avn-history-table">
-                    <thead>
+            <table  class='search-view-table'>
+                <thead class='search-view-table-head'>
                     <tr>
                         <th>검색일</th>
                         <th>직항</th>
@@ -387,12 +398,12 @@ module.exports = async (req, res) => {
                         <th>검색</th>
                     </tr>
                 </thead>
-                 <tbody>
+                <tbody class='search-view-table-body'  >
                     ${listHTML}
                 </tbody>
             </table>
-             <div  class="opt-footer">
-                <button type="button" onclick="$('#ageCheckPopup').hide()">닫기</button>
+            <div class="opt-footer">
+                <button type="button" onclick="$('#beforeSearch').hide();">닫기</button>
             </div>
         `;
 
@@ -456,6 +467,23 @@ module.exports = async (req, res) => {
             </div>
         `;
         res.json({ ageData: html  });
-    } 
+    } else if (mode == "revDataSearch") {
+        sqlText = `select * from interline_domestic_rev where 1=1 `;
+        /*
+        if (sWord != "") sqlText += ` and subject like '%${sWord}%' `;
+        if (sAir != "") sqlText += ` and airline = '${sAir}' `;
+        let totQuery = `select count(*) as total from interline_domestic_rev as a ${sqlText}`;
+        const result2 = await pool.request().query(totQuery);
+        const totalRowCount = result2.recordset[0].total;
+        const { startRow, endRow, pageHTML } = getPagination({
+            tot_row: totalRowCount,
+            page: page ,
+            listCount: listCount
+        });
+        const res  = await pool.request().query(data);
+        const result = res.recordset;
+        res.json({ searchData: result });
+        */
+    }
 };
 

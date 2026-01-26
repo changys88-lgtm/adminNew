@@ -1,4 +1,4 @@
-        <div id="ageCheckPopup" style="display:none; position:absolute; right:0px; top:20px; width:550px" class="detail-option">
+        <div id="ageCheckPopup" style="display:none; position:absolute; right:80px; top:20px; width:550px" class="detail-option">
             <div class="detail-top">
                 <div class="tit">나이 계산기</div>
                 <button type="button" onclick="$('#ageCheckPopup').hide()"></button>
@@ -17,10 +17,10 @@
 
                     <tr class="ac">
                         <td class="ac">
-                            <input type="text" class=" wh120 ac" name="startDate" onfocus="this.select()" id="startDate" onClick="datePick('startDate')" value="<%= new Date().toISOString().slice(0, 10) %>">
+                            <input type="date" class=" wh120 ac" name="startDate" onfocus="this.select()" id="startDate"  value="<%= new Date().toISOString().slice(0, 10) %>">
                         </td>
                         <td class="ac">
-                            <input type="text" class=" wh120 ac" name="birthDay" onfocus="this.select()" id="birthDay" onClick="datePick('birthDay')" value="<%= new Date().toISOString().slice(0, 10) %>">
+                            <input type="date" class=" wh120 ac" name="birthDay" onfocus="this.select()" id="birthDay"  value="<%= new Date().toISOString().slice(0, 10) %>">
                         </td>
                         <td>
                             <span class="btn_basic btn_blue" onclick="calculateAge ()">계산하기</span>

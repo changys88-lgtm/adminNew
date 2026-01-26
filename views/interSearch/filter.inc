@@ -1,5 +1,122 @@
 	<!--셀렉박스-->
 	<div class="select-item" id="FilterArea" style="display:none;">
+
+		 <!-- 🔽 검색 결과 -->
+		 <section class="flight-result">
+
+		<!-- 필터 -->
+		
+		<div class="flight-cols none">
+
+			<!-- ================= 여정 1 ================= -->
+			<section class="flight-col">
+			<div class="flight-col-head">
+				<div class="title">✈ 여정 1</div>
+				<div class="day-nav">
+				<button>이전날</button>
+				<span>출발지 → 도착지</span>
+				<button class="primary">다음날</button>
+				</div>
+			</div>
+
+			<!-- 카드 (선택됨 + 펼침) -->
+			<article class="flight-card active open">
+				<div class="flight-row">
+				<input type="radio" checked>
+				<div class="airline">
+					<strong>MU5672</strong>
+					<span>중국동방항공</span>
+				</div>
+				<div class="time">
+					<strong>13:20</strong><span>YNJ</span>
+				</div>
+				<div class="arrow">→</div>
+				<div class="time">
+					<strong>01:00+1</strong><span>SGN</span>
+				</div>
+				<div class="meta">
+					HGH 경유 <br><em>3시간 35분</em>
+				</div>
+				<div class="seat">9석</div>
+				<div class="price">638,100원</div>
+				</div>
+
+				<!-- 펼침 상세 -->
+			<div class="flight-detail">
+				<div class="detail-time">
+					<strong>13:20–18:20</strong>
+					<span>YNJ → HGH</span>
+				</div>
+
+				<div class="detail-meta">
+					<span class="code">MU5672</span>
+					<span>Economy</span>
+					<span>보잉</span>
+				</div>
+				</div>
+			</article>
+
+			<!-- 일반 카드 -->
+			<article class="flight-card">
+				<div class="flight-row">
+				<input type="radio">
+				<div class="airline">
+					<strong>MU5652</strong>
+					<span>중국동방항공</span>
+				</div>
+				<div class="time"><strong>10:40</strong><span>YNJ</span></div>
+				<div class="arrow">→</div>
+				<div class="time"><strong>01:10+1</strong><span>SGN</span></div>
+				<div class="meta">PVG 경유<br><em>7시간 40분</em></div>
+				<div class="seat">9석</div>
+				<div class="price">638,100원</div>
+				</div>
+			</article>
+			</section>
+
+			<!-- ================= 여정 2 ================= -->
+			<section class="flight-col">
+			<div class="flight-col-head">
+				<div class="title">✈ 여정 1</div>
+				<div class="day-nav">
+				<button>이전날</button>
+				<span>출발지 → 도착지</span>
+				<button class="primary">다음날</button>
+				</div>
+			</div>
+			<section class="flight-col">
+			<div class="day-nav">
+				<button class="day-btn today">오늘</button>
+				<button class="day-btn prev">이전날</button>
+
+				<div class="route-label">
+					<span>출발지</span>
+					<i class="arrow">→</i>
+					<span>도착지</span>
+				</div>
+
+				<button class="day-btn next">다음날</button>
+				</div>
+
+			<article class="flight-card">
+				<div class="flight-row">
+				<input type="radio">
+				<div class="airline">
+					<strong>KE476</strong>
+					<span>대한항공</span>
+				</div>
+				<div class="time"><strong>23:50</strong><span>SGN</span></div>
+				<div class="arrow">→</div>
+				<div class="time"><strong>10:50+1</strong><span>YNJ</span></div>
+				<div class="meta blue">ICN 경유<br><em>2시간 35분</em></div>
+				<div class="seat">8석</div>
+				<div class="price blue">1,686,100원</div>
+				</div>
+			</article>
+			</section>
+
+		</div>
+		</section>
 		
 		<!--직항/경유-->
 		<div class="select-item-in">
@@ -163,7 +280,6 @@
 		</div>
 		<!--소요시각//-->
 
-
 		<!--요금시간-->
 		<div class="select-item-in">
 			<div class="select-form" onClick="filterShow('SearchPriceGubun')" >
@@ -229,7 +345,6 @@
 				</ul>
 			</div>
 		</div>
-
 
 	</div>
 	<!--//셀렉박스-->

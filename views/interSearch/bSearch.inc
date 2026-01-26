@@ -1,4 +1,4 @@
-    <div id="beforeSearch" style="display:none; position:absolute; right:0px; top:20px; width:700px" class="detail-option">
+    <div id="beforeSearch" style="display:none; position:absolute; right:80px; top:20px; width:700px" class="detail-option">
 
       <div style="padding:0 10px 5px;" class="opt-row">
         <div class="opt-check">
@@ -8,7 +8,7 @@
       </div>
 
       <div class="opt-section">
-          <div class="opt-title" Style="margin-left:14px;">검색코드기준</div>
+          <div class="opt-title">검색코드기준</div>
         
           <div class="opt-check" >
             <div class="opt-radio"><input type="radio" name="SearchPortData" id="SearchPortData_1" value="" checked >
@@ -21,7 +21,7 @@
           </div>
         </div>
         
-        <div style="margin-top:10px;">
+        <div style="margin:15px 0 15px 0;">
           <div class="opt-group">
             <div class="opt-title">선호항공사</div>
             <div class="opt-check" style="padding-left:13px;">
@@ -33,7 +33,7 @@
           </div>
 
           <div id="SearchAirLike" class="avn-airline-select">
-
+            <!--
             <label class="avn-airline-item">
               <input type="checkbox" name="SearchAirLikeData" value="KE">
               <span class="avn-airline-icon ke"></span>
@@ -129,87 +129,128 @@
               <span class="avn-airline-icon nh"></span>
               <span class="avn-airline-code">NH</span>
             </label>
+            -->
           
             <!-- 필요 항공사 계속 추가 -->
           </div>
 
-          <div id="SearchAirLike">
+          <div id="SearchAirLike" class=''>
             <div>
               <input type="checkbox">
               <label>
-                <input type="text" readonly placeholder="지역선택">
+                <input type="text" class="wh80" placeholder="헝공사" name='SearchAirLikeData[]' id='SearchAirLikeData_ETC' onChange="$('#SearchAirLikeData_ETC').val(this.value)">
               </label>
             </div>
           </div>
         </div>
 
-        <div style="margin-top:10px;">
+        <div>
           <div class="opt-group">
             <div class="opt-title">최대운항시간</div>
             <div class="opt-inline">
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxJourneyTimeData"
-                      checked id="SearchMaxJourneyTimeData_ALL" value="">
-                <label for="SearchMaxJourneyTimeData_ALL">전체시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxJourneyTimeData"
+                         value="" checked>
+                  <span>전체시간</span>
+                </label>
               </div>
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxJourneyTimeData"
-                      id="SearchMaxJourneyTimeData_06" value="06">
-                <label for="SearchMaxJourneyTimeData_06">6시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxJourneyTimeData"
+                         value="06">
+                  <span>06시간</span>
+                </label>
               </div>
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxJourneyTimeData"
-                      id="SearchMaxJourneyTimeData_12" value="12">
-                <label for="SearchMaxJourneyTimeData_12">12시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxJourneyTimeData"
+                         value="12">
+                  <span>12시간</span>
+                </label>
               </div>
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxJourneyTimeData"
-                      id="SearchMaxJourneyTimeData_24" value="24">
-                <label for="SearchMaxJourneyTimeData_24">24시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxJourneyTimeData"
+                         value="24">
+                  <span>24시간</span>
+                </label>
               </div>
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxJourneyTimeData"
-                      id="SearchMaxJourneyTimeData_36" value="36">
-                <label for="SearchMaxJourneyTimeData_36">36시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxJourneyTimeData"
+                         value="36">
+                  <span>36시간</span>
+                </label>
               </div>
             </div>
           </div>
         </div>
 
-        <div style="margin-top:10px;">
-          <div class="opt-group">
+        <div>
+          <div class="opt-group" style="margin:15px 0 15px 0;">
             <div class="opt-title">최대경유시간</div>
             <div class="opt-inline">
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxShareTimeData"
-                      checked id="SearchMaxShareTimeData_ALL" value="">
-                <label for="SearchMaxShareTimeData_ALL">전체시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxShareTimeData"
+                         value="" checked>
+                  <span>전체시간</span>
+                </label>
               </div>
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxShareTimeData"
-                      id="SearchMaxShareTimeData_03" value="03">
-                <label for="SearchMaxShareTimeData_03">3시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxShareTimeData"
+                         value="03">
+                  <span>3시간</span>
+                </label>
               </div>
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxShareTimeData"
-                      id="SearchMaxShareTimeData_06" value="06">
-                <label for="SearchMaxShareTimeData_06">6시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxShareTimeData"
+                         value="06">
+                  <span>6시간</span>
+                </label>
               </div>
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxShareTimeData"
-                      id="SearchMaxShareTimeData_09" value="09">
-                <label for="SearchMaxShareTimeData_09">9시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxShareTimeData"
+                         value="09">
+                  <span>9시간</span>
+                </label>
               </div>
               <div>
-                <input class="opt-radio" type="radio" name="SearchMaxShareTimeData"
-                      id="SearchMaxShareTimeData_12" value="12">
-                <label for="SearchMaxShareTimeData_12">12시간</label>
+                <label class="opt-radio-label">
+                  <input class="opt-radio"
+                         type="radio"
+                         name="SearchMaxShareTimeData"
+                         value="12">
+                  <span>12시간</span>
+                </label>
               </div>
             </div>
           </div>
         </div>
 
-        <div style="margin-top:10px;">
+        <div>
           <div class="opt-group">
             <div class="opt-title">
               경유지 <span class="opt-sub">(장거리 경유 노선 검색시 유용함)</span>

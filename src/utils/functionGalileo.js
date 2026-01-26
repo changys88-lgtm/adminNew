@@ -387,7 +387,7 @@ async function uapiGalSearch(pData) {
       const tmp = (airLike || '').split("/");
       for (let data of tmp) {
         if (arrSabreAir.includes(data)) data = "YY"; 
-        sub += `<com:Carrier Code='${data}' />`;
+        if (data) sub += `<com:Carrier Code='${data}' />`;
       }
       addSearchQry = `
         <air:PermittedCarriers>

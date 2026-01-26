@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     data.ip = ip;
     pool = await deps.getPool();
     let { ticket_type , departure , departure2 , departure_date , arrive , arrive2 , arrive_date , dep_city2, arr_city2 , dep_city1 , arr_city1 } = data;
-    let { grade , adt , chd , inf , stopover} = data;
+    let { grade , adt , chd , inf , stopover = ''} = data;
     departure_date = deps.StrClear(departure_date);
     let addQry = '';
     if (ticket_type === "2" && arrive_date !== "") {
@@ -213,6 +213,7 @@ module.exports = async (req, res) => {
     let link2 = '';
     let link3 = '';
     let link4 = '';
+    let searchType = '';
     const checkAirports = /SIN|DPS|MLE|HKG|MAA/i;
     if ((checkAirports.test(arrive) || checkAirports.test(departure)) && stopover === "Y") SQSEARCHON = "Y";
 
@@ -267,46 +268,53 @@ module.exports = async (req, res) => {
           )
         `;
 
-        const result = await pool.request()
-          .input('grade', pData.grade)
-          .input('src', pData.departure)
-          .input('dest', pData.arrive)
-          .input('src2', pData.dep_city2)
-          .input('dest2', pData.arr_city2)
-          .input('src3', pData.dep_city3)
-          .input('dest3', pData.arr_city3)
-          .input('src4', pData.dep_city4)
-          .input('dest4', pData.arr_city4)
-          .input('src5', pData.dep_city5)
-          .input('dest5', pData.arr_city5)
-          .input('src6', pData.dep_city6)
-          .input('dest6', pData.arr_city6)
-          .input('dep_date', deps.StrClear(pData.departure_date))
-          .input('arr_date', deps.StrClear(pData.arrive_date))
-          .input('dep_date2', deps.StrClear(pData.dep_date2))
-          .input('dep_date3', deps.StrClear(pData.dep_date3))
-          .input('dep_date4', deps.StrClear(pData.dep_date4))
-          .input('dep_date5', deps.StrClear(pData.dep_date5))
-          .input('dep_date6', deps.StrClear(pData.dep_date6))
-          .input('ticket_type', ticket_type)
-          .input('up_date', deps.getNow().NOWSTIME)
-          .input('TransactionId', TransactionId)
-          .input('TraceId', TraceId)
-          .input('adt', adt)
-          .input('chd', chd)
-          .input('inf', inf)
-          .input('stopover', stopover ?? '')
-          .input('AirLikeData', sub4)
-          .input('CityLikeData', sub7)
-          .input('bspSiteCode', bspSiteCode)
-          .input('MaxJourneyTime', data.SearchMaxJourneyTimeData)
-          .input('MaxShareTime', data.SearchMaxShareTimeData)
-          .input('TransactionId_abacus', TransactionId_abacus)
-          .input('TransactionId_bxx', TransactionId_bxx ?? '')
-          .input('TraceId_bxx', TraceId_bxx ?? '')
-          .input('ndcTrNumber', ndcTrNumber)
-          .input('SearchPortData', data.SearchPortData)
-          .query(insertSql);
+        try {
+            const result = await pool.request()
+            .input('grade', pData.grade)
+            .input('src', pData.departure)
+            .input('dest', pData.arrive)
+            .input('src2', pData.dep_city2)
+            .input('dest2', pData.arr_city2)
+            .input('src3', pData.dep_city3)
+            .input('dest3', pData.arr_city3)
+            .input('src4', pData.dep_city4)
+            .input('dest4', pData.arr_city4)
+            .input('src5', pData.dep_city5)
+            .input('dest5', pData.arr_city5)
+            .input('src6', pData.dep_city6)
+            .input('dest6', pData.arr_city6)
+            .input('dep_date', deps.StrClear(pData.departure_date))
+            .input('arr_date', deps.StrClear(pData.arrive_date))
+            .input('dep_date2', deps.StrClear(pData.dep_date2))
+            .input('dep_date3', deps.StrClear(pData.dep_date3))
+            .input('dep_date4', deps.StrClear(pData.dep_date4))
+            .input('dep_date5', deps.StrClear(pData.dep_date5 || ''))
+            .input('dep_date6', deps.StrClear(pData.dep_date6 || ''))
+            .input('ticket_type', ticket_type)
+            .input('up_date', deps.getNow().NOWSTIME)
+            .input('TransactionId', TransactionId)
+            .input('TraceId', TraceId)
+            .input('adt', adt)
+            .input('chd', chd)
+            .input('inf', inf)
+            .input('stopover', stopover || '')
+            .input('AirLikeData', sub4)
+            .input('CityLikeData', sub7)
+            .input('bspSiteCode', bspSiteCode)
+            .input('MaxJourneyTime', data.SearchMaxJourneyTimeData)
+            .input('MaxShareTime', data.SearchMaxShareTimeData)
+            .input('TransactionId_abacus', TransactionId_abacus)
+            .input('TransactionId_bxx', TransactionId_bxx || '')
+            .input('TraceId_bxx', TraceId_bxx || '')
+            .input('ndcTrNumber', ndcTrNumber)
+            .input('SearchPortData', data.SearchPortData)
+            .query(insertSql);
+            maxUid = result.recordset[0]?.uid || '';
+            console.log('new: '+maxUid)
+        } catch (err) {
+            console.log(pData)
+            console.log(err.stack , err.number , err.lineNumber , err.procName);
+        }
       
         /*
         const selectSql = `
@@ -338,20 +346,22 @@ module.exports = async (req, res) => {
           .input('bspSiteCode', bspSiteCode)
           .query(selectSql);
         */
-        maxUid = result.recordset[0]?.uid || '';
-        console.log('new: '+maxUid)
+        
         searchType = 'R';
     } else {
         searchType = 'C';
     }
     const searchTime = gap.toFixed(2);
-    const logSql = `update interline_search_log set searchType = @searchType , searchTime = @searchTime  where log_uid = @log_uid `;
-            await pool.request()
-            .input('searchType',searchType )
-            .input('log_uid',logUid )
-            .input('searchTime',searchTime )
-            .query(logSql);
-    
+    try {
+        const logSql = `update interline_search_log set searchType = @searchType , searchTime = @searchTime  where log_uid = @log_uid `;
+                await pool.request()
+                .input('searchType',searchType )
+                .input('log_uid',logUid )
+                .input('searchTime',searchTime )
+                .query(logSql);
+    } catch (err) {
+        console.log(err.stack);
+    }
     res.json ({success:'ok',id:maxUid});
 
 

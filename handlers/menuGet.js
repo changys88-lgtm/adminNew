@@ -58,14 +58,16 @@ module.exports = async (req, res) => {
             html += `<div class="menu-group">
             <h4>${menuTitle}</h4>
             <div class="menu-list">`;
-            items.forEach(([label, code, url]) => {
+            items.forEach(([label, code, url ,useae]) => {
                 if (menuList.includes(code)) signal = '★';
                 else signal = '☆';
-                html += `
-                    <span class='menu-item' id='menu_${code}'>
-                        <span class='menu-star'  id='menu_${code}_signal' onClick="return menuSignal('${code}','${label}')">${signal}</span> 
-                        <span class='menu-label' id='menu_${code}_label'>${label}</span>
-                    </span>`;
+                if (useae !== 'N') {
+                    html += `
+                        <span class='menu-item' id='menu_${code}'>
+                            <span class='menu-star'  id='menu_${code}_signal' onClick="return menuSignal('${code}','${label}')">${signal}</span> 
+                            <span class='menu-label' id='menu_${code}_label'>${label}</span>
+                        </span>`;
+                }
             });
             html += `</div></div>`;
         }

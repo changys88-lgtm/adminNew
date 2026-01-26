@@ -41,33 +41,35 @@
     <!-- 하단 리스트 -->
     <section class="dashboard-bottom rev_data">
       <h3>최근 예약</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>예약번호</th>
-            <th>고객명</th>
-            <th>구간</th>
-            <th>상태</th>
-            <th>예약일</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>A20251201</td>
-            <td>김민지</td>
-            <td>ICN → NRT</td>
-            <td><span class="badge done">완료</span></td>
-            <td>2025-12-01</td>
-          </tr>
-          <tr>
-            <td>A20251202</td>
-            <td>이정훈</td>
-            <td>ICN → BKK</td>
-            <td><span class="badge wait">대기</span></td>
-            <td>2025-12-01</td>
-          </tr>
-        </tbody>
-      </table>
+      <div id="RecentReservationArea">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>예약번호</th>
+              <th>고객명</th>
+              <th>구간</th>
+              <th>상태</th>
+              <th>예약일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A20251201</td>
+              <td>김민지</td>
+              <td>ICN → NRT</td>
+              <td><span class="badge done">완료</span></td>
+              <td>2025-12-01</td>
+            </tr>
+            <tr>
+              <td>A20251202</td>
+              <td>이정훈</td>
+              <td>ICN → BKK</td>
+              <td><span class="badge wait">대기</span></td>
+              <td>2025-12-01</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="dashboard-bottom rev_data" ID="BusinessArea" style="position:relative;  "></section>
@@ -89,8 +91,26 @@
         //$("#noticeArea").html(notice);
         //$("#shakeArea").html(shake);
         formSearch(event);
+        setTimeout(() => {
+            revDataSearch();
+        }, 1000);
     });
     
+    async function revDataSearch() {
+        const data = "mode=revDataSearch";
+        const res  = await fetch('/searchGet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        });
+        const json  = await res.json();
+        const datas = json.searchData;
+        //console.log(datas);
+        $("#RecentReservationArea").html(datas);
+    }
+
     async function formSearch (e) {
         if (e) e.preventDefault();
         //LoadingStart ();

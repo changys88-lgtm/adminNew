@@ -1910,14 +1910,20 @@
 	}
 	function searchAirLikeChange (air) {
 		if (air != "") {
-			if (document.getElementById("SearchAirLikeData_"+air).checked == true) searchAirLike += air+"/";
-			else searchAirLike = searchAirLike.replace(air+"/","");
+			const chk = document.getElementById("SearchAirLikeData_" + air);
+			if (searchAirLike.includes(air)) {
+				searchAirLike = searchAirLike.replaceAll(air + "/", "");
+				chk.checked = false;
+			} else {
+				chk.checked = true;
+				searchAirLike += air+"/";
+			}
 			if (searchAirLike == "") document.getElementById("SearchAirLikeData_ALL").checked = true;
 			else document.getElementById("SearchAirLikeData_ALL").checked = false;
 		} else {
 			$("input:checked[name='SearchAirLikeData[]']").each(function(){
 				if(air != $(this).val() ) {
-					$(this).attr("checked", false);
+					$(this).prop("checked", false);
 				}
 			});
 			searchAirLike = "";
@@ -1932,7 +1938,7 @@
 		} else {
 			$("input:checked[name='SearchCityLikeData[]']").each(function(){
 				if(city != $(this).val() ) {
-					$(this).attr("checked", false);
+					$(this).prop("checked", false);
 				}
 			});
 			searchCityLike = "";
@@ -1940,21 +1946,21 @@
 	}
 	function searchListView () {
 		$(".subMenuTab").hide();
-		for (itiCnt = 1 ; itiCnt < 7 ; itiCnt ++ ) { 
-			depCnt = 0 ;
+		for (let itiCnt = 1 ; itiCnt < 7 ; itiCnt ++ ) { 
+			let depCnt = 0 ;
 			//idname = "Departure_";
 			idname = "Departure";
 			while (document.getElementById(idname+itiCnt+"_"+depCnt)) {
-				val = document.getElementById("depValue"+itiCnt+"_"+depCnt).value;
-				depTmp = Explode("^",val);
-				air    = depTmp[1].substring(0,2).toUpperCase();
-				aShare = Explode("|",depTmp[9]);
-				dView  = "";
-				aView  = "";
-				sView  = ""; // 경유지 대기 시간
+				let val = document.getElementById("depValue"+itiCnt+"_"+depCnt).value;
+				let depTmp = Explode("^",val);
+				let air    = depTmp[1].substring(0,2).toUpperCase();
+				let aShare = Explode("|",depTmp[9]);
+				let dView  = "";
+				let aView  = "";
+				let sView  = ""; // 경유지 대기 시간
 				if (searchDepTime != "") {
-					tmp = Explode("/",searchDepTime);
-					for (ix = 0 ; ix < tmp.length ; ix ++) {
+					let tmp = Explode("/",searchDepTime);
+					for (let ix = 0 ; ix < tmp.length ; ix ++) {
 							 if (tmp[ix] == "1" && depTmp[3] >= "0000" && depTmp[3] <= "0559") dView = "Y";
 						else if (tmp[ix] == "2" && depTmp[3] >= "0600" && depTmp[3] <= "1159") dView = "Y";
 						else if (tmp[ix] == "3" && depTmp[3] >= "1200" && depTmp[3] <= "1759") dView = "Y";
@@ -1962,8 +1968,8 @@
 					}
 				}
 				if (searchArrTime != "") {
-					tmp = Explode("/",searchArrTime);
-					for (ix = 0 ; ix < tmp.length ; ix ++) {
+					let tmp = Explode("/",searchArrTime);
+					for (let ix = 0 ; ix < tmp.length ; ix ++) {
 							 if (tmp[ix] == "1" && depTmp[4] >= "0000" && depTmp[4] <= "0559") aView = "Y";
 						else if (tmp[ix] == "2" && depTmp[4] >= "0600" && depTmp[4] <= "1159") aView = "Y";
 						else if (tmp[ix] == "3" && depTmp[4] >= "1200" && depTmp[4] <= "1759") aView = "Y";
@@ -1971,16 +1977,16 @@
 					}
 				}
 				if (searchShareTime != "") {
-					tmp = Explode("/",searchShareTime);
+					let tmp = Explode("/",searchShareTime);
 					aShare[4] = Number(aShare[4]);
-					for (ix = 0 ; ix < tmp.length ; ix ++) {
+					for (let ix = 0 ; ix < tmp.length ; ix ++) {
 							 if (tmp[ix] == "1" && aShare[4] >= 0    && aShare[4] <= 240) sView = "Y";
 						else if (tmp[ix] == "2" && aShare[4] >= 240  && aShare[4] <= 480) sView = "Y";
 						else if (tmp[ix] == "3" && aShare[4] >= 480  && aShare[4] <= 720) sView = "Y";
 						else if (tmp[ix] == "4" && aShare[4] >= 720                       ) sView = "Y";
 					}
 				}
-				view   = "";
+				let view   = "";
 				if (
 						(searchAir == "" || searchAir.indexOf(air+"/") != -1) 
 						&&

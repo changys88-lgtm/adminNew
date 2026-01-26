@@ -17,7 +17,7 @@
                         <button class="trip"  ID="ticketType1" onClick="return typeChange('1')">편도</button>
                         <button class="trip"  ID="ticketType3" onClick="return typeChange('3')">다구간</button>
                         <label class="direct">
-                            <input type="checkbox" name="stopover" value="Y" id="stopover" class="trip"ID="ticketDirect" onClick="return typeChange('1')"> 직항만조회
+                            <input type="checkbox" name="stopover" value="Y" id="stopover" class="trip" ID="ticketDirect" > 직항만조회
                         </label>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                 <div style="position: relative;">
                     <%- include("bSearch.inc") %>
                     <%- include("age.inc") %>
-                    <div id='SearchHistory' class="SearchHistory-layer detail-option" style="display: none;z-index:999; position: absolute; right: 0px; top:20px; width:900px">
+                    <div id='SearchHistory' class="SearchHistory-layer detail-option" style="display: none;z-index:999; position: absolute; right: 80px; top:20px; width:900px">
                         <div class="close" onclick="$('#SearchHistory').hide(); document.body.style.overflow = ''; document.documentElement.style.overflow = '';"></div>
                         <div class="scroll_tabl" id="SearchHistoryArea"></div>
                     </div>
@@ -159,17 +159,10 @@
                            </div>
                        </div>
                     <% } %>
-                 </div>
-
+            </div>
                  
              </div>
-
             
-                
-                
- 
- 
-             
              <div id="MonthData" class="monthArea mat10" style="display:none">
  
              </div>
@@ -180,8 +173,9 @@
                     <div id="searchFrame">
                         <div class="search_action_bar">
                             <div class="search_action_left">
-                                <span class="air-title">항공사 뉴스</span>
+                                <span class="section-title">항공사 뉴스</span>
                             </div>
+                            
                             <div class="search_action_right">
                                 
                                 <span class="unit">항공사</span>                                
@@ -304,13 +298,13 @@
 		searchDatas ('recentCheck');
 	}
 	function calculateAge () {
-		start_date  = $("#start_date").val();
-		birthday    = $("#birthday").val();
+		const startDate  = $("#startDate").val();
+		const birthDay    = $("#birthDay").val();
 		
-		aStart      = start_date.split("-");
-		aBirth      = birthday.split("-");
+		const aStart      = startDate.split("-");
+		const aBirth      = birthDay.split("-");
 
-		var age = aStart[0] - aBirth[0];
+		let age = aStart[0] - aBirth[0];
 		// 현재 월과 생일의 월을 비교합니다.
 		if (aStart[1] < aBirth[1]) {
 			age--;

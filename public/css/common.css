@@ -46,7 +46,7 @@ common css 참조
 .al { text-align: left !important; }
 .ar { text-align: right !important; }
 
-.none { display: none; }
+.none { display: none !important; }
 
 .font13 { font-size: 13px; }
 

@@ -1,14 +1,14 @@
 const HIDE_MENU = true;
 
 const menuJson = {
-    "상품관리;fa-chart-area" : [
+    "상품관리;" : [
         ["상품관리"		,"GOODS"	,"/Goods/Goods_list"        ,"Y"],
         ["재고관리"		,"STOCK"	,"/Goods/Stocks"            ,""],
         ["재고관리2"		,"STOCK2"	,"/Goods/Stock_list"        ,"N"],
         ["골프관리"		,"GOLFTEE"	,"/Golflist/golf_list"      ,"N" ],
         ["상품승인"		,"GOODSAUTH"	,"/Goods/Goods_confirm_list","N"]
     ],
-    "예약관리;fa-book": [
+    "예약관리;": [
         ["예약목록"		   ,"ORDERLIST"	,"/order/order_list","Y"],
         ["통합주문서"		,"TOTALBOOK"	,"/order/total_order_list","N"],
         ["국제선예약"	   ,"INTERORDER"	,"/interSearch/interRev","Y"],
@@ -22,7 +22,7 @@ const menuJson = {
         ["항공리스트(달력)"	,"AIRCAL"	,"/stats/air_calendar","N"],
         ["문자일림"		,"SMS"		,"/DirectSend/send_list","N"]
     ],
-    "정산목록;fa-chart-pie" : [
+    "정산목록;" : [
         ["정산목록"		,"SETTLELIST"	,"/order/settle_list","N"],
         ["국제선정산"		,"DSRLISTPRINT"	,"/aviation/issue_list_print"],
         ["발권데이터"		,"DSRLIST"	,"/aviation/issue_list","Y"],
@@ -30,7 +30,7 @@ const menuJson = {
         ["항공환불"		,"REFUND"	,"/refund/refund_list","Y"],
         ["인보이스"		,"AIRINVOICE"	,"/company/invoice","N"]
     ],
-    "게시판관리;fa-object-group"  : [
+    "게시판관리;"  : [
         ["뉴스관리"		,"NEWS"		,"/bbs/news_list"],
         ["제휴문의"		,"PARTNER"	,"/bbs/partnership_list","N"], 
         ["공지사항"		,"NOTICE"	,"/bbs/notice_list"],
@@ -42,7 +42,7 @@ const menuJson = {
         ["리뷰게시판"		,"REVIEW"	,"/bbs/review_list","N"],
         ["개발요청"		,"DEV"		,"/bbs/dev_list","N"]
     ],
-    "항공기초관리;fa-plane" : [
+    "항공기초관리;" : [
         ["공항코드관리"		,"PORTMAN"	,"/air/port_list"],
         ["항공사관리"		,"AIRMAN"	,"/air/air_list"],
         ["항공편타임테이블"	,"AIRTIME"	,"/air/flight_list","N"],
@@ -55,7 +55,7 @@ const menuJson = {
         ["항공사지급컴관리"	,"AIRCOMM2"	,"/air/airOutComm_list","N"]
     ],
     
-    "항공인벤관리;fa-boxes" : [
+    "항공인벤관리;" : [
         ["인벤요금관리"		,"AIRFARE"	,"/Block/fare_list"],
         ["항공편타임테이블"	 ,"AIRTIME2"	,"/Block/flight_list"],
         ["항공사규정관리"	,"INVRULE"	,"/Block/airRefund_list"	,"Y"],
@@ -63,7 +63,7 @@ const menuJson = {
     ],
     
     
-    "회계관리;fa-receipt"  : [
+    "회계관리;"  : [
         ["상품별입금내역"	,"GOODSIN"	,"/card/card_list"],
         ["입지결관리"		,"ACTLIST"	,"/bill/act_list"	,"Y"],
         ["출금등록관리"		,"MONEYOUT"	,"/bill/outsite_list"],
@@ -75,7 +75,7 @@ const menuJson = {
         ["타스프대장"		,"TASFMAN"	,"/aviation/tasf_list"]
     ],
     
-    "계좌관리;fa-won-sign"  : [
+    "계좌관리;"  : [
         ["온라인통장"		,"VISUALBANK"	,"/visualBank/visual_list"	,"Y"],
         ["법인카드승인"		,"COMCARD"	,"/card/businesscard_list","N"],
         ["손님카드승인"		,"CUSCARD"	,"/card/cardauth_list"],
@@ -88,7 +88,7 @@ const menuJson = {
         ["커미션대장"		,"COMMLIST"	,"/visual/comm_list"	,"N"]
     ],
     
-    "정산및통계;fa-chart-line"  : [
+    "정산및통계;"  : [
         ["상품매출"		,"GOODSSTATS"	,"/stats/goods_list"],
         ["상품매출(거래처별)"	,"GOODSSTATS2"	,"/stats/goods_site_list"],
         ["항공매출"		,"STATS"	,"/stats/total_list"],
@@ -100,12 +100,12 @@ const menuJson = {
         ["노선별현황표"		,"ROUTE"	,"/stats/route_list"],
         ["항공사실적관리"	,"AIRSETTLE"	,"/stats/perfor_list"]
     ],
-    "업무관리;fa-clipboard"  : [
+    "업무관리;"  : [
         ["업무일정"		,"BUSINESS"	,"/business/business_list"],
         ["인보이스관리"		,"INVOICE2"	,"/jobSchedule/invoice_list"],
         ["휴가원"		,"VACAITION"	,"/member/vacation_list"]
     ],
-    "기초관리;fa-key"  : [
+    "기초관리;"  : [
         ["기초코드관리"		,"BASICCODE"	,"/initail/code_manager"],
         ["지역관리"		,"COUNTRY"	,"/initail/category"],
         ["지역관리(호텔)"	,"COUNTRYHO"	,"/mapping/category","N"],
@@ -121,7 +121,7 @@ const menuJson = {
         ["QR생성"		,"QRCREATE"	,"/initail/qr_create","N"],
         ["거부항목"		,"REJECTIP"	,"/initail/reject","N"]
     ],
-    "멤버관리;fa-handshake"  : [
+    "멤버관리;"  : [
         ["관리자관리"		,"ADMINMAN"	,"/member/manager"],
         ["거래처관리"		,"SITEMAN"	,"/site/site_list"],
         ["템플릿거래처"		,"TEMPMAN"	,"/site/temp_list","N"],
@@ -131,7 +131,10 @@ const menuJson = {
         ["방문자보기"		,"VISITLIST"	,"/member/visit_list","N"],
         ["후급증관리"		,"PRICE"	,"/member/price_list","N"]
     ],
-    "로그관리;fa-search"  : [
+    "홈페이지관리;"  : [
+        ["홈페이지관리"		,"HOMEPAGE"	,"/home/home_list"],
+    ],
+    "로그관리;"  : [
         ["항공검색로그"		,"AIRLOG"	,"/logData/airsearch_list"],
         ["네이버검색"		,"NAVERSEARCH"	,"/logData/naversearch_list" , "N"],
         ["네이버랜딩"		,"NAVERLAND"	,"/logData/naverlanding_list", "N"],
