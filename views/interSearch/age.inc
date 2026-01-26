@@ -1,7 +1,7 @@
-        <div style="display:none; position: absolute; right: 0px; top:20px; width: 550px" id="ageCheckPopup" class="detail-option">
+        <div id="ageCheckPopup" style="display:none; position:absolute; right:0px; top:20px; width:550px" class="detail-option">
             <div class="detail-top">
-                <li class="tit">나이 계산기</li>
-                <li id="datail-close" onclick="$('#ageCheckPopup').hide()"></li>
+                <div class="tit">나이 계산기</div>
+                <button type="button" onclick="$('#ageCheckPopup').hide()"></button>
             </div>
 
             <div class="detail-content"></div>
@@ -50,6 +50,9 @@
                     </li><li>주민등록및 신분증의 출생일을 직업입력후 계산하여 주세요
                 </li></ul>
             </div>
-            <div class="detail-content ac" onclick="$('#ageCheckPopup').hide()"> <span class="btn_basic btn_gray">닫 기</span></div>
+            </div>
+
+            <div  class="opt-footer">
+                <button type="button" onclick="$('#ageCheckPopup').hide()">닫기</button>
             </div>
         </div>

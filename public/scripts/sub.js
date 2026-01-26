@@ -39,8 +39,8 @@ function generateCalendars(names = "", layer = "") {
 		let month = new Date().getMonth() + 1; // JS는 0부터 시작
 
 		// 먼저 컨테이너 초기화 - 3개월씩 한 줄, 1년치 스크롤바로 보기
-		container.innerHTML = '<div class="calendar-body" style="max-height: 440px !important; overflow-y: auto !important; overflow-x: hidden !important; padding: 10px 20px 20px !important; width: 100% !important; box-sizing: border-box !important;"><div class="calendar-wrap" style="display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; gap: 15px !important; justify-content: flex-start !important; align-items: flex-start !important; width: 100% !important; box-sizing: border-box !important; position: relative !important;">';
-
+		//container.innerHTML = '<div class="calendar-body" style="max-height: 440px !important; overflow-y: auto !important; overflow-x: hidden !important; padding: 10px 20px 20px !important; width: 100% !important; box-sizing: border-box !important;"><div class="calendar-wrap" style="display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; gap: 15px !important; justify-content: flex-start !important; align-items: flex-start !important; width: 100% !important; box-sizing: border-box !important; position: relative !important;">';
+		container.innerHTML = '';
 		for (let dCnt = 0; dCnt < 12; dCnt++) {
 			if (dCnt > 0) month++;
 			if (month > 12) {
@@ -90,14 +90,23 @@ function generateCalendars(names = "", layer = "") {
 			});
 
 			container.innerHTML += `
-				<div class="month-box" style="background: #f9f9f9; margin-left: 10px; overflow: hidden; overflow-y: auto;  height: 360px;  scrollbar-width: thin;                      /* auto | thin */
-  scrollbar-color: #cbd5e1 transparent;   ">					
+				<div class="month-box">
 					<p class="month-t">${year}년 ${month}월</p>
-					<table>
+					 <table class="calendar-table">
+						<thead>
 						<tr>
-							<th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class="sat">토</th>
-						</tr>
+							<th class="sun">일</th>
+							<th>월</th>
+							<th>화</th>
+							<th>수</th>
+							<th>목</th>
+							<th>금</th>
+							<th class="sat">토</th>
+						</tr>	
+						</thead>
+						<tbody>
 						${calendarHTML}
+						</tbody>
 					</table>
 				</div>
 			`;

@@ -192,7 +192,7 @@ module.exports = async (req, res) => {
             }
             newsData += `
                 <tr>
-                    <td>${uid}</td>
+                    <td style="text-align: center;">${uid}</td>
                     <td>${airline}</td>
                     <td class='al'><a href='javascript://' onClick="newsDetail('${uid}')">${subject}</a></td>
                     <td>${img}</td>
@@ -202,14 +202,14 @@ module.exports = async (req, res) => {
         });
         if (newsData == "") newsData = `<tr><td colspan='5' class='ac hh50'>검색결과가 없습니다.</td></tr>`;
         const cityhtml = `
-            <table class='result-table'  id='dtBasic'>
-                <thead class='thead-std' style=''>
-                <tr style='background-color:#eee;'>
-                    <th class='wh100'>넘버</th>
-                    <th class='wh100'>항공사</th>
-                    <th >제목</th>
-                    <th class='wh60'>첨부</th>
-                    <th class='wh120'>등록일</th>
+            <table  id='dtBasic'>
+                <thead>
+                <tr>
+                    <th>넘버</th>
+                    <th>항공사</th>
+                    <th>제목</th>
+                    <th>첨부</th>
+                    <th>등록일</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -372,8 +372,9 @@ module.exports = async (req, res) => {
         });
         let listHTML = Object.values(aHTML).join('');
         listHTML = `
-            <table  class='search-view-table'>
-                <thead class='search-view-table-head'>
+            <div class="avn-history-wrap">
+                <table class="avn-history-table">
+                    <thead>
                     <tr>
                         <th>검색일</th>
                         <th>직항</th>
@@ -386,10 +387,13 @@ module.exports = async (req, res) => {
                         <th>검색</th>
                     </tr>
                 </thead>
-                <tbody class='search-view-table-body'  >
+                 <tbody>
                     ${listHTML}
                 </tbody>
             </table>
+             <div  class="opt-footer">
+                <button type="button" onclick="$('#ageCheckPopup').hide()">닫기</button>
+            </div>
         `;
 
         res.json ({recentData : listHTML});

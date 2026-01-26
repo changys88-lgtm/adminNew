@@ -21,8 +21,8 @@
 .search-panel {
   background: #fff;
   border-radius: 12px;
-  padding: 10px;
-  border: 1px solid #e5e7eb;
+  padding: 0;                 /* 🔥 공기 제거 */
+  border: none;   
   height: 100%;
 }
 
@@ -39,6 +39,7 @@
   color: #475569;
   border: 1px solid #c7c7c7;
   white-space: nowrap;
+  text-align: center;
 }
 
 .search-table td {
@@ -232,16 +233,35 @@
 /* 공지사항 검색 */
 /* 전체 바 */
 .search_action_bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 16px;
-  background: #fff;
-  border: 1px solid #e5e8ef;
-  border-radius: 6px;
-  margin: 0 0 10px 0;
+  padding: 6px 12px;          /* 🔥 여백 줄이기 */
+  background: transparent;    /* 박스 제거 */
+  border-bottom: 1px solid #e5e7eb;
 }
 
+.search_action_bar + table thead th {
+  padding: 10px 8px;          /* 🔥 기존보다 컴팩트 */
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #475569;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.search_action_bar + table tbody td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eef2f7;
+  font-size: 13px;
+}
+
+.search_action_bar + table thead th:nth-child(3),
+.search_action_bar + table tbody td:nth-child(3) {
+  text-align: left;
+}
+
+.search_action_bar + table tbody tr:hover {
+  background: #f9fbff;
+}
 /* 좌측 */
 .search_action_left {
   display: flex;
@@ -872,4 +892,145 @@ span.search_action_btn_primary:hover {
 /* focus */
 .btn-close-avianext:focus {
   outline: none;
+}
+
+
+
+
+
+/* 항공사 뉴스 테이블 */
+.avn-notice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #ffffff;
+  color: #1e293b;
+}
+
+/* 헤더 */
+.avn-notice-table thead th {
+  padding: 12px 10px;
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+/* 바디 행 */
+.avn-notice-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.avn-notice-table tbody tr:hover {
+  background: #f9fbff;
+}
+
+/* 선택된 행 */
+.avn-notice-table tbody tr.is-active {
+  background: #eef6fb;
+}
+
+/* 셀 공통 */
+.avn-notice-table td {
+  padding: 12px 10px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* 번호 */
+.avn-notice-no {
+  width: 80px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* 항공사 코드 */
+.avn-notice-code {
+  width: 60px;
+  color: #475569;
+}
+
+/* 제목 */
+.avn-notice-title {
+  white-space: normal;
+}
+
+.avn-notice-title a {
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.avn-notice-title a:hover {
+  text-decoration: underline;
+}
+
+/* 첨부 아이콘 */
+.avn-notice-file {
+  width: 50px;
+  text-align: center;
+}
+
+.avn-notice-file img {
+  width: 16px;
+  opacity: 0.85;
+}
+
+/* 등록일 */
+.avn-notice-date {
+  width: 110px;
+  text-align: right;
+  font-size: 12px;
+  color: #475569;
+}
+
+
+
+#dtBasic {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #ffffff;
+}
+
+/* 헤더 */
+#dtBasic thead th {
+  padding: 12px 10px;
+  background: #f8fafc;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 바디 */
+#dtBasic tbody td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eef2f7;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* 제목 컬럼만 좌측 */
+#dtBasic thead th:nth-child(3),
+#dtBasic tbody td:nth-child(3) {
+  text-align: left;
+}
+
+/* 제목 링크 */
+#dtBasic tbody td:nth-child(3) a {
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#dtBasic tbody td:nth-child(3) a:hover {
+  text-decoration: underline;
+}
+
+/* hover */
+#dtBasic tbody tr:hover {
+  background: #f9fbff;
 }

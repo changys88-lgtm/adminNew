@@ -32,11 +32,13 @@
                 <div style="position: relative;">
                     <%- include("bSearch.inc") %>
                     <%- include("age.inc") %>
-                    <div id='SearchHistory' class="SearchHistory-layer" style="display: none;z-index:999 ">
-                        <div class="close" onclick="$('#SearchHistory').hide()"></div>
+                    <div id='SearchHistory' class="SearchHistory-layer detail-option" style="display: none;z-index:999; position: absolute; right: 0px; top:20px; width:900px">
+                        <div class="close" onclick="$('#SearchHistory').hide(); document.body.style.overflow = ''; document.documentElement.style.overflow = '';"></div>
                         <div class="scroll_tabl" id="SearchHistoryArea"></div>
                     </div>
+                    
                     <div id="revPopup" style="display:none; position: absolute; left: -638px; top: 0px; z-index: 9999;"></div>
+                    
                 </div>
             </div>
         </div>
@@ -178,7 +180,7 @@
                     <div id="searchFrame">
                         <div class="search_action_bar">
                             <div class="search_action_left">
-                                <span>항공사 뉴스</span>
+                                <span class="air-title">항공사 뉴스</span>
                             </div>
                             <div class="search_action_right">
                                 
@@ -192,8 +194,7 @@
                             
                         
         
-                        
-                        <div ID="listFrameSub" class="search-panel">
+                        <div id="listFrameSub" class="search-panel">
                             
                         </div>
                         <div class="action_bar_split">
@@ -480,8 +481,12 @@
             document.body.style.overflow = "hidden";
             document.documentElement.style.overflow = "hidden";
         } else if (mode == "recentCheck") {
+            smallPopHide ();
             $('#SearchHistory').show();
             $("#SearchHistoryArea").html(json.recentData);
+            // iframe 스크롤바 제거
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden";
         }
 	};
 
@@ -602,6 +607,8 @@
 		interSearch ();
 
 		$('#SearchHistory').hide();
+		document.body.style.overflow = '';
+		document.documentElement.style.overflow = '';
 	}
 	function motionClick (dep,cnt) {
 		$("#OpenView"+dep+"_"+cnt).slideDown("fast");
