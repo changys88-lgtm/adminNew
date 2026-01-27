@@ -5,19 +5,19 @@
     <section class="dashboard-summary">
       <div class="kpi-card">
         <p class="kpi-title">오늘 예약</p>
-        <strong class="kpi-value">12건</strong>
+        <strong class="kpi-value"><span id="todayCnt">0</span>건</strong>
       </div>
       <div class="kpi-card">
         <p class="kpi-title">이번달 예약</p>
-        <strong class="kpi-value">324건</strong>
+        <strong class="kpi-value"><span id="monthCnt">0</span>건</strong>
       </div>
       <div class="kpi-card">
         <p class="kpi-title">대기 예약</p>
-        <strong class="kpi-value wait">8건</strong>
+        <strong class="kpi-value wait"><span id="pendingCount">0</span>건</strong>
       </div>
       <div class="kpi-card">
         <p class="kpi-title">취소 요청</p>
-        <strong class="kpi-value cancel">3건</strong>
+        <strong class="kpi-value cancel"><span id="cancelReqCount">0</span>건</strong>
       </div>
     </section>
 
@@ -49,23 +49,36 @@
               <th>고객명</th>
               <th>구간</th>
               <th>상태</th>
+              <th>인원</th>
               <th>예약일</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>A20251201</td>
-              <td>김민지</td>
-              <td>ICN → NRT</td>
-              <td><span class="badge done">완료</span></td>
-              <td>2025-12-01</td>
+              <td colspan="6" class="ac hh50">데이터 검색중</td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="dashboard-bottom rev_data">
+      <h3>최근 주문</h3>
+      <div id="RecentGoodsArea">
+        <table class="table">
+          <thead>
             <tr>
-              <td>A20251202</td>
-              <td>이정훈</td>
-              <td>ICN → BKK</td>
-              <td><span class="badge wait">대기</span></td>
-              <td>2025-12-01</td>
+              <th>주문번호</th>
+              <th>상품명</th>
+              <th>주문일</th>
+              <th>주문자</th>
+              <th>주문상태</th>
+              <th>출발일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="6" class="ac hh50">데이터 검색중</td>
             </tr>
           </tbody>
         </table>
@@ -106,9 +119,18 @@
             body: data
         });
         const json  = await res.json();
-        const datas = json.searchData;
+        const datas = json.revData;
         //console.log(datas);
-        $("#RecentReservationArea").html(datas);
+        if (json.success === "ok") {
+            $("#RecentReservationArea").html(datas);
+            $("#cancelReqCount").html(json.cancelReqCnt);
+            $("#pendingCount").html(json.pendingCnt);
+            $("#todayCnt").html(json.todayCnt);
+            $("#monthCnt").html(json.monthCnt);
+            $("#RecentGoodsArea").html(json.goodsData);
+        } else {
+            newAlert(json.errorMsg);
+        }
     }
 
     async function formSearch (e) {

@@ -1749,6 +1749,9 @@ iframe.search_frame {
 	justify-content: center ;
 	margin-left: 4px ;
 	transition: all .2s ;
+	top: -14px;
+	right: -14px;
+	position: relative;
   }
   
   #searchFrame .top-tabs .tab .tab-close:hover {

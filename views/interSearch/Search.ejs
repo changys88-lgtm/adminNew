@@ -32,7 +32,7 @@
                 <div style="position: relative;">
                     <%- include("bSearch.inc") %>
                     <%- include("age.inc") %>
-                    <div id='SearchHistory' class="SearchHistory-layer detail-option" style="display: none;z-index:999; position: absolute; right: 80px; top:20px; width:900px">
+                    <div id='SearchHistory' class="SearchHistory-layer detail-option" style="display: none;z-index:999; position: absolute; right: 80px; top:20px; width:900px ; max-height: 620px;">
                         <div class="close" onclick="$('#SearchHistory').hide(); document.body.style.overflow = ''; document.documentElement.style.overflow = '';"></div>
                         <div class="scroll_tabl" id="SearchHistoryArea"></div>
                     </div>
@@ -46,37 +46,40 @@
 
       <!-- 검색바 -->
     <div class="search-bar">
+       <!-- <div class="" id="singleArea"> -->
+            <div class="search-item city-select" data-type="from">
+                <span class="label">출발도시</span>
+                <!-- <strong id="fromText">인천</strong> -->
+                <strong id="departure_name_text">
+                <input type="text" class="city-input" name="departure_name" id="departure_name" onClick="cityView('1','0')" onkeyup="autoComplete(this,'1','0')" autocomplete="off" value="인천" placeholder="출발도시">
+                </strong>
 
-        <div class="search-item city-select" data-type="from">
-            <span class="label">출발도시</span>
-            <!-- <strong id="fromText">인천</strong> -->
-            <strong id="departure_name_text">
-            <input type="text" class="city-input" name="departure_name" id="departure_name" onClick="cityView('1','0')" onkeyup="autoComplete(this,'1','0')" autocomplete="off" value="인천" placeholder="출발도시">
-            </strong>
+            </div>
 
-        </div>
+            <div class="swap">⇄</div>
 
-        <div class="swap">⇄</div>
+            <div class="search-item city-select" data-type="to">
+                <span class="label">도착도시</span>
+                <!-- <strong id="toText" class="is-placeholder">도착도시</strong> -->
+                <strong id="arrive_name_text">
+                <input type="text" class="city-input" name="arrive_name" id="arrive_name" onClick="cityView('2','0')" onkeyup="autoComplete(this,'2','0')" autocomplete="off" value="" placeholder="도착도시">
+                </strong>
+            </div>
 
-        <div class="search-item city-select" data-type="to">
-            <span class="label">도착도시</span>
-            <!-- <strong id="toText" class="is-placeholder">도착도시</strong> -->
-            <strong id="arrive_name_text">
-            <input type="text" class="city-input" name="arrive_name" id="arrive_name" onClick="cityView('2','0')" onkeyup="autoComplete(this,'2','0')" autocomplete="off" value="" placeholder="도착도시">
-            </strong>
-        </div>
+            <div class="search-item date-select" id="openCalendar">
+                <span class="label">출발일</span>
+                <!-- <strong id="departText">2025-12-25 (목)</strong> -->
+                <strong class="date-span" id="departure_date_name"  onClick="return generateCalendars('departure_date','CalendarLayer')"></strong>
+            </div>
 
-        <div class="search-item date-select" id="openCalendar">
-            <span class="label">출발일</span>
-            <!-- <strong id="departText">2025-12-25 (목)</strong> -->
-            <strong class="date-span" id="departure_date_name"  onClick="return generateCalendars('departure_date','CalendarLayer')"></strong>
-        </div>
-
-        <div class="search-item date-select" id="openCalendarReturn">
-            <span class="label">귀국일</span>
-            <!-- <strong id="returnText">2025-12-27 (토)</strong> -->
-            <strong class="date-span" id="arrive_date_name"  onClick="return generateCalendars('arrive_date','CalendarLayer')"></strong>
-        </div>
+            <div class="search-item date-select" >
+                <div id="openCalendarReturn">
+                    <span class="label">귀국일</span>
+                    <!-- <strong id="returnText">2025-12-27 (토)</strong> -->
+                    <strong class="date-span" id="arrive_date_name"  onClick="return generateCalendars('arrive_date','CalendarLayer')"></strong>
+                </div>
+            </div>
+        <!-- </div> -->
 
         <div class="search-item pax-select" onClick="seatView()">
             <span class="label">인원</span>

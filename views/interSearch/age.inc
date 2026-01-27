@@ -9,7 +9,8 @@
             <div style="padding:10px 10px">
                 <table width="100%" height="160" class="OyeTable bgcEEE">
 
-                    <tbody><tr class="ac">
+                    <tbody>
+                    <tr class="ac">
                         <th>출발일</th>
                         <th>생년월일</th>
                         <th>계산</th>
@@ -37,19 +38,20 @@
 
                     </tr>
 
-                </tbody></table>
+                    </tbody>
+                </table>
             </div>
             
             <div class="detail-content">
-            <div class="pal30 al">
-                <ul>
-                    <li>최종 탑승일을 입력해 주세요
-                    </li><li>성인 : 만 12세 이상
-                    </li><li>소아 : 2세 부터 12세 미만까지
-                    </li><li>유아 : 24개월 미만 
-                    </li><li>주민등록및 신분증의 출생일을 직업입력후 계산하여 주세요
-                </li></ul>
-            </div>
+                <div class="pal30 al">
+                    <ul>
+                        <li>최종 탑승일을 입력해 주세요
+                        </li><li>성인 : 만 12세 이상
+                        </li><li>소아 : 2세 부터 12세 미만까지
+                        </li><li>유아 : 24개월 미만 
+                        </li><li>주민등록및 신분증의 출생일을 직업입력후 계산하여 주세요
+                    </li></ul>
+                </div>
             </div>
 
             <div  class="opt-footer">

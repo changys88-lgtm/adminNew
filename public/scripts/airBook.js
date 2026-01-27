@@ -27,34 +27,34 @@
 		}
 	}
 	function typeChange(s) {
-		Obj = document.frmForm;
-		ticket_type = Obj.ticket_type.value;
+		const Obj = document.frmForm;
+		let ticket_type = Obj.ticket_type.value;
 		if (ticket_type != s) {
-			$("#ticketType"+ticket_type).toggleClass("is-checked");
+			$("#ticketType"+ticket_type).toggleClass("active");
 			ticket_type = s;
 			Obj.ticket_type.value = ticket_type;
-			$("#ticketType"+ticket_type).toggleClass("is-checked");
+			$("#ticketType"+ticket_type).toggleClass("active");
 			if (ticket_type == "1") {
-				$("#arrDateArea").hide();
-				$("#single_area").show();
-				$("#multi_area").hide();
+				$("#openCalendarReturn").hide();
+				$("#singleArea").show();
+				$("#multiArea").hide();
 				$("#multiSelect").hide();
 				$("#sotoSelect").show();
 				$("#itiRouteRight2").hide();
 				Obj.RouteCount.value = 1;
 				multiAllHide ();
 			} else if (ticket_type == "2") {
-				$("#arrDateArea").show();
-				$("#single_area").show();
-				$("#multi_area").hide();
+				$("#openCalendarReturn").show();
+				$("#singleArea").show();
+				$("#multiArea").hide();
 				$("#multiSelect").hide();
 				$("#sotoSelect").show();
 				$("#itiRouteRight2").show();
 				Obj.RouteCount.value = 2;
 				multiAllHide ();
 			} else if (ticket_type == "3") {
-				$("#single_area").hide();
-				$("#multi_area").show();
+				$("#singleArea").hide();
+				$("#multiArea").show();
 				$("#multiSelect").show();
 				$("#sotoSelect").hide();
 				Obj.RouteCount.value = 2;
@@ -554,6 +554,7 @@
 		$("#SearchShareTime").hide();
 		$("#SearchPriceGubun").hide();
 		$("#SearchPrice").hide();
+		$("#codeShareView").hide();
 		$("#MonthData").hide();
 		$("#beforeSearch").hide();
 		$("#ageCheckPopup").hide();

@@ -2,6 +2,7 @@ const { aes128Encrypt, aes128Decrypt } = require('../src/utils/cryptoUtil');
 const { dbConfig, blockedIP, getNow , bbsImgName } = require('../lib/config');
 const { sql, getPool } = require('../lib/dbPool');
 const { cutDate , cutTime , getWeekday } = require('../src/utils/cutDate');
+const { arrInterGubun } = require('../src/utils/airConst');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 //const sql = require('mssql');
@@ -18,6 +19,7 @@ module.exports = async (req, res) => {
     const aviaLoginId   = req.cookies?.AviaLoginId   || '';
     const AviaLoginName = req.cookies?.AviaLoginName || '';
     const b2bLoginId    = req.cookies?.b2bLoginId    || '';
+    const b2bSiteCode   = req.cookies?.b2bSiteCode    || '';
     const pool = await getPool();
     let   sqlText = '';
     let   sqlResult = '';
@@ -403,7 +405,7 @@ module.exports = async (req, res) => {
                 </tbody>
             </table>
             <div class="opt-footer">
-                <button type="button" onclick="$('#beforeSearch').hide();">닫기</button>
+                <button type="button" onclick="$('#SearchHistory').hide();">닫기</button>
             </div>
         `;
 
@@ -468,22 +470,96 @@ module.exports = async (req, res) => {
         `;
         res.json({ ageData: html  });
     } else if (mode == "revDataSearch") {
-        sqlText = `select * from interline_domestic_rev where 1=1 `;
-        /*
-        if (sWord != "") sqlText += ` and subject like '%${sWord}%' `;
-        if (sAir != "") sqlText += ` and airline = '${sAir}' `;
-        let totQuery = `select count(*) as total from interline_domestic_rev as a ${sqlText}`;
-        const result2 = await pool.request().query(totQuery);
-        const totalRowCount = result2.recordset[0].total;
-        const { startRow, endRow, pageHTML } = getPagination({
-            tot_row: totalRowCount,
-            page: page ,
-            listCount: listCount
-        });
-        const res  = await pool.request().query(data);
-        const result = res.recordset;
-        res.json({ searchData: result });
-        */
+        sqlText = `select top 3 a.uid , a.order_date , a.site_code , c.citycode , b.eng_name1 + '/' + b.eng_name2 as paxName , a.adult_member , a.child_member , a.infant_member , a.in_status `;
+        sqlText += ` from interline as a left outer join interline_pax as b on a.uid = b.uid_minor and b.minor_num = '1'  `;
+        sqlText += ` left outer join interline_routing as c on a.uid = c.uid_minor and c.minor_num = '1'  `;
+        sqlText += ` where 1=1 and a.in_status != '9' `;
+        if (b2bSiteCode != "") sqlText += ` and site_code = '${b2bSiteCode}' `;
+        sqlText += ` order by uid desc `;   
+        sqlResult = await pool.request().query(sqlText);
+        let listHTML = '';
+        for (const row of sqlResult.recordset) {
+            let { uid , order_date , site_code , citycode , paxName , adult_member , child_member , infant_member , in_status } = row;
+            listHTML += `
+                <tr >
+                    <td>${uid}</td>
+                    <td>${site_code} - ${paxName}</td>
+                    <td>${citycode}</td>
+                    <td>${arrInterGubun[in_status]}</td>
+                    <td>${adult_member}/${child_member}/${infant_member}</td>
+                    <td>${cutDate(order_date)}</td>
+                </tr>
+            `;
+        };
+        listHTML = `
+            <table class='table'>
+                <thead>
+                    <tr >
+                        <th>예약번호</th>
+                        <th>고객명</th>
+                        <th>구간</th>
+                        <th>상태</th>
+                        <th>인원</th>
+                        <th>예약일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${listHTML}
+                </tbody>
+            </table>
+        `;
+        sqlText = `select top 3 a.order_num , a.order_date , a.site_code , a.order_name , a.status , b.start_day , c.tourName `;
+        sqlText += ` from orderSheet as a left outer join orderSheet_minor as b on a.order_num = b.order_num and b.minor_num = '1'  `;
+        sqlText += ` left outer join Products as c on b.tourNumber = c.tourNumber  `;
+        sqlText += ` where 1=1 and a.status != '9' `;
+        if (b2bSiteCode != "") sqlText += ` and site_code = '${b2bSiteCode}' `;
+        sqlText += ` order by a.uid desc `;   
+        sqlResult = await pool.request().query(sqlText);
+        let goodsListHTML = '';
+        for (const row of sqlResult.recordset) {
+            let { order_num , order_date , site_code , order_name , status , start_day , tourName } = row;
+            goodsListHTML += `
+                <tr >
+                    <td>${order_num}</td>
+                    <td>${tourName}</td>
+                    <td>${cutDate(order_date)}</td>
+                    <td>${order_name}</td>
+                    <td>${status}</td>
+                    <td>${cutDate(start_day)}</td>
+                </tr>
+            `;
+        };
+        goodsListHTML = `
+            <table class='table'>
+                <thead>
+                    <tr >
+                        <th>주문번호</th>
+                        <th>상품명</th>
+                        <th>주문일</th>
+                        <th>주문자</th>
+                        <th>주문상태</th>
+                        <th>출발일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${goodsListHTML}
+                </tbody>
+            </table>
+        `;
+        sqlText = `
+            SELECT
+                SUM(CASE WHEN in_status = '8' THEN 1 ELSE 0 END) AS cancelReqCount,
+                SUM(CASE WHEN in_status = '1' THEN 1 ELSE 0 END) AS pendingCount,
+                SUM(CASE WHEN SUBSTRING(order_date,1,8) = @today THEN 1 ELSE 0 END) AS todayCount,
+                SUM(CASE WHEN SUBSTRING(order_date,1,6) = @month THEN 1 ELSE 0 END) AS monthCount
+            FROM interline;
+        `;
+        sqlResult = await pool.request()
+                    .input('today', sql.VarChar, getNow().NOWS)
+                    .input('month', sql.VarChar, getNow().NOWS.substring(0,6))
+                    .query(sqlText);
+        const { cancelReqCount , pendingCount , todayCount , monthCount } = sqlResult.recordset?.[0];
+        res.json({ success: 'ok', errorMsg: msg , revData: listHTML , cancelReqCnt: cancelReqCount , pendingCnt: pendingCount , todayCnt: todayCount , monthCnt: monthCount , goodsData: goodsListHTML });
     }
 };
 

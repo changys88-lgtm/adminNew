@@ -308,7 +308,7 @@
 		<!--요금시간//-->
 
 		<!--가격대-->
-		<div class="select-item-in">
+		<div class="select-item-in none">1
 			<div class="select-form" onClick="filterShow('SearchPrice')" >
 				<p>가격</p>
 			</div>
