@@ -259,34 +259,35 @@
 		document.frmForm.arrAirCode.value					= "";
 		document.getElementById("depAreaList").innerHTML	= "";
 		document.getElementById("arrAreaList").innerHTML	= "";
+		if (document.getElementById("depAirNameR")) {
+			document.getElementById("depAirNameR").innerHTML	= "";
+			document.getElementById("depReaminR").innerHTML		= "0";
+			document.getElementById("depNameR").innerHTML		= "";
+			document.getElementById("depDateR").innerHTML		= "";
+			document.getElementById("depAirFlightR").innerHTML	= "";
+			document.getElementById("depPriceR").innerHTML		= "";
 
-		document.getElementById("depAirNameR").innerHTML	= "";
-		document.getElementById("depReaminR").innerHTML		= "0";
-		document.getElementById("depNameR").innerHTML		= "";
-		document.getElementById("depDateR").innerHTML		= "";
-		document.getElementById("depAirFlightR").innerHTML	= "";
-		document.getElementById("depPriceR").innerHTML		= "";
+			document.getElementById("arrAirNameR").innerHTML	= "";
+			document.getElementById("arrReaminR").innerHTML		= "0";
+			document.getElementById("arrNameR").innerHTML		= "";
+			document.getElementById("arrDateR").innerHTML		= "";
+			document.getElementById("arrAirFlightR").innerHTML	= "";
+			document.getElementById("arrPriceR").innerHTML		= "";
 
-		document.getElementById("arrAirNameR").innerHTML	= "";
-		document.getElementById("arrReaminR").innerHTML		= "0";
-		document.getElementById("arrNameR").innerHTML		= "";
-		document.getElementById("arrDateR").innerHTML		= "";
-		document.getElementById("arrAirFlightR").innerHTML	= "";
-		document.getElementById("arrPriceR").innerHTML		= "";
+			document.getElementById("adtMemR").innerHTML		= "1";
+			document.getElementById("adtPriceR").innerHTML		= "0원";
+			document.getElementById("adtAirPriceR").innerHTML	= "0원";
+			document.getElementById("adtAirFuelR").innerHTML	= "0원";
+			document.getElementById("adtAirTaxR").innerHTML		= "0원";
 
-		document.getElementById("adtMemR").innerHTML		= "1";
-		document.getElementById("adtPriceR").innerHTML		= "0원";
-		document.getElementById("adtAirPriceR").innerHTML	= "0원";
-		document.getElementById("adtAirFuelR").innerHTML	= "0원";
-		document.getElementById("adtAirTaxR").innerHTML		= "0원";
+			document.getElementById("chdMemR").innerHTML		= "0";
+			document.getElementById("chdPriceR").innerHTML		= "0원";
+			document.getElementById("chdAirPriceR").innerHTML	= "0원";
+			document.getElementById("chdAirFuelR").innerHTML	= "0원";
+			document.getElementById("chdAirTaxR").innerHTML		= "0원";
+			document.getElementById("TotalAmount").innerHTML	= "0원";
+		}
 
-		document.getElementById("chdMemR").innerHTML		= "0";
-		document.getElementById("chdPriceR").innerHTML		= "0원";
-		document.getElementById("chdAirPriceR").innerHTML	= "0원";
-		document.getElementById("chdAirFuelR").innerHTML	= "0원";
-		document.getElementById("chdAirTaxR").innerHTML		= "0원";
-
-		document.getElementById("TotalAmount").innerHTML	= "0원";
 	}
 
 	function airSelect (

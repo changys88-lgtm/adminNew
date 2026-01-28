@@ -1,139 +1,28 @@
 <%- include('../header') %>
 <script language="JavaScript" src="../scripts/domeClass.js?v=<?=$v?>"></script>
+<link rel="stylesheet" href="/css/international.css">
+<main class=" international">
 
-<main class="main international">
-
-</main>
-<!--page_item--->
-<div id="content">
-
-	<div>
-		<form name="frmForm" id="frmForm" method="post" class="search-form">
-		<div class="search-box>
-			<div class="flight-type">
-				<label class="fl-way-block is-checked" ID="ticketType2" onClick="typeChange('2')">
-					<input type="radio" class="radio-box">
-					<span class="radio-txt" >왕복</span>
-				</label>
-				<label class="fl-way-block" ID="ticketType1" onClick="typeChange('1')">
-					<input type="radio" class="radio-box">
-					<span class="radio-txt" >편도</span>
-				</label>
-
-			</div>
-
-			<div class="air-page-quickbar" style="margin-right:25px">
-				<!--
-				<div class="map_search" onclick="searchAction () ">
-					<i class="fa fa-search search_icon"></i>검색
+    <form name="frmForm" method="post" id="frmForm" onsubmit="return false">
+		<input type="hidden" name = "tmpData" value ="" id = "tmpData"> 
+		<input type="hidden" name = "tmpData2" value ="" id = "tmpData2"> 
+		<input type="hidden" name="titleData" value="">
+		<div id="searchFrame">
+			<div class="search_action_bar">
+				<div class="search_action_left">
+					<div class="search-options">
+						<div class="trip-type">
+							<button class="trip active"  ID="ticketType2" onClick="return typeChange('2')">왕복</button>
+							<button class="trip"  ID="ticketType1" onClick="return typeChange('1')">편도</button>
+						</div>
+					</div>
 				</div>
-				-->
-				<!--선택정보확인-->
-				<div class="aq-box">
-					<div class="aq-top">
-						선택한 항공편
-					</div>
-					<div class="aq-body">
-						<div class="item-1">
-							<p class="f1">
-								<span class="s1">[가는편]</span>
-								<span class="s2" id="depAirNameR"></span>
-								<span class="s3">잔여(<span style="color:#ff0;" id="depReaminR">0</span>석)</span>
-							</p>
-							<div class="wt-box">
-								<span class="qb-item">
-									<span>구간</span><span class="tkt-way" id="depNameR"></span>
-								</span>
-								<span class="qb-item">
-									<span>출발일시</span><span class="tkt-way" id="depDateR"></span>
-								</span>
-								<span class="qb-item">
-									<span>편명</span><span class="tkt-way" id="depAirFlightR"></span>
-								</span>
-								<span class="qb-item">
-									<span>소계<span class="s1">(성인 1인기준)</span></span><span class="tkt-way" id="depPriceR"></span>
-								</span>
-							</div>
-						</div>
-						<div class="item-1">
-							<p class="f1">
-								<span class="s1">[오는편]</span>
-								<span class="s2" id="arrAirNameR"></span>
-								<span class="s3">잔여(<span style="color:#ff0;" id="arrReaminR">0</span>석)</span>
-							</p>
-							<div class="wt-box">
-								<span class="qb-item">
-									<span>구간</span><span class="tkt-way" id="arrNameR"></span>
-								</span>
-								<span class="qb-item">
-									<span>출발일시</span><span class="tkt-way" id="arrDateR"></span>
-								</span>
-								<span class="qb-item">
-									<span>편명</span><span class="tkt-way" id="arrAirFlightR"></span>
-								</span>
-								<span class="qb-item">
-									<span>소계<span class="s1">(성인 1인기준)</span></span><span class="tkt-way" id="arrPriceR"></span>
-								</span>
-							</div>
-						</div>
-						
-						<div class="item-1">
-							<div class="wt-box" id="adtArea">
-								<span class="qb-item cnt">
-									성인<span id="adtMemR"> 1</span>명<span class="tkt-way" id="adtPriceR">0원</span>
-								</span>
-								<span class="qb-item">
-									<span>운임</span><span class="tkt-way" id="adtAirPriceR">0원</span>
-								</span>
-								<span class="qb-item">
-									<span>유류할증료</span><span class="tkt-way" id="adtAirFuelR">0원</span>
-								</span>
-								<span class="qb-item">
-									<span>세금</span><span class="tkt-way" id="adtAirTaxR">0원</span>
-								</span>
-							</div>
-							<div class="wt-box" id="chdArea" style="display:none">
-								<span class="qb-item cnt">
-									소아<span id="chdMemR"> 0</span>명<span class="tkt-way" id="chdPriceR">0원</span>
-								</span>
-								<span class="qb-item">
-									<span>운임</span><span class="tkt-way" id="chdAirPriceR">0원</span>
-								</span>
-								<span class="qb-item">
-									<span>유류할증료</span><span class="tkt-way" id="chdAirFuelR">0원</span>
-								</span>
-								<span class="qb-item">
-									<span>세금</span><span class="tkt-way" id="chdAirTaxR">0원</span>
-								</span>
-							</div>
-							<div class="wt-box" id="infArea" style="display:none">
-								<span class="qb-item cnt">
-									유아<span id="infMemR"> 1</span>명<span class="tkt-way" id="infPriceR">무임</span>
-								</span>
-							</div>
-						</div>
-						<div class="item-1" style="border-bottom:none;">
-							<div class="wt-box">
-								<span class="qb-item " title="타스프 금액은 성인/소아 1인 기준입니다.">
-									<span>마크업(Tasf)/인당</span><span class="sum"><input type="text" class="d-inline wh70 ar"  name="tasfDome" id="tasfDome" onChange="return tasfChange()" value="0">원</span>
-								</span>
-								<span class="qb-item">
-									<span>총 결제금액</span><span class="sum" id="TotalAmount">0원</span>
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="aq_btn" id="reserveButton" onClick="return airConfirm ()" style="display:none">
-						예약하기
-					</div>
-					
-				</div>
-			</div>
+            </div>
 
-			<div class="page_item_content2">	
+			<!-- < %- include('priceInfo.inc') % > -->
+
+			<div class="search-bar">	
 				<!--여행지역 선택-->
-				<div class="search-bar">
-	
 					<div class="search-item city-select" data-type="from">
 						<span class="label">출발도시</span>
 						<strong>
@@ -166,12 +55,12 @@
 
 					<div class="search-item date-select" id="openCalendar">
 						<span class="label">가는날</span>
-						<strong class="date-span" id="dep_date_name" onClick="return generateDomCalendars('dep_date','CalendarLayer')">선택하세요</strong>
+						<strong class="date-span" id="dep_date_name" onClick="return generateCalendars('dep_date','CalendarLayer')">선택하세요</strong>
 					</div>
 
 					<div class="search-item date-select" id="openCalendarReturn">
 						<span class="label">오는날</span>
-						<strong class="date-span" id="arr_date_name" onClick="return CalendarDomeBasic('arr_date','frmForm','CalendarLayer','','','','')">선택하세요</strong>
+						<strong class="date-span" id="arr_date_name" onClick="return generateCalendars('arr_date','CalendarLayer')">선택하세요</strong>
 					</div>
 
 					<div class="search-item pax-select" onClick="seatView()">
@@ -196,7 +85,7 @@
 				</div>
 				<!--//여행지역 선택-->
 			</div>
-			<div class='calendar-layer' style='display:none;top:145px;left:25px;' ID='CalendarLayer'>
+			<div class='calendar-layer' ID='CalendarLayer'>
 				<div class='layer-box'>
 					<div class='layer-head'>
 						<strong>날짜 선택</strong>

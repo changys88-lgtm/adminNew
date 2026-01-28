@@ -16,6 +16,8 @@
                         <button class="trip active"  ID="ticketType2" onClick="return typeChange('2')">왕복</button>
                         <button class="trip"  ID="ticketType1" onClick="return typeChange('1')">편도</button>
                         <button class="trip"  ID="ticketType3" onClick="return typeChange('3')">다구간</button>
+                        <button type="button" class="trip-multi-btn" >+</button>
+                        <button type="button" class="trip-multi-btn" >−</button>
                         <label class="direct">
                             <input type="checkbox" name="stopover" value="Y" id="stopover" class="trip" ID="ticketDirect" > 직항만조회
                         </label>
@@ -46,50 +48,119 @@
 
       <!-- 검색바 -->
     <div class="search-bar">
-       <!-- <div class="" id="singleArea"> -->
-            <div class="search-item city-select" data-type="from">
-                <span class="label">출발도시</span>
-                <!-- <strong id="fromText">인천</strong> -->
-                <strong id="departure_name_text">
-                <input type="text" class="city-input" name="departure_name" id="departure_name" onClick="cityView('1','0')" onkeyup="autoComplete(this,'1','0')" autocomplete="off" value="인천" placeholder="출발도시">
-                </strong>
+        <div>
+            <div class="" id="singleArea" >
+                <div class="search-list">
+                    <div class="search-row">
+                        <div class="search-item city-select" data-type="from">
+                            <span class="label">출발도시</span>
+                            <!-- <strong id="fromText">인천</strong> -->
+                            <strong id="departure_name_text">
+                            <input type="text" class="city-input" name="departure_name" id="departure_name" onClick="cityView('1','0')" onkeyup="autoComplete(this,'1','0')" autocomplete="off" value="인천" placeholder="출발도시">
+                            </strong>
+        
+                        </div>
+        
+                        <div class="swap">⇄</div>
+        
+                        <div class="search-item city-select" data-type="to">
+                            <span class="label">도착도시</span>
 
-            </div>
-
-            <div class="swap">⇄</div>
-
-            <div class="search-item city-select" data-type="to">
-                <span class="label">도착도시</span>
-                <!-- <strong id="toText" class="is-placeholder">도착도시</strong> -->
-                <strong id="arrive_name_text">
-                <input type="text" class="city-input" name="arrive_name" id="arrive_name" onClick="cityView('2','0')" onkeyup="autoComplete(this,'2','0')" autocomplete="off" value="" placeholder="도착도시">
-                </strong>
-            </div>
-
-            <div class="search-item date-select" id="openCalendar">
-                <span class="label">출발일</span>
-                <!-- <strong id="departText">2025-12-25 (목)</strong> -->
-                <strong class="date-span" id="departure_date_name"  onClick="return generateCalendars('departure_date','CalendarLayer')"></strong>
-            </div>
-
-            <div class="search-item date-select" >
-                <div id="openCalendarReturn">
-                    <span class="label">귀국일</span>
-                    <!-- <strong id="returnText">2025-12-27 (토)</strong> -->
-                    <strong class="date-span" id="arrive_date_name"  onClick="return generateCalendars('arrive_date','CalendarLayer')"></strong>
+                           
+                            <!-- <strong id="toText" class="is-placeholder">도착도시</strong> -->
+                            <strong id="arrive_name_text">
+                            <input type="text" class="city-input" name="arrive_name" id="arrive_name" onClick="cityView('2','0')" onkeyup="autoComplete(this,'2','0')" autocomplete="off" value="" placeholder="도착도시">
+                            </strong>
+                        </div>
+        
+                        <div class="search-item date-select" id="openCalendar">
+                            <span class="label">출발일</span>
+                            <div class="date-inline avn-cabin">
+                                <strong class="date-span" id="departure_date_name" onClick="return generateCalendars('departure_date','CalendarLayer')"></strong>
+                                <button type="button" class="avn-cabin-btn">이코노미</button>
+                                <ul class="avn-cabin-layer">
+                                    <li>이코노미</li>
+                                    <li>이코노미 프리미엄</li>
+                                    <li>비즈니스</li>
+                                    <li>퍼스트</li>
+                                </ul>
+                            </div>
+                        </div>
+        
+                        <div class="search-item date-select" >
+                            <div id="openCalendarReturn">
+                                <span class="label">귀국일</span>
+                               
+                                <div class="date-inline avn-cabin">
+                                    <strong class="date-span" id="arrive_date_name"  onClick="return generateCalendars('arrive_date','CalendarLayer')"></strong>
+                                    <button type="button" class="avn-cabin-btn">이코노미</button>
+                                    <ul class="avn-cabin-layer">
+                                        <li>이코노미</li>
+                                        <li>이코노미 프리미엄</li>
+                                        <li>비즈니스</li>
+                                        <li>퍼스트</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        <!-- </div> -->
-
+            <div class="" id="multiArea" style="display: none;">
+                <div class="search-list">
+                    <% for (let ix = 1; ix < 5; ix++) { 
+                        if (ix == 1) depName = "인천";
+                        else depName = "";
+                        
+                    %>
+                    <div class="search-row">
+                        <div class="search-item city-select" data-type="from">
+                            <span class="label">출발도시</span>
+                            <strong id="departure_name_text">
+                            <input type="text" class="city-input" name="dep_city<%- ix %>_name" id="dep_city<%- ix %>_name" onClick="cityView('1','<%- ix %>')" onkeyup="autoComplete(this,'1','<%- ix %>')" autocomplete="off" value="<%- depName %>" placeholder="출발도시">
+                            </strong>
+        
+                        </div>
+        
+                        <div class="swap">⇄</div>
+        
+                        <div class="search-item city-select" data-type="to">
+                            <span class="label">도착도시</span>
+                            <strong id="arrive_name_text">
+                            <input type="text" class="city-input" name="arr_city<%- ix %>_name" id="arr_city<%- ix %>_name" onClick="cityView('2','<%- ix %>')" onkeyup="autoComplete(this,'2','<%- ix %>')" autocomplete="off" value="" placeholder="도착도시">
+                            </strong>
+                        </div>
+        
+                        <div class="search-item date-select" id="openCalendar">
+                            <span class="label">출발일</span>
+                            <div class="date-inline avn-cabin">
+                                <strong class="date-span wh120" id="dep_date<%- ix %>_name"  onClick="return generateCalendars('dep_date<%- ix %>','CalendarLayer')"></strong>
+                                <button type="button" class="avn-cabin-btn">이코노미</button>
+                                <ul class="avn-cabin-layer">
+                                    <li>이코노미</li>
+                                    <li>이코노미 프리미엄</li>
+                                    <li>비즈니스</li>
+                                    <li>퍼스트</li>
+                                </ul>
+                            </div>
+                        </div>
+        
+                        <div class="search-item date-select" >
+                            
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
         <div class="search-item pax-select" onClick="seatView()">
             <span class="label">인원</span>
             <strong id="seat-box">성인 1</strong>
         </div>
-        
-        <button class="search-btn cursor" onClick="return interSearch()">🔍 검색</button>
-        <div style="position :relative;">
-            <%- include("mem.inc") %>
-        </div>
+        <button class="search-btn" onClick="return interSearch()">🔍 검색</button>
+    </div>
+    <div style="position: relative; margin-top: 4px;">
+        <%- include("mem.inc") %>
     </div>
      
     <div class="city-layer" id="CityLayer">

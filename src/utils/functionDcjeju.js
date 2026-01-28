@@ -27,7 +27,7 @@ async function dcjejuSave (Xml) {
 
 }
 async function dcjejuCurl(postField='',urls='',method='post',Token='',Logs='') {
-    let url = 'https://core.dcjeju.net'+urls;
+    let url = 'https://r9r-api.sunmintour.com'+urls;
     const headers = await createHeader(Token);
     dcjejuLogSave (postField);
     try {
